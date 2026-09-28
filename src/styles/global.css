@@ -78,6 +78,9 @@ img, svg, canvas { display: block; max-width: 100%; }
 /* An image keeps its own proportions whenever something narrows it. */
 img { height: auto; }
 a { color: inherit; }
+/* Every link eases into its hover colour rather than snapping to it. */
+a { transition: color .25s ease, opacity .25s ease, text-decoration-color .25s ease; }
+@media (prefers-reduced-motion: reduce) { a { transition: none; } }
 h1, h2, h3 { color: var(--ink); line-height: 1.08; letter-spacing: -0.025em; margin: 0; font-weight: 800; text-wrap: balance; }
 p { margin: 0; text-wrap: pretty; }
 .container { width: 100%; max-width: calc(var(--max) + 2 * var(--gutter)); margin-inline: auto; padding-inline: var(--gutter); }
@@ -121,10 +124,15 @@ p { margin: 0; text-wrap: pretty; }
 .brand img { width: 34px; height: 34px; }
 .nav { display: flex; gap: 26px; margin-left: auto; font-size: 15px; font-weight: 500; }
 .nav a { text-decoration: none; opacity: .82; }
-.nav a:hover { opacity: 1; }
+/* Over the hero the header's links turn lime; on the page's own background, the
+   deeper green that reads on a pale header (lime again in dark). */
+.nav a:hover, .lang:hover { opacity: 1; color: var(--lime); }
+.site-header.is-solid .nav a:hover, .site-header.is-solid .lang:hover { color: var(--lime-deep); }
+@media (prefers-color-scheme: dark) {
+  .site-header.is-solid .nav a:hover, .site-header.is-solid .lang:hover { color: var(--lime); }
+}
 .header-end { display: flex; align-items: center; gap: 12px; }
 .lang { font-size: 14px; font-weight: 600; text-decoration: none; opacity: .82; padding: 8px 6px; }
-.lang:hover { opacity: 1; }
 @media (max-width: 860px) {
   .nav { display: none; }
   .header-end { margin-left: auto; }
@@ -253,7 +261,8 @@ p { margin: 0; text-wrap: pretty; }
      a horizon, with the trip happening on the part above the fold. */
   .globe-area { --d: min(118vw, 780px); margin-top: calc(var(--d) * -0.1); justify-content: center; }
   .globe-slot { position: relative; top: auto; transform: none; width: var(--d); margin-inline: calc((100% - var(--d)) / 2); margin-bottom: calc(var(--d) * -0.34); }
-  .globe-pause { bottom: 16px; }
+  /* Clear of the "what is it" card, which rises over the hero's foot. */
+  .globe-pause { bottom: 64px; }
   .chip-name { display: none; }
 }
 
@@ -265,8 +274,31 @@ p { margin: 0; text-wrap: pretty; }
 .section h2 { margin-top: 10px; font-size: clamp(32px, 4.4vw, 54px); }
 .section-head p { margin-top: 16px; font-size: clamp(17px, 1.6vw, 20px); color: var(--muted); }
 
-.what { padding-block: clamp(64px, 8vw, 104px) 0; }
-.what .box { max-width: 720px; margin-inline: auto; text-align: center; }
+/* The answer to "what is it" as one of the app's cards: the wash panel, a white rim, rising
+   over the foot of the hero — the step from the planet into the page, and a clear break
+   before the features start. */
+.what { position: relative; z-index: 10; margin-top: clamp(-96px, -7vw, -48px); }
+.what .box {
+  position: relative; isolation: isolate;
+  max-width: 860px; margin-inline: auto; text-align: center;
+  padding: clamp(30px, 4.5vw, 52px) clamp(22px, 5vw, 64px);
+  border-radius: 32px;
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid var(--glass-rim);
+  /* Soft: a wide, faint lift, only enough to set the card off the hero it overlaps. */
+  box-shadow: 0 24px 56px -30px rgba(4, 8, 18, .22), var(--glass-shadow);
+}
+/* The card's ground on a layer of its own, so it alone can thin out: at the very top of
+   the page it is frosted glass over the planet, and it fills in as soon as the reader
+   scrolls (html.at-top, set in Base.astro). The words on it never change. */
+.what .box::before {
+  content: ''; position: absolute; inset: 0; z-index: -1; border-radius: inherit;
+  background: var(--panel);
+  transition: opacity .6s ease;
+}
+.at-top .what .box::before { opacity: .45; }
+@media (prefers-reduced-motion: reduce) { .what .box::before { transition: none; } }
 /* The coin over the question, the four-colour rule under it, then the answer. */
 .what-coin { width: 56px; height: 56px; margin: 0 auto 16px; filter: drop-shadow(0 8px 18px rgba(201, 128, 79, .35)); }
 .what h2 { font-size: clamp(26px, 3vw, 36px); }
@@ -453,6 +485,10 @@ p { margin: 0; text-wrap: pretty; }
   transition: transform .25s ease;
 }
 .faq details[open] summary::after { transform: rotate(45deg); }
+/* The + turns back as the answer starts to close, not when it has finished closing. */
+.faq details.is-closing summary::after { transform: none; }
+.faq summary::after { transition: transform .32s cubic-bezier(.2, .7, .2, 1); }
+.faq-a { overflow: hidden; }
 .faq details p { padding: 0 0 24px; font-size: 17px; color: var(--ink-soft); max-width: 60em; }
 @media (max-width: 600px) { .faq { padding: 4px 20px; } }
 
@@ -476,8 +512,14 @@ p { margin: 0; text-wrap: pretty; }
 .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 32px; }
 .footer-grid h2 { font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
 .footer-grid ul { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 8px; }
-.footer-grid a { text-decoration: none; color: var(--ink-soft); }
-.footer-grid a:hover { color: var(--ink); text-decoration: underline; }
+/* The underline is always there, clear, and fades in with the colour on hover. */
+.footer-grid a {
+  color: var(--ink-soft);
+  text-decoration: underline; text-decoration-color: transparent;
+  text-underline-offset: 3px; text-decoration-thickness: 1.5px;
+}
+.footer-grid a:hover { color: var(--lime-deep); text-decoration-color: currentColor; }
+@media (prefers-color-scheme: dark) { .footer-grid a:hover { color: var(--lime); } }
 .footer-brand p { margin-top: 12px; color: var(--muted); max-width: 30em; }
 .footer-brand .brand { color: var(--ink); }
 .fineprint { margin-top: 40px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 13px; color: var(--muted); }

@@ -9,7 +9,7 @@
 //   public/globe/earth-4k.webp, earth-2k.webp  the app's Blue Marble ground, as is / halved
 //   public/globe/ids.png                        the journey's countries, one grey level each
 //   public/transport/*.webp                     the app's top-down vehicle sprites
-//   public/shots/*.webp                         raw app screenshots (Store/screenshots)
+//   public/shots/*.webp                         raw app screenshots (Store/Screenshots)
 //   public/art/*.webp                           onboarding illustrations
 //   public/avatars/*.webp                       the app's profile avatars
 //   public/icons/*                              favicon, touch icon, the coin
@@ -92,10 +92,33 @@ const SHOTS = {
   compare: 'IMG_0177.PNG',   // Poland against Thailand
   crossings: 'IMG_0173.PNG', // the crossings timeline
   pace: 'IMG_0169.PNG',      // the dashboard's spending pace
+  budget: 'IMG_0190.PNG',    // the dashboard, dark, with the monthly budget bar
 };
+/**
+ * Status-bar clutter painted out, per capture, as [left, top, width, height] in the
+ * original's pixels: IMG_0190 was taken from a TestFlight build and carries "◀ TestFlight"
+ * under the clock. Each row of the patch takes the colour just right of it, so the
+ * page's gradient carries on underneath.
+ */
+const PAINT_OUT = { 'IMG_0190.PNG': [18, 80, 320, 60] };
+async function paintOut(input, [left, top, width, height]) {
+  const { data, info } = await sharp(input).extract({ left: left + width + 8, top, width: 16, height }).raw().toBuffer({ resolveWithObject: true });
+  const patch = Buffer.alloc(width * height * 3);
+  for (let y = 0; y < height; y++) {
+    const rgb = [0, 1, 2].map((c) => {
+      let sum = 0;
+      for (let x = 0; x < info.width; x++) sum += data[(y * info.width + x) * info.channels + c];
+      return Math.round(sum / info.width);
+    });
+    for (let x = 0; x < width; x++) patch.set(rgb, (y * width + x) * 3);
+  }
+  return sharp(input).composite([{ input: patch, raw: { width, height, channels: 3 }, left, top }]).png().toBuffer();
+}
 for (const f of fs.readdirSync(`${OUT}/shots`)) fs.rmSync(`${OUT}/shots/${f}`);
 for (const [name, file] of Object.entries(SHOTS)) {
-  await sharp(app('Store/screenshots', file)).resize(720).webp({ quality: 82 }).toFile(`${OUT}/shots/${name}.webp`);
+  let input = app('Store/Screenshots', file);
+  if (PAINT_OUT[file]) input = await paintOut(input, PAINT_OUT[file]);
+  await sharp(input).resize(720).webp({ quality: 82 }).toFile(`${OUT}/shots/${name}.webp`);
 }
 
 // --- illustrations ------------------------------------------------------------------------

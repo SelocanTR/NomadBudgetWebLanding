@@ -56,7 +56,7 @@ const en: Strings = {
   meta: {
     title: 'Nomad Budget — Multi-Currency Expense Tracker for Digital Nomads',
     description:
-      'Nomad Budget is an iPhone expense tracker for digital nomads, expats and long-term travellers: one wallet per country in its own currency, one total in yours, and your journey on a 3D globe.',
+      'Nomad Budget is an expense tracker app for digital nomads, expats and long-term travellers: one wallet per country in its own currency, one total in yours, and your journey on a 3D globe.',
     ogAlt: 'Nomad Budget: a globe with a travel route and what each country cost',
   },
   nav: { features: 'Features', privacy: 'Privacy', faq: 'FAQ', download: 'Download', langName: 'English', otherLang: 'Türkçe' },
@@ -65,8 +65,8 @@ const en: Strings = {
     title: ['Your money,', 'wherever you are.'],
     lede:
       'One wallet per country, each in its own currency — all of it added up in yours. Log an expense in seconds and watch your journey draw itself on a globe.',
-    cta: 'Download',
-    qr: 'Scan with your iPhone camera',
+    cta: 'Download Now',
+    qr: 'Scan with your phone camera',
     android: 'Android isn’t available yet — Nomad Budget is on iPhone for now.',
     pause: 'Pause the globe',
     play: 'Play the globe',
@@ -77,7 +77,7 @@ const en: Strings = {
   what: {
     title: 'What is Nomad Budget?',
     body:
-      'Nomad Budget is an iPhone expense tracker for digital nomads, expats and long-term travellers whose money lives in more than one country. Every country gets a wallet in its own currency, and everything adds up in the one you choose.',
+      'Nomad Budget is an expense tracker app for digital nomads, expats and long-term travellers whose money lives in more than one country. Every country gets a wallet in its own currency, and everything adds up in the one you choose.',
   },
   features: {
     eyebrow: 'Features',
@@ -135,7 +135,16 @@ const en: Strings = {
         title: ['Know your pace', 'before the month ends.'],
         body:
           'Your spending pace compares this month with the last one while it’s still happening, so you can slow down in time — not find out afterwards.',
-        points: ['This month against the last', 'Countries and goals at a glance', 'A monthly budget with alerts'],
+        points: ['This month against the last', 'Countries and goals at a glance', 'Every month back to your first'],
+      },
+      {
+        key: 'budget',
+        shot: 'budget',
+        accent: 'orange',
+        title: ['A budget that', 'travels with you.'],
+        body:
+          'Set a monthly budget and watch it fill as you spend, in your own currency whichever country you are in. You hear about it at 80% and again if you go over, while there is still time to change course.',
+        points: ['A monthly budget, free', 'Alerts at 80% and when you go over', 'Category and country budgets with Pro, by the day or the month'],
       },
     ],
   },
@@ -147,7 +156,7 @@ const en: Strings = {
       { art: 'reminders', title: 'Recurring bills', body: 'Rent, subscriptions, insurance — set them once and they record themselves when they’re due.' },
       { art: 'import', title: 'Bring your history', body: 'Moving from another app? Import a CSV or Excel file. The file is read on your phone, never uploaded.' },
       { art: 'all-set', title: 'Works offline', body: 'No signal on the train? Entries are saved on the device and sync when you’re back online.' },
-      { art: 'slide-journey', title: 'Six languages', body: 'English, Turkish, Spanish, French, Russian and Arabic — with light and dark themes.' },
+      { art: 'slide-journey', title: 'Many languages', body: 'In your language, including English, Turkish, Spanish, French, Russian and Arabic, with light and dark themes.' },
     ],
   },
   steps: {
@@ -214,7 +223,7 @@ const en: Strings = {
     items: [
       {
         q: 'What is Nomad Budget?',
-        a: 'An iPhone expense tracker for people whose money lives in more than one country. It keeps one wallet per country in its own currency, adds everything up in the main currency you choose, and shows your travels and their cost on a 3D globe.',
+        a: 'An expense tracker app for people whose money lives in more than one country. It keeps one wallet per country in its own currency, adds everything up in the main currency you choose, and shows your travels and their cost on a 3D globe.',
       },
       {
         q: 'Is Nomad Budget a good budget app for digital nomads?',
@@ -245,8 +254,12 @@ const en: Strings = {
         a: 'It takes what you actually spend by category and prices it in another country using official price levels from the World Bank (ICP 2021) and Eurostat. The general price index is free; the comparison built from your own basket is part of Pro.',
       },
       {
+        q: 'Can I set a budget?',
+        a: 'Yes. A monthly budget for your total is free, and it alerts you at 80% and again if you go over. With Pro you can also give a category or a country a budget of its own, by the day or by the month.',
+      },
+      {
         q: 'Is it free?',
-        a: 'Yes. Recording expenses, wallets, currencies, the globe and offline use are free. Pro is an optional in-app subscription that adds insight built from your own spending and budgets.',
+        a: 'Yes. Recording expenses, wallets, currencies, the globe, a monthly budget and offline use are free. Pro is an optional in-app subscription that adds insight built from your own spending, and category and country budgets.',
       },
       {
         q: 'Is Nomad Budget available on Android?',
@@ -254,7 +267,7 @@ const en: Strings = {
       },
       {
         q: 'Which languages does it support?',
-        a: 'English, Turkish, Spanish, French, Russian and Arabic.',
+        a: 'Many, including English, Turkish, Spanish, French, Russian and Arabic, with Arabic laid out right to left.',
       },
     ],
   },
@@ -278,7 +291,7 @@ const tr: Strings = {
   meta: {
     title: 'Nomad Budget — Dijital Göçebeler için Çok Para Birimli Harcama Takibi',
     description:
-      'Nomad Budget; dijital göçebeler, yurt dışında yaşayanlar ve uzun süre seyahat edenler için bir iPhone harcama takip uygulaması: her ülkeye kendi para biriminde bir cüzdan, senin para biriminde tek toplam ve 3B kürede yolculuğun.',
+      'Nomad Budget; dijital göçebeler, yurt dışında yaşayanlar ve uzun süre seyahat edenler için bir harcama takip uygulaması: her ülkeye kendi para biriminde bir cüzdan, senin para biriminde tek toplam ve 3B kürede yolculuğun.',
     ogAlt: 'Nomad Budget: seyahat rotası ve her ülkenin maliyeti gösterilen bir küre',
   },
   nav: { features: 'Özellikler', privacy: 'Gizlilik', faq: 'SSS', download: 'İndir', langName: 'Türkçe', otherLang: 'English' },
@@ -287,8 +300,8 @@ const tr: Strings = {
     title: ['Paran,', 'neredeysen orada.'],
     lede:
       'Her ülkeye kendi para biriminde bir cüzdan — hepsi senin para biriminde tek toplamda. Harcamayı saniyeler içinde gir, yolculuğunun kürede kendiliğinden çizilişini izle.',
-    cta: 'İndir',
-    qr: 'iPhone kamerasıyla okut',
+    cta: 'Hemen İndir',
+    qr: 'Telefon kamerasıyla okut',
     android: 'Android sürümü henüz yok — Nomad Budget şimdilik iPhone’da.',
     pause: 'Küreyi durdur',
     play: 'Küreyi oynat',
@@ -299,7 +312,7 @@ const tr: Strings = {
   what: {
     title: 'Nomad Budget nedir?',
     body:
-      'Nomad Budget, parası birden fazla ülkede olan dijital göçebeler, yurt dışında yaşayanlar ve uzun süre gezenler için bir iPhone harcama takip uygulamasıdır. Her ülkeye kendi para biriminde bir cüzdan açar, hepsini senin seçtiğin para biriminde toplar.',
+      'Nomad Budget, parası birden fazla ülkede olan dijital göçebeler, yurt dışında yaşayanlar ve uzun süre gezenler için bir harcama takip uygulamasıdır. Her ülkeye kendi para biriminde bir cüzdan açar, hepsini senin seçtiğin para biriminde toplar.',
   },
   features: {
     eyebrow: 'Özellikler',
@@ -357,7 +370,16 @@ const tr: Strings = {
         title: ['Ay bitmeden', 'hızını bil.'],
         body:
           'Harcama hızın bu ayı, daha ay bitmeden geçen ayla karşılaştırır; sonradan öğrenmek yerine zamanında yavaşlarsın.',
-        points: ['Bu ay, geçen aya karşı', 'Ülkeler ve hedefler tek bakışta', 'Uyarılı aylık bütçe'],
+        points: ['Bu ay, geçen aya karşı', 'Ülkeler ve hedefler tek bakışta', 'İlk ayına kadar ay ay'],
+      },
+      {
+        key: 'budget',
+        shot: 'budget',
+        accent: 'orange',
+        title: ['Seninle gezen', 'bir bütçe.'],
+        body:
+          'Aylık bir bütçe koy, hangi ülkede olursan ol harcadıkça kendi para biriminde dolduğunu izle. %80’e geldiğinde ve aşarsan haber verir; rotayı değiştirmek için hâlâ vaktin varken.',
+        points: ['Aylık bütçe, ücretsiz', '%80’de ve aşınca uyarı', 'Pro ile günlük ya da aylık kategori ve ülke bütçeleri'],
       },
     ],
   },
@@ -369,7 +391,7 @@ const tr: Strings = {
       { art: 'reminders', title: 'Tekrarlayan ödemeler', body: 'Kira, abonelikler, sigorta — bir kez kur, zamanı gelince kendiliğinden kaydedilsin.' },
       { art: 'import', title: 'Geçmişini getir', body: 'Başka bir uygulamadan mı geliyorsun? CSV ya da Excel dosyası içe aktar. Dosya telefonunda okunur, hiçbir yere yüklenmez.' },
       { art: 'all-set', title: 'Çevrimdışı çalışır', body: 'Trende çekmiyor mu? Kayıtlar cihazda saklanır, bağlantı gelince eşitlenir.' },
-      { art: 'slide-journey', title: 'Altı dil', body: 'Türkçe, İngilizce, İspanyolca, Fransızca, Rusça ve Arapça — açık ve koyu temayla.' },
+      { art: 'slide-journey', title: 'Birçok dil', body: 'Kendi dilinde: aralarında Türkçe, İngilizce, İspanyolca, Fransızca, Rusça ve Arapça var; açık ve koyu temayla.' },
     ],
   },
   steps: {
@@ -436,7 +458,7 @@ const tr: Strings = {
     items: [
       {
         q: 'Nomad Budget nedir?',
-        a: 'Parası birden fazla ülkede olan insanlar için bir iPhone harcama takip uygulaması. Her ülke için kendi para biriminde bir cüzdan tutar, hepsini seçtiğin ana para biriminde toplar ve seyahatlerini maliyetleriyle birlikte 3B bir kürede gösterir.',
+        a: 'Parası birden fazla ülkede olan insanlar için bir harcama takip uygulaması. Her ülke için kendi para biriminde bir cüzdan tutar, hepsini seçtiğin ana para biriminde toplar ve seyahatlerini maliyetleriyle birlikte 3B bir kürede gösterir.',
       },
       {
         q: 'Dijital göçebeler için iyi bir bütçe uygulaması mı?',
@@ -467,8 +489,12 @@ const tr: Strings = {
         a: 'Kategori kategori gerçekte ne harcadığını alır ve Dünya Bankası (ICP 2021) ile Eurostat’ın resmî fiyat seviyeleriyle başka bir ülkede fiyatlar. Genel fiyat endeksi ücretsizdir; kendi sepetinle yapılan karşılaştırma Pro’nun parçasıdır.',
       },
       {
+        q: 'Bütçe koyabilir miyim?',
+        a: 'Evet. Toplamın için aylık bir bütçe ücretsizdir; %80’e geldiğinde ve aşarsan seni uyarır. Pro ile bir kategoriye ya da ülkeye de günlük veya aylık kendi bütçesini verebilirsin.',
+      },
+      {
         q: 'Ücretsiz mi?',
-        a: 'Evet. Harcama kaydı, cüzdanlar, para birimleri, küre ve çevrimdışı kullanım ücretsizdir. Pro; kendi harcamandan çıkan içgörüleri ve bütçeleri ekleyen, isteğe bağlı bir uygulama içi aboneliktir.',
+        a: 'Evet. Harcama kaydı, cüzdanlar, para birimleri, küre, aylık bütçe ve çevrimdışı kullanım ücretsizdir. Pro; kendi harcamandan çıkan içgörüleri, kategori ve ülke bütçelerini ekleyen, isteğe bağlı bir uygulama içi aboneliktir.',
       },
       {
         q: 'Android’de var mı?',
@@ -476,7 +502,7 @@ const tr: Strings = {
       },
       {
         q: 'Hangi dilleri destekliyor?',
-        a: 'Türkçe, İngilizce, İspanyolca, Fransızca, Rusça ve Arapça.',
+        a: 'Birçok dili; aralarında Türkçe, İngilizce, İspanyolca, Fransızca, Rusça ve sağdan sola düzeniyle Arapça var.',
       },
     ],
   },

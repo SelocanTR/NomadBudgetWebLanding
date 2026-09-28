@@ -15,11 +15,13 @@ const AVATARS = [['avatar_2'], ['avatar_7'], ['avatar_1'], ['avatar_6'], ['avata
 <Hero lang={lang} />
 
 <section class="what" aria-labelledby="what-title">
-  <div class="container box">
-    <img class="what-coin" src="/icons/coin-96.webp" width="56" height="56" alt="" loading="lazy" />
-    <h2 id="what-title">{s.what.title}</h2>
-    <div class="rule" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-    <p>{s.what.body}</p>
+  <div class="container">
+    <div class="box">
+      <img class="what-coin" src="/icons/coin-96.webp" width="56" height="56" alt="" loading="lazy" />
+      <h2 id="what-title">{s.what.title}</h2>
+      <div class="rule" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      <p>{s.what.body}</p>
+    </div>
   </div>
 </section>
 
@@ -151,7 +153,7 @@ const AVATARS = [['avatar_2'], ['avatar_7'], ['avatar_1'], ['avatar_6'], ['avata
         {s.faq.items.map((item, i) => (
           <details open={i === 0}>
             <summary>{item.q}</summary>
-            <p>{item.a}</p>
+            <div class="faq-a"><p>{item.a}</p></div>
           </details>
         ))}
       </div>
@@ -164,6 +166,47 @@ const AVATARS = [['avatar_2'], ['avatar_7'], ['avatar_1'], ['avatar_6'], ['avata
     <img src="/art/slide-journey.webp" width="360" height="300" alt="" loading="lazy" />
     <h2 id="final-title">{s.final.title}</h2>
     <p>{s.final.body}</p>
-    <a class="btn btn-lime" href={store} rel="noopener">{s.hero.cta}</a>
+    <a class="btn btn-lime" href={store} rel="noopener">{s.nav.download}</a>
   </div>
 </section>
+
+<script>
+  // The FAQ's answers slide open and shut instead of jumping. <details> keeps doing the
+  // work (keyboard, find-in-page, no-JS): the script only animates the answer's height
+  // around the toggle — opening sets `open` first and grows into it, closing shrinks
+  // first and clears `open` at the end. Reduced motion keeps the plain toggle.
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  for (const details of document.querySelectorAll<HTMLDetailsElement>('.faq details')) {
+    const summary = details.querySelector('summary');
+    const answer = details.querySelector<HTMLElement>('.faq-a');
+    if (!summary || !answer) continue;
+    let running: Animation | null = null;
+    summary.addEventListener('click', (e) => {
+      if (reduce.matches) return;
+      e.preventDefault();
+      const opening = !details.open || details.classList.contains('is-closing');
+      const from = running ? answer.offsetHeight : opening ? 0 : answer.offsetHeight;
+      running?.cancel();
+      details.classList.toggle('is-closing', !opening);
+      if (opening) details.open = true;
+      const to = opening ? answer.scrollHeight : 0;
+      running = answer.animate(
+        [{ height: `${from}px`, opacity: opening ? 0 : 1 }, { height: `${to}px`, opacity: opening ? 1 : 0 }],
+        { duration: 320, easing: 'cubic-bezier(.2, .7, .2, 1)' },
+      );
+      // The promise, not the `finish` event: the event waits for the next rendered frame,
+      // the promise settles as soon as the animation ends. A cancelled run (clicked again
+      // mid-way) rejects, and the run that replaced it takes over.
+      const run = running;
+      run.finished.then(
+        () => {
+          if (running !== run) return;
+          if (!opening) details.open = false;
+          details.classList.remove('is-closing');
+          running = null;
+        },
+        () => {},
+      );
+    });
+  }
+</script>

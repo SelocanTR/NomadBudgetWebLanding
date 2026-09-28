@@ -61,6 +61,9 @@ const qr = await QRCode.toString(appStoreUrl(lang), { type: 'svg', margin: 0, er
 
     <script is:inline>
       if (/Android/i.test(navigator.userAgent)) document.documentElement.classList.add('is-android');
+      // Set before the first paint so the card over the hero starts see-through rather
+      // than flashing solid; the scroll handler keeps it true from then on.
+      if (!scrollY) document.documentElement.classList.add('at-top');
     </script>
   </head>
   <body>
@@ -143,6 +146,7 @@ const qr = await QRCode.toString(appStoreUrl(lang), { type: 'svg', margin: 0, er
           const pastHero = !hero || hero.getBoundingClientRect().bottom <= header.offsetHeight;
           header.classList.toggle('is-scrolled', scrolled && !pastHero);
           header.classList.toggle('is-solid', pastHero);
+          document.documentElement.classList.toggle('at-top', !scrolled);
         };
         addEventListener('scroll', update, { passive: true });
         addEventListener('resize', update, { passive: true });
