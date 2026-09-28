@@ -1,0 +1,153 @@
+---
+import '@fontsource-variable/inter';
+import '../styles/global.css';
+import { STRINGS, SITE, APP_STORE_ID, appStoreUrl, pathFor, type Lang } from '../i18n';
+import QRCode from 'qrcode';
+
+interface Props {
+  lang: Lang;
+  title?: string;
+  description?: string;
+  jsonLd?: object[];
+  noindex?: boolean;
+}
+
+const { lang, title, description, jsonLd = [], noindex = false } = Astro.props;
+const s = STRINGS[lang];
+const other: Lang = lang === 'en' ? 'tr' : 'en';
+const pageTitle = title ?? s.meta.title;
+const pageDescription = description ?? s.meta.description;
+const canonical = new URL(pathFor(lang), SITE).href;
+const og = new URL(`/og-${lang}.jpg`, SITE).href;
+const qr = await QRCode.toString(appStoreUrl(lang), { type: 'svg', margin: 0, errorCorrectionLevel: 'M', color: { dark: '#0E1726', light: '#FFFFFF' } });
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="en" href={new URL(pathFor('en'), SITE).href} />
+    <link rel="alternate" hreflang="tr" href={new URL(pathFor('tr'), SITE).href} />
+    <link rel="alternate" hreflang="x-default" href={new URL(pathFor('en'), SITE).href} />
+    <meta name="theme-color" content="#040812" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="apple-itunes-app" content={`app-id=${APP_STORE_ID}`} />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <!-- The hero's planet turns from the first moments: its texture and the country map
+         start downloading with the page instead of after the globe's code asks for them. -->
+    <link rel="preload" as="image" href="/globe/earth-2k.webp" type="image/webp" fetchpriority="high" />
+    <link rel="preload" as="image" href="/globe/ids.png" type="image/png" fetchpriority="high" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Nomad Budget" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={og} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={s.meta.ogAlt} />
+    <meta property="og:locale" content={s.locale} />
+    <meta property="og:locale:alternate" content={STRINGS[other].locale} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    {jsonLd.map((block) => <script type="application/ld+json" set:html={JSON.stringify(block)} />)}
+
+    <script is:inline>
+      if (/Android/i.test(navigator.userAgent)) document.documentElement.classList.add('is-android');
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#main">{lang === 'tr' ? 'İçeriğe geç' : 'Skip to content'}</a>
+    <header class="site-header" data-header>
+      <div class="container header-inner">
+        <a class="brand" href={pathFor(lang)} aria-label="Nomad Budget">
+          <img src="/icons/coin-96.webp" width="34" height="34" alt="" />
+          <span>Nomad Budget</span>
+        </a>
+        <nav class="nav" aria-label={lang === 'tr' ? 'Ana menü' : 'Main'}>
+          <a href="#features">{s.nav.features}</a>
+          <a href="#privacy">{s.nav.privacy}</a>
+          <a href="#faq">{s.nav.faq}</a>
+        </nav>
+        <div class="header-end">
+          <a class="btn btn-lime btn-small" href={appStoreUrl(lang)} rel="noopener">
+            {s.nav.download}
+          </a>
+          <a class="lang" href={pathFor(other)} hreflang={other} lang={other} aria-label={s.nav.otherLang}><span class="long" aria-hidden="true">{s.nav.otherLang}</span><span class="short" aria-hidden="true">{other.toUpperCase()}</span></a>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <!-- On a computer the App Store is a phone away: the code stays in the corner. -->
+    <a class="qr-float" href={appStoreUrl(lang)} rel="noopener" aria-label={s.hero.qr}>
+      <span class="qr-code" set:html={qr} />
+      <span class="qr-caption">{s.hero.qr}</span>
+    </a>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <a class="brand" href={pathFor(lang)}>
+              <img src="/icons/coin-96.webp" width="34" height="34" alt="" />
+              <span>Nomad Budget</span>
+            </a>
+            <p>{s.footer.tagline}</p>
+          </div>
+          <div>
+            <h2>{s.footer.legal}</h2>
+            <ul>
+              <li><a href={`https://legal.rubeeks.co/nomadbudget/privacy.${lang}.html`}>{s.footer.privacy}</a></li>
+              <li><a href={`https://legal.rubeeks.co/nomadbudget/terms.${lang}.html`}>{s.footer.terms}</a></li>
+              {s.footer.kvkk && <li><a href="https://legal.rubeeks.co/nomadbudget/kvkk.tr.html">{s.footer.kvkk}</a></li>}
+              <li><a href={`https://legal.rubeeks.co/nomadbudget/disclaimer.${lang}.html`}>{s.footer.disclaimer}</a></li>
+              <li><a href={`https://legal.rubeeks.co/nomadbudget/licenses.${lang}.html`}>{s.footer.licenses}</a></li>
+            </ul>
+          </div>
+          <div>
+            <h2>{s.footer.contact}</h2>
+            <ul>
+              <li><a href="mailto:nomadbudget@rubeeks.co">nomadbudget@rubeeks.co</a></li>
+              <li><a href={appStoreUrl(lang)} rel="noopener">App Store</a></li>
+              <li><a href={pathFor(other)} hreflang={other} lang={other}>{s.nav.otherLang}</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="fineprint">
+          <span>© {new Date().getFullYear()} {s.footer.rights}</span>
+          <span>{s.footer.imagery}</span>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // The header is clear only at the very top. From the first pixel of scroll it gets a
+      // background: dark glass while it is still over the dark hero, the page's own once
+      // the hero is behind it.
+      const header = document.querySelector<HTMLElement>('[data-header]');
+      const hero = document.querySelector<HTMLElement>('.hero');
+      if (header) {
+        const update = () => {
+          const scrolled = scrollY > 0;
+          const pastHero = !hero || hero.getBoundingClientRect().bottom <= header.offsetHeight;
+          header.classList.toggle('is-scrolled', scrolled && !pastHero);
+          header.classList.toggle('is-solid', pastHero);
+        };
+        addEventListener('scroll', update, { passive: true });
+        addEventListener('resize', update, { passive: true });
+        update();
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,65 @@
+---
+import { STRINGS, appStoreUrl, type Lang } from '../i18n';
+import { heroJourney, flagSvg } from '../data/journey';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const s = STRINGS[lang];
+const journey = heroJourney(lang);
+const store = appStoreUrl(lang);
+---
+
+<section class="hero" aria-labelledby="hero-title" data-hero>
+  <canvas class="hero-stars" aria-hidden="true"></canvas>
+  <canvas class="hero-globe" aria-hidden="true"></canvas>
+  <canvas class="hero-routes" aria-hidden="true"></canvas>
+  <div class="hero-chips" aria-hidden="true">
+    {journey.stops.map((stop) => (
+      <div class="chip" data-code={stop.code}>
+        <div class="chip-body">
+          <span class="chip-flag" set:html={flagSvg(stop.code)} />
+          <span class="chip-text">
+            <span class="chip-name">{stop.name}</span>
+            <span class="chip-amount">{stop.amount}{s.hero.perMonth}</span>
+          </span>
+        </div>
+      </div>
+    ))}
+  </div>
+  <div class="hero-scrim"></div>
+
+  <div class="container hero-inner">
+    <div class="hero-copy">
+      <p class="eyebrow">
+        <img src="/icons/globe-48.webp" width="20" height="20" alt="" />
+        {s.hero.eyebrow}
+      </p>
+      <h1 id="hero-title"><span>{s.hero.title[0]}</span><span class="glow">{s.hero.title[1]}</span></h1>
+      <p class="lede">{s.hero.lede}</p>
+      <div class="cta-row">
+        <a class="btn btn-lime" href={store} rel="noopener">{s.hero.cta}</a>
+      </div>
+      <p class="android-note">{s.hero.android}</p>
+    </div>
+
+    <div class="globe-area">
+      <div class="globe-slot"></div>
+      <img class="hero-fallback" src="/art/slide-journey.webp" width="360" height="300" alt="" loading="lazy" />
+    </div>
+  </div>
+
+  <button class="globe-pause" type="button" aria-pressed="false" aria-label={s.hero.pause} data-pause={s.hero.pause} data-play={s.hero.play}>
+    <svg class="i-pause" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><rect x="3" y="2" width="3.5" height="12" rx="1" /><rect x="9.5" y="2" width="3.5" height="12" rx="1" /></svg>
+    <svg class="i-play" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M4 2.6v10.8a1 1 0 0 0 1.5.86l8.6-5.4a1 1 0 0 0 0-1.72L5.5 1.74A1 1 0 0 0 4 2.6z" /></svg>
+  </button>
+
+  <p class="sr-only">{s.hero.globeAlt}</p>
+  <script type="application/json" id="journey-data" set:html={JSON.stringify(journey)} />
+</section>
+
+<script>
+  // The page opens with the planet turning: the globe's code starts as soon as the
+  // document is parsed. A device without WebGL keeps the illustration.
+  const root = document.querySelector<HTMLElement>('[data-hero]');
+  if (root) import('../globe/hero').then(({ startHero }) => startHero(root));
+</script>

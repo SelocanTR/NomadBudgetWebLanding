@@ -1,0 +1,18 @@
+# Nomad Budget
+
+> Nomad Budget is an iPhone expense tracker for digital nomads, expats and long-term travellers — people whose money lives in more than one country. It keeps one wallet per country in its own currency, stores every entry at the exchange rate of the day it was paid, and adds everything up in the main currency the user chooses. It shows where the user has been, and what each country cost, on a 3D globe.
+
+- Platform: iPhone (App Store: https://apps.apple.com/app/id6803787746). Not on Android yet.
+- Price: free; Pro is an optional in-app subscription (country comparison built from the user's own spending, cost-of-a-month estimates, unlimited goals / recurring transactions / shared wallets, category and country budgets).
+- No bank connection; data is not sold; location is read only at country level and never stored.
+- Works offline; imports CSV / Excel history from other apps; shared wallets with edit or view-only access.
+- Country comparison uses World Bank ICP 2021 and Eurostat price levels applied to the user's own spending by category.
+- Languages: English, Turkish, Spanish, French, Russian, Arabic.
+- Made by Rubeeks — nomadbudget@rubeeks.co
+
+## Pages
+
+- [Nomad Budget (English)](https://nomadbudget.rubeeks.co/): features, privacy, free vs Pro, FAQ
+- [Nomad Budget (Türkçe)](https://nomadbudget.rubeeks.co/tr/): the same in Turkish
+- [Privacy Policy](https://legal.rubeeks.co/nomadbudget/privacy.en.html)
+- [Terms of Use](https://legal.rubeeks.co/nomadbudget/terms.en.html)

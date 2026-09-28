@@ -1,0 +1,19 @@
+---
+import Base from '../layouts/Base.astro';
+import { STRINGS } from '../i18n';
+// GitHub Pages serves this for every missing path, in either language; English with a
+// way back to both.
+const s = STRINGS.en;
+const t = STRINGS.tr;
+---
+
+<Base lang="en" title="404 — Nomad Budget" noindex>
+  <section class="container notfound">
+    <div>
+      <h1>{s.notFound.title}</h1>
+      <p>{s.notFound.body}</p>
+      <a class="btn btn-lime" href="/">{s.notFound.home}</a>
+      <p style="margin-top: 18px"><a href="/tr/">{t.notFound.home} (Türkçe)</a></p>
+    </div>
+  </section>
+</Base>

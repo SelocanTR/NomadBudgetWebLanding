@@ -1,0 +1,23 @@
+{
+  "name": "nomadbudget-web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "assets": "node scripts/build-assets.mjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/inter": "^5.3.0",
+    "astro": "^7.3.5"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@types/qrcode": "^1.5.6",
+    "qrcode": "^1.5.4",
+    "sharp": "^0.35.5",
+    "typescript": "^5.9.3"
+  }
+}

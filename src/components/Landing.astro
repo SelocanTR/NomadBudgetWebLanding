@@ -1,0 +1,169 @@
+---
+import { STRINGS, appStoreUrl, type Lang } from '../i18n';
+import Hero from './Hero.astro';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const s = STRINGS[lang];
+const store = appStoreUrl(lang);
+/** The app's own profile avatars, one per kind of traveller, in `audience.items` order:
+ *  the one working from a beach, the one on a terrace abroad, the explorer, the one with
+ *  a city at dusk, the one holding a chart that grows — and two for the couple. */
+const AVATARS = [['avatar_2'], ['avatar_7'], ['avatar_1'], ['avatar_6'], ['avatar_3'], ['avatar_4', 'avatar_8']];
+---
+
+<Hero lang={lang} />
+
+<section class="what" aria-labelledby="what-title">
+  <div class="container box">
+    <img class="what-coin" src="/icons/coin-96.webp" width="56" height="56" alt="" loading="lazy" />
+    <h2 id="what-title">{s.what.title}</h2>
+    <div class="rule" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <p>{s.what.body}</p>
+  </div>
+</section>
+
+<section class="section" id="features" aria-labelledby="features-title">
+  <div class="container">
+    <div class="section-head center">
+      <p class="kicker">{s.features.eyebrow}</p>
+      <h2 id="features-title">{s.features.title}</h2>
+    </div>
+    <div class="features">
+      {s.features.items.map((f, i) => (
+        <article class={`feature c-${f.accent}`} id={f.key}>
+          <div class="feature-media">
+            <img src={`/shots/${f.shot}.webp`} width="720" height="1558" alt="" loading="lazy" decoding="async" />
+          </div>
+          <div class="feature-copy">
+            <p class="feature-index">{String(i + 1).padStart(2, '0')}</p>
+            <h3>{f.title[0]} <span>{f.title[1]}</span></h3>
+            <p>{f.body}</p>
+            <ul class="checks">
+              {f.points.map((p) => <li>{p}</li>)}
+            </ul>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- The app's home-screen wash behind the next three sections, glass cards on it. -->
+<div class="wash">
+  <section class="section" aria-labelledby="more-title">
+    <div class="container">
+      <div class="section-head center"><h2 id="more-title">{s.more.title}</h2></div>
+      <div class="cards">
+        {s.more.items.map((c) => (
+          <article class="card glass">
+            <img src={`/art/tile-${c.art}.webp`} width="88" height="88" alt="" loading="lazy" decoding="async" />
+            <h3>{c.title}</h3>
+            <p>{c.body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section tight" aria-labelledby="steps-title">
+    <div class="container">
+      <div class="section-head center"><h2 id="steps-title">{s.steps.title}</h2></div>
+      <ol class="steps">
+        {s.steps.items.map((step) => (
+          <li class="step glass">
+            <h3>{step.title}</h3>
+            <p>{step.body}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section tight" aria-labelledby="people-title">
+    <div class="container">
+      <div class="section-head center">
+        <h2 id="people-title">{s.audience.title}</h2>
+        <p>{s.audience.body}</p>
+      </div>
+      <div class="people">
+        {s.audience.items.map((p, i) => (
+          <article class="person glass">
+            <div class="avatars" aria-hidden="true">
+              {AVATARS[i].map((a) => <img src={`/avatars/${a}.webp`} width="64" height="64" alt="" loading="lazy" decoding="async" />)}
+            </div>
+            <div>
+              <h3>{p.title}</h3>
+              <p>{p.body}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</div>
+
+<section class="section" id="privacy" aria-labelledby="privacy-title">
+  <div class="container">
+    <div class="privacy-panel">
+      <p class="kicker">{s.privacy.eyebrow}</p>
+      <h2 id="privacy-title">{s.privacy.title[0]} <span>{s.privacy.title[1]}</span></h2>
+      <p>{s.privacy.body}</p>
+      <div class="privacy-grid">
+        {s.privacy.items.map((item) => (
+          <div class="privacy-item glass">
+            <h3>{item.title}</h3>
+            <p>{item.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wash wash-mirror">
+  <section class="section" id="pro" aria-labelledby="plans-title">
+    <div class="container">
+      <div class="section-head center">
+        <h2 id="plans-title">{s.plans.title}</h2>
+        <p>{s.plans.body}</p>
+      </div>
+      <div class="plans">
+        <article class="plan glass c-lime">
+          <h3>{s.plans.free.name}</h3>
+          <p class="tagline">{s.plans.free.tagline}</p>
+          <ul class="checks">{s.plans.free.items.map((i) => <li>{i}</li>)}</ul>
+        </article>
+        <article class="plan plan-pro glass c-blue">
+          <h3 class="pro-badge"><img src="/art/pro.webp" width="34" height="34" alt="" loading="lazy" />{s.plans.pro.name}</h3>
+          <p class="tagline">{s.plans.pro.tagline}</p>
+          <ul class="checks">{s.plans.pro.items.map((i) => <li>{i}</li>)}</ul>
+        </article>
+      </div>
+      <p class="plans-note">{s.plans.note}</p>
+    </div>
+  </section>
+
+  <section class="section tight" id="faq" aria-labelledby="faq-title">
+    <div class="container">
+      <div class="section-head center"><h2 id="faq-title">{s.faq.title}</h2></div>
+      <div class="faq glass">
+        {s.faq.items.map((item, i) => (
+          <details open={i === 0}>
+            <summary>{item.q}</summary>
+            <p>{item.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+</div>
+
+<section class="container" aria-labelledby="final-title">
+  <div class="final">
+    <img src="/art/slide-journey.webp" width="360" height="300" alt="" loading="lazy" />
+    <h2 id="final-title">{s.final.title}</h2>
+    <p>{s.final.body}</p>
+    <a class="btn btn-lime" href={store} rel="noopener">{s.hero.cta}</a>
+  </div>
+</section>
