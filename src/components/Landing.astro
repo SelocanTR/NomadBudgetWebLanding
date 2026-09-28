@@ -10,6 +10,9 @@ const store = appStoreUrl(lang);
  *  the one working from a beach, the one on a terrace abroad, the explorer, the one with
  *  a city at dusk, the one holding a chart that grows — and two for the couple. */
 const AVATARS = [['avatar_2'], ['avatar_7'], ['avatar_1'], ['avatar_6'], ['avatar_3'], ['avatar_4', 'avatar_8']];
+/** The vehicle the trip turns into at each stop, one per feature (the hero's sprites);
+ *  no two stops in a row share one, so every arrival changes it. */
+const ROUTE_VEHICLES = ['train', 'ferry', 'flight', 'car', 'bus', 'train', 'flight'];
 ---
 
 <Hero lang={lang} />
@@ -32,8 +35,19 @@ const AVATARS = [['avatar_2'], ['avatar_7'], ['avatar_1'], ['avatar_6'], ['avata
       <h2 id="features-title">{s.features.title}</h2>
     </div>
     <div class="features">
+      <!-- The trip down the gap between the columns: a stop at every feature, a vehicle
+           that scrolls from one to the next (the script at the foot of the page). -->
+      <div class="route" aria-hidden="true" data-vehicles={ROUTE_VEHICLES.join(' ')}>
+        <div class="route-fill"></div>
+        <div class="route-vehicle">
+          {ROUTE_VEHICLES.filter((v, i, all) => all.indexOf(v) === i).map((v) => (
+            <img src={`/transport/${v}.webp`} data-vehicle={v} width="256" height="256" alt="" loading="lazy" decoding="async" />
+          ))}
+        </div>
+      </div>
       {s.features.items.map((f, i) => (
-        <article class={`feature c-${f.accent}`} id={f.key}>
+        <article class={`feature c-${f.accent}`} id={f.key} data-accent={f.accent}>
+          <span class="route-stop" aria-hidden="true"></span>
           <div class="feature-media">
             <img src={`/shots/${f.shot}.webp`} width="720" height="1558" alt="" loading="lazy" decoding="async" />
           </div>
@@ -208,5 +222,128 @@ const AVATARS = [['avatar_2'], ['avatar_7'], ['avatar_1'], ['avatar_6'], ['avata
         () => {},
       );
     });
+  }
+</script>
+
+<script>
+  // The features' trip. The middle of the screen is where the reader is; the vehicle
+  // follows it down the line between the stops but lingers at each one and hurries
+  // between them, so it pulls in beside a feature while that feature is being read.
+  // It turns round when the reader scrolls back up, and every time it pulls into a stop,
+  // going either way, it turns into that stop's vehicle. Only where the two columns stand side by side (the CSS hides the
+  // route elsewhere). With reduced motion there is no vehicle: the line is drawn whole.
+  const features = document.querySelector<HTMLElement>('.features');
+  const route = features?.querySelector<HTMLElement>('.route');
+  const vehicle = route?.querySelector<HTMLElement>('.route-vehicle');
+  const fill = route?.querySelector<HTMLElement>('.route-fill');
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (features && route && vehicle && fill) {
+    const articles = [...features.querySelectorAll<HTMLElement>('.feature')];
+    const kinds = (route.dataset.vehicles ?? '').split(' ');
+    const sprites = new Map([...vehicle.querySelectorAll<HTMLImageElement>('img')].map((img) => [img.dataset.vehicle!, img]));
+    const wide = matchMedia('(min-width: 821px)');
+    /** Each stop's height down the route, the first at 0. */
+    let stops: number[] = [];
+    /** The first stop's height inside the features block. */
+    let first = 0;
+    let y = 0;
+    let angle = 90;
+    let heading = 90;
+    /** The stop whose vehicle is showing. */
+    let shown = -1;
+    let last = 0;
+    let frame = 0;
+    let visible = false;
+
+    const measure = () => {
+      const centres = articles.map((a) => a.offsetTop + a.offsetHeight / 2);
+      stops = centres.map((c) => c - centres[0]);
+      first = centres[0];
+      const length = stops[stops.length - 1] || 1;
+      route.style.top = `${centres[0]}px`;
+      route.style.height = `${length}px`;
+      // The travelled line takes each feature's colour as it passes it.
+      fill.style.backgroundImage = `linear-gradient(180deg, ${articles
+        .map((a, i) => `var(--acc-${a.dataset.accent}) ${((stops[i] / length) * 100).toFixed(2)}%`)
+        .join(', ')})`;
+    };
+
+    /** How far down the route the vehicle should be for this scroll. */
+    const target = () => {
+      // Read live: anything above that grows or shrinks (a font arriving) moves the block
+      // without resizing it, which the ResizeObserver would never hear about.
+      const focus = innerHeight / 2 - features.getBoundingClientRect().top - first;
+      const n = stops.length - 1;
+      if (focus <= 0) return 0;
+      if (focus >= stops[n]) return stops[n];
+      let i = 0;
+      while (i < n - 1 && focus >= stops[i + 1]) i++;
+      const t = (focus - stops[i]) / (stops[i + 1] - stops[i]);
+      // A quarter of each leg's scroll is spent standing at either end of it.
+      const u = Math.min(1, Math.max(0, (t - 0.25) / 0.5));
+      const eased = u * u * (3 - 2 * u);
+      return stops[i] + eased * (stops[i + 1] - stops[i]);
+    };
+
+    const draw = (now: number) => {
+      frame = 0;
+      const dt = last ? Math.min(64, now - last) : 16;
+      last = now;
+      const gap = target() - y;
+      const from = y;
+      // A little weight behind it: it eases after the reader rather than jumping with
+      // every notch of the wheel.
+      y += gap * (1 - Math.exp(-dt / 110));
+      if (Math.abs(gap) > 1.5) heading = gap > 0 ? 90 : -90;
+      angle += (heading - angle) * (1 - Math.exp(-dt / 140));
+      // The vehicle changes as it pulls in, not when the reader passes the stop: the
+      // last stop it reached this frame — one it is sitting at, or one a fast scroll
+      // carried it over — or on the first frame the nearest one.
+      const lo = Math.min(from, y) - 3;
+      const hi = Math.max(from, y) + 3;
+      let at = -1;
+      stops.forEach((s, i) => {
+        if (s >= lo && s <= hi && (at < 0 || Math.abs(s - y) < Math.abs(stops[at] - y))) at = i;
+      });
+      if (at < 0 && shown < 0) at = nearest();
+      if (at >= 0 && at !== shown) {
+        shown = at;
+        const name = kinds[at % kinds.length];
+        for (const [key, img] of sprites) img.classList.toggle('is-on', key === name);
+      }
+      vehicle.style.transform = `translate3d(-50%, calc(${y.toFixed(1)}px - 50%), 0) rotate(${angle.toFixed(1)}deg)`;
+      fill.style.clipPath = `inset(0 0 ${Math.max(0, stops[stops.length - 1] - y).toFixed(1)}px 0)`;
+      articles.forEach((a, i) => a.classList.toggle('is-reached', y >= stops[i] - 2));
+      vehicle.classList.toggle('is-tappable', next() >= 0);
+      const settled = Math.abs(gap) < 0.3 && Math.abs(heading - angle) < 0.3;
+      if (!settled && visible) frame = requestAnimationFrame(draw);
+      else last = 0;
+    };
+    const wake = () => {
+      if (!frame && visible && !still && wide.matches) frame = requestAnimationFrame(draw);
+    };
+    const nearest = () => stops.reduce((best, s, i) => (Math.abs(s - y) < Math.abs(stops[best] - y) ? i : best), 0);
+    /** The stop ahead of the vehicle, or -1 once it has pulled into the last one. */
+    const next = () => stops.findIndex((s) => s > y + 4);
+
+    // A tap on the vehicle brings the next stop to the middle of the screen, where the
+    // vehicle pulls in: the page scrolls, and the vehicle rides along with it.
+    vehicle.addEventListener('click', () => {
+      const k = next();
+      if (k < 0) return;
+      const at = scrollY + features.getBoundingClientRect().top + first + stops[k] - innerHeight / 2;
+      scrollTo({ top: at, behavior: 'smooth' });
+    });
+
+    measure();
+    y = target();
+    features.classList.add(still ? 'has-route' : 'has-trip');
+    new ResizeObserver(() => { measure(); wake(); }).observe(features);
+    new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      wake();
+    }, { rootMargin: '25% 0px' }).observe(features);
+    addEventListener('scroll', wake, { passive: true });
+    addEventListener('resize', wake);
   }
 </script>

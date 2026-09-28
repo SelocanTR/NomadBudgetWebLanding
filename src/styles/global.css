@@ -336,20 +336,61 @@ p { margin: 0; text-wrap: pretty; }
   content: ''; flex: none; width: 22px; height: 22px; margin-top: 2px; border-radius: 50%;
   background: var(--c) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 14px no-repeat;
 }
-.c-lime { --c: var(--lime-deep); }
-.c-blue { --c: var(--blue); }
-.c-magenta { --c: var(--magenta); }
-.c-orange { --c: #D98A13; }
+/* The accents as text colours, by name: the features' titles and ticks, and the colours
+   the route's line takes as it passes each feature. */
+:root { --acc-lime: var(--lime-deep); --acc-blue: var(--blue); --acc-magenta: var(--magenta); --acc-orange: #D98A13; }
 @media (prefers-color-scheme: dark) {
-  .c-lime { --c: var(--lime); }
-  .c-blue { --c: #8C97FF; }
-  .c-magenta { --c: #FF72B6; }
-  .c-orange { --c: var(--orange); }
+  :root { --acc-lime: var(--lime); --acc-blue: #8C97FF; --acc-magenta: #FF72B6; --acc-orange: var(--orange); }
 }
+.c-lime { --c: var(--acc-lime); }
+.c-blue { --c: var(--acc-blue); }
+.c-magenta { --c: var(--acc-magenta); }
+.c-orange { --c: var(--acc-orange); }
 @media (max-width: 820px) {
   .feature { grid-template-columns: minmax(0, 1fr); }
   .feature:nth-child(even) .feature-media { order: 0; }
   .feature-media { aspect-ratio: 1 / .92; }
+}
+
+/* The trip between the features: a dashed line down the gap between the columns, a stop
+   beside every feature, and the hero's vehicles carrying the reader from one to the next.
+   The script places it (top and length, the travelled part, the vehicle); without it, or
+   in one column, there is none. */
+.features { position: relative; isolation: isolate; }
+.feature { position: relative; }
+.route, .route-stop, .route-vehicle { display: none; }
+.route { position: absolute; left: 50%; width: 0; }
+.route::before, .route-fill { content: ''; position: absolute; top: 0; bottom: 0; left: -0.75px; width: 1.5px; border-radius: 1px; }
+.route::before { background: repeating-linear-gradient(180deg, color-mix(in srgb, var(--muted) 45%, transparent) 0 6px, transparent 6px 13px); }
+.route-vehicle {
+  --v: clamp(40px, 4.4vw, 60px);
+  position: absolute; left: 0; top: 0; z-index: 2; width: var(--v); height: var(--v);
+  will-change: transform;
+  filter: drop-shadow(0 0 7px rgba(12, 24, 36, .28));
+}
+/* A tap on the vehicle takes the reader on to the next stop. */
+.route-vehicle.is-tappable { cursor: pointer; }
+.route-vehicle.is-tappable:hover img.is-on { transform: scale(1.14); }
+.route-vehicle img {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  opacity: 0; transform: scale(.55);
+  transition: opacity .3s ease, transform .45s cubic-bezier(.34, 1.56, .64, 1);
+}
+.route-vehicle img.is-on { opacity: 1; transform: none; }
+.route-stop {
+  position: absolute; left: 50%; top: 50%; z-index: 1;
+  width: 13px; height: 13px; margin: -6.5px 0 0 -6.5px; border-radius: 50%;
+  background: var(--bg); border: 2px solid var(--c);
+  transition: background-color .3s ease, box-shadow .4s ease, transform .4s cubic-bezier(.34, 1.56, .64, 1);
+}
+/* A stop the trip has reached fills in with its feature's colour. */
+.has-route .route-stop, .feature.is-reached .route-stop {
+  background: var(--c); transform: scale(1.15);
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--c) 18%, transparent);
+}
+@media (min-width: 821px) {
+  .has-route .route, .has-trip .route, .has-route .route-stop, .has-trip .route-stop { display: block; }
+  .has-trip .route-vehicle { display: block; }
 }
 
 /* --- the app's surfaces ---------------------------------------------------------- */
