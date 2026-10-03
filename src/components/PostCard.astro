@@ -1,0 +1,47 @@
+---
+// One post as a card: cover (or the coin, if it has none), topic, title, summary, date and
+// reading time. Used by the blog's index and the home page's latest posts.
+import { Image } from 'astro:assets';
+import { STRINGS } from '../i18n';
+import { holdOf, urlOf, formatDate, isoDate, minRead, type Post } from '../blog';
+import '../styles/post-card.css';
+
+interface Props {
+  post: Post;
+  /** 2 on the blog's index (under its h1), 3 under a section's h2. */
+  level?: 2 | 3;
+  eager?: boolean;
+}
+const { post, level = 2, eager = false } = Astro.props;
+const b = STRINGS[post.lang].blog;
+const d = post.entry.data;
+const Title = level === 3 ? 'h3' : 'h2';
+---
+
+<a class="post-card" href={urlOf(post)}>
+  <div class="post-card-art">
+    {d.cover ? (
+      <Image
+        class="post-card-cover"
+        src={d.cover}
+        alt={d.coverAlt ?? ''}
+        widths={[400, 640, 960]}
+        sizes="(max-width: 700px) 100vw, 400px"
+        loading={eager ? 'eager' : 'lazy'}
+      />
+    ) : (
+      <img class="post-card-coin" src="/icons/coin-96.webp" width="56" height="56" alt="" />
+    )}
+  </div>
+  <div class="post-card-body">
+    <p class="post-topic">{b.topics[d.topic]}</p>
+    <Title class="post-card-title">{d.title}</Title>
+    <p class="post-card-desc">{d.description}</p>
+    <p class="post-card-meta">
+      <time datetime={isoDate(d.pubDate)}>{formatDate(d.pubDate, post.lang)}</time>
+      <span aria-hidden="true">·</span>
+      <span>{minRead(post)}</span>
+      {holdOf(post.entry) && <span class="post-draft">{holdOf(post.entry)}</span>}
+    </p>
+  </div>
+</a>

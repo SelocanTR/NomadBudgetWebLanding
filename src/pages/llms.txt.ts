@@ -1,4 +1,9 @@
-# Nomad Budget
+import { SITE, type Lang } from '../i18n';
+import { allPosts, holdOf, postsIn, urlOf } from '../blog';
+
+// What AI assistants read first: the app in a paragraph and a list, the pages, and the
+// blog's posts, which join the list by themselves as they are published.
+const BASE = `# Nomad Budget
 
 > Nomad Budget is an expense tracker app for digital nomads, expats and long-term travellers — people whose money lives in more than one country. It keeps one wallet per country in its own currency, stores every entry at the exchange rate of the day it was paid, and adds everything up in the main currency the user chooses. It shows where the user has been, and what each country cost, on a 3D globe.
 
@@ -16,4 +21,18 @@
 - [Nomad Budget (English)](https://nomadbudget.rubeeks.co/): features, privacy, free vs Pro, FAQ
 - [Nomad Budget (Türkçe)](https://nomadbudget.rubeeks.co/tr/): the same in Turkish
 - [Privacy Policy](https://legal.rubeeks.co/nomadbudget/privacy.en.html)
-- [Terms of Use](https://legal.rubeeks.co/nomadbudget/terms.en.html)
+- [Terms of Use](https://legal.rubeeks.co/nomadbudget/terms.en.html)`;
+
+const NAME: Record<Lang, string> = { en: 'Blog (English)', tr: 'Blog (Türkçe)' };
+
+export async function GET() {
+  const posts = (await allPosts()).filter((p) => !holdOf(p.entry));
+  const sections = (['en', 'tr'] as Lang[])
+    .map((l) => postsIn(l, posts))
+    .filter((own) => own.length)
+    .map((own) =>
+      [`## ${NAME[own[0].lang]}`, '', ...own.map((p) => `- [${p.entry.data.title}](${SITE}${urlOf(p)}): ${p.entry.data.description}`)].join('\n'),
+    );
+  const body = [BASE, ...sections].join('\n\n') + '\n';
+  return new Response(body, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
+}

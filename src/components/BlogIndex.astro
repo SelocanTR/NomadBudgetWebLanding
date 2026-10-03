@@ -1,0 +1,49 @@
+---
+// The blog's front page in one language: every post, newest first, as cards.
+import Base from '../layouts/Base.astro';
+import PostCard from './PostCard.astro';
+import { STRINGS, blogPath, type Lang } from '../i18n';
+import { allPosts, postsIn, urlOf, isoDate } from '../blog';
+import { blogLd } from '../seo';
+import '../styles/blog.css';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const s = STRINGS[lang];
+const b = s.blog;
+const posts = postsIn(lang, await allPosts());
+const ld = blogLd(lang, posts.map((p) => ({ title: p.entry.data.title, url: urlOf(p), date: isoDate(p.entry.data.pubDate) })));
+---
+
+<Base
+  lang={lang}
+  title={b.metaTitle}
+  description={b.metaDescription}
+  path={blogPath(lang)}
+  alternates={{ en: blogPath('en'), tr: blogPath('tr') }}
+  jsonLd={ld}
+  noindex={posts.length === 0}
+  solidHeader
+>
+  <div class="blog-page container">
+    <header class="blog-head">
+      <p class="kicker">{s.nav.blog}</p>
+      <h1>{b.title}</h1>
+      <p>{b.lede}</p>
+    </header>
+
+    {posts.length === 0 ? (
+      <p class="blog-empty">{b.empty}</p>
+    ) : (
+      <ul class="post-grid">
+        {posts.map((p, i) => (
+          <li><PostCard post={p} eager={i < 3} /></li>
+        ))}
+      </ul>
+    )}
+
+    {posts.length > 0 && (
+      <p class="blog-rss"><a href={`${blogPath(lang)}rss.xml`}>{b.rss}</a></p>
+    )}
+  </div>
+</Base>

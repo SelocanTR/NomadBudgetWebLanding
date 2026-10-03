@@ -6,6 +6,10 @@
 //
 // Outside the disc the canvas is transparent but for the haze, so the stars drawn once
 // underneath it (stars.ts) show through, and the whole-canvas pass stays cheap there.
+//
+// The marketing video (video/) adds the app's cost layer: every country painted in its
+// price band against a home country, revealed as a wave spreading out from home. It is
+// off (uCost = 0) unless `loadCost` has been called, so the hero never pays for it.
 
 const VERT = `
 attribute vec2 aPos;
@@ -25,6 +29,12 @@ uniform float uHaze;         // how fast the haze falls off, per radius
 uniform float uDawn;         // 0 → 1 as the planet comes up
 uniform float uAnyFill;
 uniform vec2 uIdsSize;
+uniform sampler2D uCountry;  // every country, one grey level each (index + 1), nearest
+uniform sampler2D uBands;    // 256 × 1: rgb = the country's band colour, a = has one
+uniform vec2 uCountrySize;
+uniform float uCost;         // 0 → 1: how much of the cost layer is painted
+uniform vec3 uHome;          // the home country, a unit vector
+uniform float uSweep;        // radians from home the wave has reached
 
 const float PI = 3.14159265;
 const vec3 RIM = vec3(0.55, 0.72, 1.0);
@@ -47,6 +57,24 @@ vec2 fillAt(vec2 uv) {
   vec2 b = fillOf(i + vec2(1.0, 0.0));
   vec2 c = fillOf(i + vec2(0.0, 1.0));
   vec2 d = fillOf(i + vec2(1.0, 1.0));
+  return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
+}
+
+vec4 bandOf(vec2 texel) {
+  float id = floor(texture2D(uCountry, (texel + 0.5) / uCountrySize).r * 255.0 + 0.5);
+  vec4 b = texture2D(uBands, vec2((id + 0.5) / 256.0, 0.5));
+  return vec4(b.rgb * b.a, b.a);
+}
+
+// As fillAt: the four neighbours' colours, blended by hand (premultiplied).
+vec4 bandAt(vec2 uv) {
+  vec2 p = uv * uCountrySize - 0.5;
+  vec2 i = floor(p);
+  vec2 f = p - i;
+  vec4 a = bandOf(i);
+  vec4 b = bandOf(i + vec2(1.0, 0.0));
+  vec4 c = bandOf(i + vec2(0.0, 1.0));
+  vec4 d = bandOf(i + vec2(1.0, 1.0));
   return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
 }
 
@@ -88,6 +116,18 @@ void main() {
     t = mix(t, paint, fill.r * 0.8);
   }
 
+  if (uCost > 0.0) {
+    vec4 band = bandAt(uv);
+    if (band.a > 0.0) {
+      float dist = acos(clamp(dot(vec3(x2, y1, z2), uHome), -1.0, 1.0));
+      float reveal = 1.0 - smoothstep(uSweep - 0.14, uSweep, dist);
+      float front = exp(-pow((dist - uSweep + 0.05) / 0.05, 2.0)) * step(0.001, uSweep);
+      float shade = mix(0.78, 1.0, z);
+      vec3 paint = band.rgb / band.a * shade + vec3(0.35 * front);
+      t = mix(t, paint, band.a * 0.85 * reveal * uCost);
+    }
+  }
+
   t += RIM * pow(1.0 - z, 4.0) * 0.55;
 
   vec4 inside = vec4(t, 1.0);
@@ -125,22 +165,25 @@ export class GlobeRenderer {
   private gl: WebGLRenderingContext;
   private program: WebGLProgram;
   private loc: Record<string, WebGLUniformLocation | null> = {};
-  private textures: Record<'ground' | 'ids' | 'idsLin' | 'fill', WebGLTexture>;
+  private textures: Record<'ground' | 'ids' | 'idsLin' | 'fill' | 'country' | 'bands', WebGLTexture>;
   private fill = new Uint8Array(16 * 4);
   private fillDirty = true;
   private anyFill = false;
   private idsSize: [number, number] = [2048, 1024];
+  private countrySize: [number, number] = [1, 1];
+  private cost = { mix: 0, home: [0, 0, 1] as [number, number, number], sweep: 0 };
   scale = 1;
 
-  constructor(private canvas: HTMLCanvasElement) {
-    const opts: WebGLContextAttributes = { alpha: true, premultipliedAlpha: true, antialias: false, depth: false, stencil: false, powerPreference: 'high-performance' };
+  /** `keep`: hold the drawn frame for the page to be captured from (the video). */
+  constructor(private canvas: HTMLCanvasElement, keep = false) {
+    const opts: WebGLContextAttributes = { alpha: true, premultipliedAlpha: true, antialias: false, depth: false, stencil: false, powerPreference: 'high-performance', preserveDrawingBuffer: keep };
     const gl = (canvas.getContext('webgl2', opts) ?? canvas.getContext('webgl', opts)) as WebGLRenderingContext | null;
     if (!gl) throw new Error('no webgl');
     const hp = gl.getShaderPrecisionFormat(gl.FRAGMENT_SHADER, gl.HIGH_FLOAT);
     if (!hp || hp.precision === 0) throw new Error('no highp');
     this.gl = gl;
     this.program = this.link();
-    for (const name of ['uGround', 'uIds', 'uIdsLin', 'uFill', 'uCenter', 'uRadius', 'uTrig', 'uHaze', 'uDawn', 'uAnyFill', 'uIdsSize']) {
+    for (const name of ['uGround', 'uIds', 'uIdsLin', 'uFill', 'uCenter', 'uRadius', 'uTrig', 'uHaze', 'uDawn', 'uAnyFill', 'uIdsSize', 'uCountry', 'uBands', 'uCountrySize', 'uCost', 'uHome', 'uSweep']) {
       this.loc[name] = gl.getUniformLocation(this.program, name);
     }
     const buf = gl.createBuffer();
@@ -149,7 +192,7 @@ export class GlobeRenderer {
     const aPos = gl.getAttribLocation(this.program, 'aPos');
     gl.enableVertexAttribArray(aPos);
     gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
-    this.textures = { ground: gl.createTexture()!, ids: gl.createTexture()!, idsLin: gl.createTexture()!, fill: gl.createTexture()! };
+    this.textures = { ground: gl.createTexture()!, ids: gl.createTexture()!, idsLin: gl.createTexture()!, fill: gl.createTexture()!, country: gl.createTexture()!, bands: gl.createTexture()! };
   }
 
   private link(): WebGLProgram {
@@ -209,6 +252,26 @@ export class GlobeRenderer {
     this.upload(this.textures.ground, 0, img, this.gl.LINEAR, this.gl.REPEAT);
   }
 
+  /**
+   * The cost layer: `idsUrl` every country as a grey level, `bands` 256 × RGBA — the
+   * colour of the country with that level, alpha 255 where it has one.
+   */
+  async loadCost(idsUrl: string, bands: Uint8Array) {
+    const ids = await loadImage(idsUrl);
+    const gl = this.gl;
+    this.upload(this.textures.country, 4, ids, gl.NEAREST, gl.REPEAT);
+    this.upload(this.textures.bands, 5, null, gl.NEAREST, gl.CLAMP_TO_EDGE, 256, 1, bands);
+    this.countrySize = [ids.naturalWidth, ids.naturalHeight];
+    gl.uniform1i(this.loc.uCountry, 4);
+    gl.uniform1i(this.loc.uBands, 5);
+  }
+
+  /** How much of the cost layer shows, and how far from `home` (lon, lat) its wave has spread, degrees. */
+  setCost(mix: number, home: [number, number], sweepDeg: number) {
+    const φ = (home[1] * Math.PI) / 180, λ = (home[0] * Math.PI) / 180;
+    this.cost = { mix, home: [Math.cos(φ) * Math.sin(λ), Math.sin(φ), Math.cos(φ) * Math.cos(λ)], sweep: (sweepDeg * Math.PI) / 180 };
+  }
+
   /** How filled journey country `index` is (0..1) and how fresh its colour (0..1). */
   setFill(index: number, amount: number, fresh: number) {
     const i = (index + 1) * 4;
@@ -252,6 +315,10 @@ export class GlobeRenderer {
     gl.uniform1f(this.loc.uDawn, v.dawn);
     gl.uniform1f(this.loc.uAnyFill, this.anyFill ? 1 : 0);
     gl.uniform2f(this.loc.uIdsSize, this.idsSize[0], this.idsSize[1]);
+    gl.uniform2f(this.loc.uCountrySize, this.countrySize[0], this.countrySize[1]);
+    gl.uniform1f(this.loc.uCost, this.cost.mix);
+    gl.uniform3f(this.loc.uHome, ...this.cost.home);
+    gl.uniform1f(this.loc.uSweep, this.cost.sweep);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
   }
 }

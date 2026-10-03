@@ -1,6 +1,9 @@
 ---
-import { STRINGS, appStoreUrl, type Lang } from '../i18n';
+import { STRINGS, appStoreUrl, blogPath, type Lang } from '../i18n';
+import { allPosts, postsIn } from '../blog';
 import Hero from './Hero.astro';
+import { STRIP_TILES } from '../data/strip';
+import PostCard from './PostCard.astro';
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
@@ -12,12 +15,36 @@ const store = appStoreUrl(lang);
 const AVATARS = [['avatar_2'], ['avatar_7'], ['avatar_1'], ['avatar_6'], ['avatar_3'], ['avatar_4', 'avatar_8']];
 /** The vehicle the trip turns into at each stop, one per feature (the hero's sprites);
  *  no two stops in a row share one, so every arrival changes it. */
-const ROUTE_VEHICLES = ['train', 'ferry', 'flight', 'car', 'bus', 'train', 'flight'];
+const ROUTE_VEHICLES = ['train', 'ferry', 'bus', 'flight', 'car', 'bus', 'train', 'flight'];
+/** The strip's polaroids lie as if dropped on a table: each its own tilt (degrees) and
+ *  lift (px), by its place on the strip, so a tile and its repeat match and the loop is seamless. */
+const TILTS = [-3.5, 2, -1, 3, -2.5, 1.5, -2, 3.5, -1.5, 2.5, -3, 1, -1.5, 3, -2, 0.5, 2, -2.5];
+const LIFTS = [0, 6, -4, 3, -6, 2, 5, -3, -1, 4, -5, 1, 6, -2, 3, -6, 0, 5];
+const lie = (i: number) => `--tilt: ${TILTS[i % TILTS.length]}deg; --lift: ${LIFTS[i % LIFTS.length]}px`;
+/** The newest posts, once the blog has any in this language. */
+const latest = postsIn(lang, await allPosts()).slice(0, 3);
 ---
 
 <Hero lang={lang} />
 
 <section class="what" aria-labelledby="what-title">
+  <!-- Behind the card, the app's country pictures as polaroids on one strip running through
+       its middle: the journey the globe just drew, then more places to go. The strip is its
+       tiles twice over, so sliding it by half comes back to where it began. -->
+  <div class="strip" aria-hidden="true">
+    <div class="strip-track">
+      {[...STRIP_TILES, ...STRIP_TILES].map((c, i) => (
+        <figure class="strip-tile" style={lie(i % STRIP_TILES.length)}>
+          <img src={c.src} width="480" height="360" alt="" loading="lazy" decoding="async" />
+          <figcaption>
+            <span class="strip-flag" set:html={c.flag} />
+            <span class="strip-name">{c.name[lang]}</span>
+            <span class="strip-currency">{c.currency}</span>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
   <div class="container">
     <div class="box">
       <img class="what-coin" src="/icons/coin-96.webp" width="56" height="56" alt="" loading="lazy" />
@@ -174,6 +201,24 @@ const ROUTE_VEHICLES = ['train', 'ferry', 'flight', 'car', 'bus', 'train', 'flig
     </div>
   </section>
 </div>
+
+{latest.length > 0 && (
+  <section class="section tight latest" id="blog" aria-labelledby="latest-title">
+    <div class="container">
+      <div class="latest-head">
+        <div class="section-head">
+          <p class="kicker">{s.nav.blog}</p>
+          <h2 id="latest-title">{s.blog.latest}</h2>
+          <p>{s.blog.lede}</p>
+        </div>
+        <a class="latest-all" href={blogPath(lang)}>{s.blog.all} →</a>
+      </div>
+      <ul class="post-grid">
+        {latest.map((p) => <li><PostCard post={p} level={3} /></li>)}
+      </ul>
+    </div>
+  </section>
+)}
 
 <section class="container" aria-labelledby="final-title">
   <div class="final">

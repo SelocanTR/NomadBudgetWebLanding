@@ -47,6 +47,8 @@ export async function startHero(root: HTMLElement) {
   // social card is one) and for looking at a frame without waiting for it.
   const frozenParam = new URLSearchParams(location.search).get('globe-t');
   const frozen = frozenParam !== null && Number.isFinite(Number(frozenParam));
+  // With it, `&globe-view=60,32` (lon,lat[,zoom]) points the camera there instead (store images).
+  const viewParam = new URLSearchParams(location.search).get('globe-view')?.split(',').map(Number);
   const small = () => innerWidth < 768;
 
   let renderer: GlobeRenderer;
@@ -130,7 +132,8 @@ export async function startHero(root: HTMLElement) {
     cy = s.top - box.top + s.height / 2;
     R0 = (s.width / 2) * 0.94;
     focus = small() ? { x: 0.1 * R0, y: -0.46 * R0 } : { x: 0, y: -0.08 * R0 };
-    dpr = Math.min(devicePixelRatio || 1, small() ? 1.5 : 2);
+    // A frozen frame is a picture to keep: as sharp as the screen asks, however dense.
+    dpr = frozen ? devicePixelRatio || 1 : Math.min(devicePixelRatio || 1, small() ? 1.5 : 2);
     renderer.resize(W, H, dpr);
     routes.resize(W, H, dpr);
     drawStars(starsCanvas, Math.min(devicePixelRatio || 1, 2));
@@ -328,6 +331,8 @@ export async function startHero(root: HTMLElement) {
     pauseButton.setAttribute('aria-pressed', String(!on));
     pauseButton.setAttribute('aria-label', on ? pauseButton.dataset.pause! : pauseButton.dataset.play!);
     pauseButton.classList.toggle('is-paused', !on);
+    // The country strip under "What is Nomad Budget?" stops with the globe.
+    document.documentElement.classList.toggle('motion-paused', !on);
     dirty = true;
     schedulefr();
   };
@@ -350,6 +355,12 @@ export async function startHero(root: HTMLElement) {
     cam.zoom = sc.zoom;
     [cam.lon, cam.lat] = cameraFor(sc.target, cam.zoom);
     resumeAt = 0;
+    spin.lon = spin.lat = 0;
+    if (viewParam && viewParam.length >= 2 && viewParam.every(Number.isFinite)) {
+      [cam.lon, cam.lat] = viewParam;
+      if (viewParam[2]) cam.zoom = viewParam[2];
+      resumeAt = Infinity; // and keeps it there, as if the reader had turned it
+    }
     draw(16);
   };
 

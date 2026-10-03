@@ -12,14 +12,16 @@
 //   public/shots/*.webp                         raw app screenshots (Store/Screenshots)
 //   public/art/*.webp                           onboarding illustrations
 //   public/avatars/*.webp                       the app's profile avatars
+//   public/countries/*.webp                     the app's country covers, for the strip
 //   public/icons/*                              favicon, touch icon, the coin
 //   src/data/geo.json                           anchors of the journey's countries
-//   src/data/flags.json                         their flags (SVG)
+//   src/data/flags.json                         their flags and the strip's (SVG)
 
 import fs from 'node:fs';
 import path from 'node:path';
 import sharp from 'sharp';
 import { JOURNEY_CODES } from '../src/data/journey-codes.mjs';
+import { STRIP_CODES } from '../src/data/strip-codes.mjs';
 
 const APP = path.resolve(process.env.APP ?? '../NomadBudget');
 const OUT = path.resolve('public');
@@ -74,8 +76,22 @@ fs.writeFileSync(`${DATA}/geo.json`, JSON.stringify(geo, null, 1) + '\n');
 
 // --- flags --------------------------------------------------------------------------------
 const allFlags = JSON.parse(fs.readFileSync(app('src/data/flags.json'), 'utf8'));
-const flags = Object.fromEntries(JOURNEY_CODES.map((c) => [c, allFlags[c]]));
+const flags = Object.fromEntries([...JOURNEY_CODES, ...STRIP_CODES].map((c) => [c, allFlags[c]]));
 fs.writeFileSync(`${DATA}/flags.json`, JSON.stringify(flags) + '\n');
+
+// --- country covers -----------------------------------------------------------------------
+// The pictures the app heads its country sheets with (1024×768), for the strip behind "What
+// is Nomad Budget?". The app keeps them in a public bucket (src/data/covers.ts); its own
+// scripts/.cache holds the same files when the covers were built on this machine.
+fs.mkdirSync(`${OUT}/countries`, { recursive: true });
+const coverUrls = Object.fromEntries(
+  [...fs.readFileSync(app('src/data/covers.ts'), 'utf8').matchAll(/"([a-z]{2})": "([^"]+)"/g)].map((m) => [m[1], m[2]]),
+);
+for (const code of [...JOURNEY_CODES, ...STRIP_CODES].map((c) => c.toLowerCase())) {
+  const cached = app('scripts/.cache/covers-out', `${code}.webp`);
+  const input = fs.existsSync(cached) ? cached : Buffer.from(await (await fetch(coverUrls[code])).arrayBuffer());
+  await sharp(input).resize(480, 360).webp({ quality: 74 }).toFile(`${OUT}/countries/${code}.webp`);
+}
 
 // --- vehicles -----------------------------------------------------------------------------
 for (const t of ['flight', 'train', 'bus', 'ferry', 'car']) {
@@ -93,6 +109,9 @@ const SHOTS = {
   crossings: 'IMG_0173.PNG', // the crossings timeline
   pace: 'IMG_0169.PNG',      // the dashboard's spending pace
   budget: 'IMG_0190.PNG',    // the dashboard, dark, with the monthly budget bar
+  // Payment capture (v1.0.4): no capture yet. Until one is put in Store/Screenshots and
+  // named here, the app's capture artwork stands in, on the app's dark background.
+  capture: null,
 };
 /**
  * Status-bar clutter painted out, per capture, as [left, top, width, height] in the
@@ -116,6 +135,13 @@ async function paintOut(input, [left, top, width, height]) {
 }
 for (const f of fs.readdirSync(`${OUT}/shots`)) fs.rmSync(`${OUT}/shots/${f}`);
 for (const [name, file] of Object.entries(SHOTS)) {
+  if (!file) {
+    const art = await sharp(app('assets/capture/intro.webp')).resize(900).toBuffer();
+    const canvas = await sharp({ create: { width: 1170, height: 2532, channels: 3, background: '#0E1726' } })
+      .composite([{ input: art, gravity: 'centre' }]).png().toBuffer();
+    await sharp(canvas).resize(720).webp({ quality: 82 }).toFile(`${OUT}/shots/${name}.webp`);
+    continue;
+  }
   let input = app('Store/Screenshots', file);
   if (PAINT_OUT[file]) input = await paintOut(input, PAINT_OUT[file]);
   await sharp(input).resize(720).webp({ quality: 82 }).toFile(`${OUT}/shots/${name}.webp`);

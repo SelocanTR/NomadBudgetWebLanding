@@ -1,0 +1,36 @@
+/* A post as a card — on the blog's index and in the home page's "latest posts". Titles
+   are styled by class, not tag: the card's heading is an h2 on the index and an h3 under
+   a section title on the home page. */
+
+.post-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 20px; }
+.post-card {
+  display: flex; flex-direction: column; height: 100%;
+  border-radius: 24px; overflow: hidden; text-decoration: none;
+  background: var(--surface); box-shadow: var(--glass-shadow);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.post-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+@media (prefers-reduced-motion: reduce) { .post-card, .post-card:hover { transition: none; transform: none; } }
+.post-card-art { aspect-ratio: 16 / 9; background: var(--panel); display: grid; place-items: center; overflow: hidden; }
+.post-card-art .post-card-cover { width: 100%; height: 100%; object-fit: cover; }
+.post-card-art .post-card-coin { width: 56px; height: 56px; filter: drop-shadow(0 8px 18px rgba(201, 128, 79, .35)); }
+.post-card-body { padding: 20px 22px 24px; display: flex; flex-direction: column; flex: 1; }
+.post-card .post-card-title { margin-top: 8px; font-size: 22px; line-height: 1.22; letter-spacing: -0.02em; }
+.post-card-desc { margin-top: 10px; font-size: 16px; line-height: 1.5; color: var(--muted); }
+.post-card-meta { margin-top: auto; padding-top: 16px; display: flex; flex-wrap: wrap; gap: 6px; font-size: 14px; color: var(--muted); }
+
+.post-topic { font-size: 12.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--acc-lime); }
+.post-draft { padding: 0 8px; border-radius: 999px; background: var(--orange); color: #0E1726; font-size: 12px; font-weight: 700; }
+
+/* The home page's "latest posts": the section title with the way to the rest beside it. */
+.latest-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px 32px; flex-wrap: wrap; }
+.latest-head .section-head { margin-bottom: 0; }
+.latest-all {
+  display: inline-flex; align-items: center; gap: 8px; flex: none;
+  padding: 10px 16px; border-radius: 12px;
+  background: var(--surface); box-shadow: var(--glass-shadow);
+  font-size: 15px; font-weight: 700; color: var(--ink); text-decoration: none;
+  transition: box-shadow .25s ease, color .25s ease;
+}
+.latest-all:hover { box-shadow: var(--shadow); color: var(--acc-lime); }
+.latest .post-grid { margin-top: clamp(28px, 4vw, 44px); }

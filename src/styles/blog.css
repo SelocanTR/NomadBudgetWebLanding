@@ -1,0 +1,137 @@
+/* The blog: the landing page's tokens and surfaces, set for reading. A post is one
+   column a comfortable line long; the index is cards on the page's own background. */
+
+/* --- the index -------------------------------------------------------------------- */
+.blog-page { padding-top: calc(68px + clamp(40px, 7vw, 88px)); }
+.blog-head { max-width: 760px; margin-bottom: clamp(36px, 5vw, 56px); }
+.blog-head h1 { margin-top: 10px; font-size: clamp(38px, 5.4vw, 64px); }
+.blog-head p:last-child { margin-top: 16px; font-size: clamp(17px, 1.6vw, 20px); color: var(--muted); }
+.blog-empty { padding: 48px 0; font-size: 18px; color: var(--muted); }
+.blog-rss { margin-top: 40px; font-size: 14px; }
+.blog-rss a { color: var(--muted); }
+
+/* The cards themselves are in post-card.css: the home page shows the latest ones too. */
+
+/* --- a post ----------------------------------------------------------------------- */
+.post {
+  max-width: calc(720px + 2 * var(--gutter)); margin-inline: auto;
+  padding: calc(68px + clamp(28px, 5vw, 64px)) var(--gutter) 0;
+}
+.post-back { display: inline-block; margin-bottom: 28px; font-size: 15px; font-weight: 600; color: var(--muted); text-decoration: none; }
+.post-back:hover { color: var(--ink); }
+.post-head h1 { margin-top: 12px; font-size: clamp(32px, 5vw, 50px); line-height: 1.1; letter-spacing: -0.03em; }
+.post-lede { margin-top: 18px; font-size: clamp(18px, 2vw, 21px); line-height: 1.55; color: var(--muted); }
+.post-byline { display: flex; align-items: center; gap: 12px; margin-top: 28px; }
+.post-avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; }
+.post-author { font-weight: 700; color: var(--ink); font-size: 15.5px; line-height: 1.3; }
+.post-meta { display: flex; flex-wrap: wrap; gap: 6px; font-size: 14px; color: var(--muted); line-height: 1.4; }
+.post-cover { width: 100%; height: auto; margin-top: 36px; border-radius: 24px; box-shadow: var(--shadow); }
+
+/* "For information only": a quiet card with the app's info mark, the way the app shows
+   a hint — no coloured edge. */
+.post-note {
+  display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: start;
+  margin-top: 36px; padding: 14px 18px 14px 14px; border-radius: 18px;
+  background: var(--surface-muted);
+  font-size: 15px; line-height: 1.55; color: var(--ink-soft);
+}
+.post-note::before {
+  content: ''; width: 26px; height: 26px; border-radius: 50%;
+  background: var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236B7684' stroke-width='2.6' stroke-linecap='round'%3E%3Cpath d='M12 11v6M12 7.2v.1'/%3E%3C/svg%3E") center / 18px no-repeat;
+  box-shadow: var(--glass-shadow);
+}
+
+/* The text. */
+.prose { margin-top: 36px; font-size: 18.5px; line-height: 1.75; color: var(--ink-soft); }
+.prose > * + * { margin-top: 1.15em; }
+.prose h2 { margin-top: 2.1em; font-size: clamp(25px, 3vw, 31px); line-height: 1.2; scroll-margin-top: 96px; }
+.prose h3 { margin-top: 1.7em; font-size: 21px; line-height: 1.3; letter-spacing: -0.015em; scroll-margin-top: 96px; }
+.prose h2 + *, .prose h3 + * { margin-top: .7em; }
+.prose strong { color: var(--ink); font-weight: 700; }
+.prose a { color: var(--acc-lime); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1.5px; }
+.prose a:hover { color: var(--ink); }
+.prose ul, .prose ol { padding-left: 1.3em; }
+.prose li + li { margin-top: .45em; }
+.prose li::marker { color: var(--acc-lime); }
+/* A quote as one of the app's cards: the wash panel, the lime badge the steps and the
+   privacy ticks wear (here with a quote mark), the words set large, whose they are under
+   them. In Markdown the attribution is its own paragraph: `>` / `> — Name`. */
+.prose blockquote {
+  position: relative; margin: 2em 0; padding: 26px 28px 26px;
+  border-radius: 24px; background: var(--panel); box-shadow: var(--glass-shadow);
+  font-size: 21px; line-height: 1.5; font-weight: 600; letter-spacing: -0.012em; color: var(--ink);
+}
+.prose blockquote::before {
+  content: ''; display: block; width: 40px; height: 40px; margin-bottom: 14px; border-radius: 50%;
+  /* Two layers, the mark over the lime: without the comma the whole value is dropped. */
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2311371C'%3E%3Cpath d='M10 6.5c-3.3.6-5.5 3-5.5 6.4V18h5.2v-5.2H7.1c.1-1.7 1.2-3 2.9-3.5zM19.5 6.5c-3.3.6-5.5 3-5.5 6.4V18h5.2v-5.2h-2.6c.1-1.7 1.2-3 2.9-3.5z'/%3E%3C/svg%3E") center / 26px no-repeat,
+    linear-gradient(180deg, #7BEAB6, #52D69B);
+  box-shadow: 0 6px 14px rgba(82, 214, 155, .3);
+}
+.prose blockquote p + p { margin-top: 14px; font-size: 15px; font-weight: 600; letter-spacing: 0; color: var(--muted); }
+@media (max-width: 600px) {
+  .prose blockquote { padding: 22px 20px; font-size: 19px; }
+}
+.prose img { border-radius: 20px; }
+.prose hr { border: 0; height: 1px; background: var(--border); margin: 2.4em 0; }
+.prose code { font-size: .88em; padding: .1em .35em; border-radius: 6px; background: var(--surface-muted); }
+.prose table { width: 100%; border-collapse: collapse; font-size: 16px; }
+.prose th, .prose td { padding: 10px 12px; border-bottom: 1px solid var(--border); text-align: left; }
+.prose th { color: var(--ink); }
+
+/* A draft's open question to the author (`<mark class="todo" data-label="…">` in the
+   Markdown): kept in the flow of the text, a faint amber tint with a small label — noticed
+   without shouting. A published post can't contain one (src/blog.ts stops the build). */
+.prose mark.todo {
+  padding: 1px 6px; border-radius: 6px;
+  background: color-mix(in srgb, var(--orange) 11%, transparent);
+  color: var(--muted); font-style: italic;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone;
+}
+.prose mark.todo::before {
+  content: attr(data-label) ' · '; font-style: normal;
+  font-size: .72em; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+  color: color-mix(in srgb, var(--acc-orange) 80%, transparent);
+}
+
+/* The app, once, after the text. */
+.post-cta {
+  display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 18px;
+  margin-top: 56px; padding: 24px 26px; border-radius: 24px;
+  background: var(--panel); box-shadow: var(--shadow);
+}
+.post-cta img { width: 48px; height: 48px; filter: drop-shadow(0 8px 18px rgba(201, 128, 79, .35)); }
+.post-cta h2 { font-size: 20px; line-height: 1.25; letter-spacing: -0.02em; }
+.post-cta p { margin-top: 4px; font-size: 15.5px; line-height: 1.5; color: var(--ink-soft); }
+@media (max-width: 640px) {
+  .post-cta { grid-template-columns: auto 1fr; }
+  .post-cta .btn { grid-column: 1 / -1; justify-content: center; }
+}
+
+.post-author-box {
+  display: flex; gap: 20px; align-items: flex-start;
+  margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--border);
+}
+.post-author-photo { flex: none; width: 88px; height: 88px; border-radius: 50%; object-fit: cover; border: 3px solid #fff; box-shadow: 0 6px 16px rgba(12, 24, 36, .18); }
+.post-author-box h2 { margin-top: 4px; font-size: 22px; }
+.post-author-tagline { margin-top: 2px; font-size: 14.5px; color: var(--muted); }
+.post-author-box p:not(.kicker):not(.post-author-tagline) { margin-top: 10px; font-size: 16px; line-height: 1.6; }
+.post-author-more { display: inline-block; margin-top: 10px; font-size: 15px; font-weight: 600; color: var(--acc-lime); text-decoration: none; }
+.post-author-more:hover { color: var(--ink); }
+@media (max-width: 520px) {
+  .post-author-box { flex-direction: column; gap: 14px; }
+  .post-author-photo { width: 72px; height: 72px; }
+}
+
+.post-related { max-width: calc(720px + 2 * var(--gutter)); margin-top: 64px; }
+.post-related h2 { font-size: 24px; }
+.post-related ul { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 12px; }
+.post-related a {
+  display: grid; gap: 4px; padding: 18px 20px; border-radius: 18px;
+  background: var(--surface); box-shadow: var(--glass-shadow); text-decoration: none;
+  transition: box-shadow .25s ease;
+}
+.post-related a:hover { box-shadow: var(--shadow); }
+.post-related-title { font-size: 18px; font-weight: 700; color: var(--ink); line-height: 1.3; }
+.post-related-meta { font-size: 14px; color: var(--muted); }

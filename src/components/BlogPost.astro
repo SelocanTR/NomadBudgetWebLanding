@@ -1,0 +1,141 @@
+---
+// One post: its head (topic, title, author, date), the cover, the "for information only"
+// note where the post asks for it, the text, then the app, the author and what to read
+// next. The post itself carries only its words; everything around them comes from here.
+import { Image, getImage } from 'astro:assets';
+import { render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { STRINGS, appStoreUrl, blogPath, type Lang } from '../i18n';
+import { AUTHOR } from '../author';
+import {
+  allPosts, alternatesOf, holdOf, relatedTo, urlOf, formatDate, isoDate, minRead, type Post,
+} from '../blog';
+import { postLd } from '../seo';
+import '../styles/blog.css';
+
+interface Props { post: Post }
+const { post } = Astro.props;
+const lang: Lang = post.lang;
+const s = STRINGS[lang];
+const b = s.blog;
+const d = post.entry.data;
+const posts = await allPosts();
+const { Content } = await render(post.entry);
+const related = relatedTo(post, posts);
+
+// The share card: the cover cut to 1200×630, or the language's own card.
+const og = d.cover ? (await getImage({ src: d.cover, width: 1200, height: 630, fit: 'cover', format: 'jpg' })).src : `/og-${lang}.jpg`;
+const photo = await getImage({ src: AUTHOR.photo, width: 400, height: 400, format: 'jpg' });
+const published = isoDate(d.pubDate);
+const modified = isoDate(d.updatedDate ?? d.pubDate);
+const ld = postLd(lang, {
+  title: d.title,
+  description: d.description,
+  url: urlOf(post),
+  published,
+  modified,
+  image: og,
+  photo: photo.src,
+});
+---
+
+<Base
+  lang={lang}
+  title={`${d.title} — Nomad Budget`}
+  description={d.description}
+  path={urlOf(post)}
+  alternates={alternatesOf(post, posts)}
+  ogImage={og}
+  ogType="article"
+  jsonLd={ld}
+  noindex={!!holdOf(post.entry)}
+  solidHeader
+>
+  <Fragment slot="head">
+    <meta property="article:published_time" content={published} />
+    <meta property="article:modified_time" content={modified} />
+    <meta property="article:author" content={AUTHOR.name} />
+  </Fragment>
+
+  <article class="post">
+    <header class="post-head">
+      <a class="post-back" href={blogPath(lang)}>← {b.all}</a>
+      <p class="post-topic">{b.topics[d.topic]}</p>
+      <h1>{d.title}</h1>
+      <p class="post-lede">{d.description}</p>
+      <div class="post-byline">
+        <Image src={AUTHOR.photo} width={44} height={44} densities={[1, 2]} alt="" class="post-avatar" />
+        <div>
+          <p class="post-author">{AUTHOR.name}</p>
+          <p class="post-meta">
+            <time datetime={published}>{formatDate(d.pubDate, lang)}</time>
+            <span aria-hidden="true">·</span>
+            <span>{minRead(post)}</span>
+            {d.updatedDate && (
+              <>
+                <span aria-hidden="true">·</span>
+                <span>{b.updated} <time datetime={modified}>{formatDate(d.updatedDate, lang)}</time></span>
+              </>
+            )}
+            {holdOf(post.entry) && <span class="post-draft">{holdOf(post.entry)}</span>}
+          </p>
+        </div>
+      </div>
+    </header>
+
+    {d.cover && (
+      <Image
+        class="post-cover"
+        src={d.cover}
+        alt={d.coverAlt ?? ''}
+        widths={[720, 1080, 1440]}
+        sizes="(max-width: 760px) 100vw, 720px"
+        loading="eager"
+        fetchpriority="high"
+      />
+    )}
+
+    {d.disclaimer && <aside class="post-note">{b.disclaimer}</aside>}
+
+    <div class="prose">
+      <Content />
+    </div>
+
+    <aside class="post-cta">
+      <img src="/icons/coin-96.webp" width="48" height="48" alt="" loading="lazy" />
+      <div>
+        <h2>{b.cta.title}</h2>
+        <p>{b.cta.body}</p>
+      </div>
+      <a class="btn btn-lime" href={appStoreUrl(lang)} rel="noopener">{s.nav.download}</a>
+    </aside>
+
+    <section class="post-author-box" aria-labelledby="author-title">
+      <Image src={AUTHOR.photo} width={88} height={88} densities={[1, 2]} alt={AUTHOR.name} class="post-author-photo" loading="lazy" />
+      <div>
+        <p class="kicker">{b.aboutAuthor}</p>
+        <h2 id="author-title">{AUTHOR.name}</h2>
+        <p class="post-author-tagline">{b.authorTagline}</p>
+        <p>{b.authorBio}</p>
+        <a class="post-author-more" href={AUTHOR.medium} rel="me noopener">{b.authorMore} →</a>
+      </div>
+    </section>
+  </article>
+
+  {related.length > 0 && (
+    <section class="post-related container" aria-labelledby="related-title">
+      <h2 id="related-title">{b.related}</h2>
+      <ul>
+        {related.map((p) => (
+          <li>
+            <a href={urlOf(p)}>
+              <span class="post-topic">{b.topics[p.entry.data.topic]}</span>
+              <span class="post-related-title">{p.entry.data.title}</span>
+              <span class="post-related-meta">{formatDate(p.entry.data.pubDate, lang)} · {minRead(p)}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+</Base>

@@ -32,7 +32,12 @@ const store = appStoreUrl(lang);
     <div class="hero-copy">
       <p class="eyebrow">
         <img src="/icons/globe-48.webp" width="20" height="20" alt="" />
-        {s.hero.eyebrow}
+        <span class="eyebrow-full">{s.hero.eyebrow}</span>
+        <!-- One audience at a time, the pill growing and shrinking to each (the script
+             below); the whole sentence stays for screen readers. -->
+        <span class="eyebrow-roll" aria-hidden="true" data-audiences={JSON.stringify(s.hero.audiences)}>
+          <span class="eyebrow-word">{s.hero.audiences[0]}</span>
+        </span>
       </p>
       <h1 id="hero-title"><span>{s.hero.title[0]}</span><span class="glow">{s.hero.title[1]}</span></h1>
       <p class="lede">{s.hero.lede}</p>
@@ -58,6 +63,30 @@ const store = appStoreUrl(lang);
 </section>
 
 <script>
+  // The eyebrow: every few seconds the audience in it leaves upwards, the pill eases to
+  // the width of the next one, and the next rises into it. Only while the page is in
+  // view, the globe is not paused, and motion is welcome; otherwise it keeps the first.
+  const roll = document.querySelector<HTMLElement>('.eyebrow-roll');
+  const word = roll?.querySelector<HTMLElement>('.eyebrow-word');
+  if (roll && word && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const audiences: string[] = JSON.parse(roll.dataset.audiences ?? '[]');
+    let at = 0;
+    const fit = () => { roll.style.width = `${word.offsetWidth}px`; };
+    setInterval(() => {
+      if (!roll.offsetParent || document.hidden || document.documentElement.classList.contains('motion-paused')) return;
+      fit(); // From the width it has now, so the first change eases too.
+      word.classList.add('is-out');
+      setTimeout(() => {
+        at = (at + 1) % audiences.length;
+        word.textContent = audiences[at];
+        word.classList.replace('is-out', 'is-in');
+        fit();
+        word.getBoundingClientRect(); // Start the rise from below, not from where it left.
+        word.classList.remove('is-in');
+      }, 260);
+    }, 2800);
+  }
+
   // The page opens with the planet turning: the globe's code starts as soon as the
   // document is parsed. A device without WebGL keeps the illustration.
   const root = document.querySelector<HTMLElement>('[data-hero]');

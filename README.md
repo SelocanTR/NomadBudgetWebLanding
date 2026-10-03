@@ -11,6 +11,19 @@ npm run build        # dist/
 npx astro check      # tip denetimi
 ```
 
+## Blog
+
+Yazılar `src/content/blog/<dil>/<slug>/index.md`; adresler `/blog/<slug>/` ve `/tr/blog/<slug>/`.
+Yazım kuralları, yazar bilgisi ve frontmatter: **`docs/blog-yazim-rehberi.md`**.
+
+- `draft: true` yazılar ve `pubDate`'i gelmemiş yazılar yalnız `npm run dev`'de görünür; build'e
+  girmez. Deploy workflow'u her sabah 08:00'de (TR) yeniden çalışır, o günün yazısı push olmadan
+  yayına girer. Plan: `docs/blog-yazim-rehberi.md` §2.
+- Yayındaki her yazının öbür dilde eşi (aynı `translationKey`) olmalı, yoksa build durur.
+- Menüdeki Blog linki, sitemap ve `llms.txt`'deki liste ilk yayındaki yazıyla kendiliğinden gelir;
+  o zamana kadar `/blog/` boş ve `noindex`.
+- RSS: `/blog/rss.xml`, `/tr/blog/rss.xml`.
+
 ## Uygulama deposundan gelen dosyalar
 
 Site, uygulama deposunun (`../NomadBudget`) küre dokusunu, taşıt sprite'larını, bayrakları,
@@ -62,6 +75,9 @@ gizliyken ya da hero ekran dışındayken döngü durur.
 
 ## Açık işler
 
+- Ödeme yakalama özelliğinin (v1.0.4) ekran görüntüsü yok; yerinde uygulamanın yakalama çizimi
+  duruyor. Görüntü `Store/Screenshots/`'a konup `scripts/build-assets.mjs` → `SHOTS.capture`'a
+  dosya adı yazılır, betik yeniden çalıştırılır.
 - App Store rozeti şu an metin butonu. Apple'ın resmî "Download on the App Store" rozeti
   (Apple Marketing Tools) indirilip `DownloadIcon`/buton yerine konabilir.
 - Android yayınlanınca: `i18n.ts` → `hero.android` metni ve FAQ, Play butonu.

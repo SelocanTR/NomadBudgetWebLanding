@@ -172,7 +172,9 @@ p { margin: 0; text-wrap: pretty; }
   position: relative; z-index: 5;
   display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); align-items: center; gap: 24px;
   min-height: max(560px, 100svh);
-  padding-top: calc(68px + 2svh); padding-bottom: 4svh;
+  /* The bottom also clears the "what is it" card, which rises over the hero's foot by the
+     same clamp (.what margin-top), so the centred copy never sits on its edge. */
+  padding-top: calc(68px + 2svh); padding-bottom: calc(4svh + clamp(48px, 7vw, 96px));
   pointer-events: none;
 }
 .hero-copy { max-width: 560px; pointer-events: auto; }
@@ -183,11 +185,23 @@ p { margin: 0; text-wrap: pretty; }
   font-size: 13px; font-weight: 600; letter-spacing: .01em; color: #D6DEEA;
 }
 .eyebrow img { width: 20px; height: 20px; flex: none; }
+/* The whole sentence is for screen readers; the eye gets one audience at a time. */
+.eyebrow-full { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.eyebrow-roll {
+  display: block; overflow: hidden; white-space: nowrap; line-height: 1.3;
+  transition: width .5s cubic-bezier(.3, .7, .2, 1);
+}
+.eyebrow-word { display: inline-block; transition: opacity .26s ease, transform .32s ease, filter .32s ease; }
+.eyebrow-word.is-out { opacity: 0; transform: translateY(-.6em); filter: blur(3px); }
+.eyebrow-word.is-in { opacity: 0; transform: translateY(.6em); filter: blur(3px); transition: none; }
 /* Sized by the screen's height as well as its width, so the whole of the copy sits in
    the first view of a short laptop screen as much as a tall monitor. */
 .hero h1 { margin-top: clamp(12px, 2.6svh, 22px); color: #fff; font-size: clamp(38px, min(6.2vw, 8.6svh), 80px); letter-spacing: -0.035em; line-height: 1.02; }
 .hero h1 span { display: block; }
 .hero h1 .glow { color: var(--lime); }
+/* On computers the English opener ("The expense tracker") stays on one line; it is
+   allowed to run past the copy column, over the edge of the globe. */
+@media (min-width: 900px) { .hero h1:lang(en) span:first-child { white-space: nowrap; } }
 .hero .lede { margin-top: clamp(12px, 2.6svh, 22px); font-size: clamp(16px, min(1.5vw, 2.3svh), 20px); line-height: 1.55; color: rgba(233, 238, 245, .8); max-width: 34em; }
 .cta-row { display: flex; align-items: center; gap: 18px; margin-top: clamp(18px, 3.6svh, 32px); flex-wrap: wrap; }
 /* The App Store code, fixed in the corner on computers (a phone opens the store itself). */
@@ -264,6 +278,10 @@ p { margin: 0; text-wrap: pretty; }
   /* Clear of the "what is it" card, which rises over the hero's foot. */
   .globe-pause { bottom: 64px; }
   .chip-name { display: none; }
+  /* One column: the copy centred over the planet. */
+  .hero-copy { margin-inline: auto; padding-inline: clamp(14px, 6vw, 44px); text-align: center; }
+  .hero .lede { margin-inline: auto; }
+  .cta-row { justify-content: center; }
 }
 
 /* --- sections ---------------------------------------------------------------------- */
@@ -298,12 +316,61 @@ p { margin: 0; text-wrap: pretty; }
   transition: opacity .6s ease;
 }
 .at-top .what .box::before { opacity: .45; }
+/* Off the top, a breath of the country strip still shows through the frost. */
+html:not(.at-top) .what .box::before { opacity: .86; }
 @media (prefers-reduced-motion: reduce) { .what .box::before { transition: none; } }
 /* The coin over the question, the four-colour rule under it, then the answer. */
 .what-coin { width: 56px; height: 56px; margin: 0 auto 16px; filter: drop-shadow(0 8px 18px rgba(201, 128, 79, .35)); }
 .what h2 { font-size: clamp(26px, 3vw, 36px); }
 .what .rule { margin: 16px auto 0; }
 .what p { margin-top: 20px; font-size: clamp(17px, 1.7vw, 21px); line-height: 1.6; color: var(--ink-soft); }
+/* The strip through the card's middle: the width of the screen, level, its ends fading out; the
+   pictures on it are polaroids, each lying at its own slight angle (--tilt, --lift, set
+   per tile in Landing.astro). The card's frosted glass blurs what passes under it. The
+   section clips it sideways only, so it can reach into the hero above. */
+.what { overflow-x: clip; }
+.what .container { position: relative; z-index: 1; }
+.strip {
+  --tile-w: clamp(190px, 17vw, 250px); --tile-gap: clamp(16px, 1.8vw, 28px);
+  position: absolute; left: 50%; top: 50%; width: 112vw;
+  /* Room for the tilted corners: the fading mask clips anything outside the box. */
+  padding-block: 28px;
+  transform: translate(-50%, -50%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 4%, #000 22%, #000 78%, transparent 96%);
+  mask-image: linear-gradient(90deg, transparent 4%, #000 22%, #000 78%, transparent 96%);
+  pointer-events: none;
+}
+.strip-track { display: flex; align-items: center; width: max-content; animation: strip-drift 150s linear infinite; }
+@keyframes strip-drift { to { transform: translateX(-50%); } }
+/* Still for those who ask for less motion, and with the globe when its pause is pressed. */
+.motion-paused .strip-track { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) { .strip-track { animation: none; } }
+.strip-tile {
+  flex: none; width: var(--tile-w); margin: 0 var(--tile-gap) 0 0;
+  padding: 9px 9px 0; border-radius: 3px; background: #FBFAF6;
+  transform: translateY(var(--lift, 0)) rotate(var(--tilt, 0deg));
+  box-shadow: 0 1px 2px rgba(4, 8, 18, .18), 0 14px 26px -12px rgba(4, 8, 18, .5);
+}
+.strip-tile img { width: 100%; aspect-ratio: 1 / .9; object-fit: cover; display: block; border-radius: 1px; }
+.strip-tile figcaption {
+  display: flex; align-items: center; gap: 7px; height: 40px; padding: 0 3px;
+  color: #2A3342; font-size: 14px; font-weight: 600; line-height: 1;
+}
+.strip-flag { display: flex; flex: none; width: 20px; height: 14px; border-radius: 2px; overflow: hidden; box-shadow: 0 0 0 1px rgba(14, 23, 38, .12); }
+.strip-flag svg { width: 100%; height: 100%; display: block; }
+.strip-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.strip-currency { margin-left: auto; flex: none; color: #8A93A3; font-size: 11.5px; font-weight: 700; letter-spacing: .05em; }
+/* Where the card takes up most of the width, its middle would hide the strip whole: the
+   strip leaves it and runs on its own between the card and the features, touching neither. */
+@media (max-width: 1100px) {
+  /* Centred in the gap: --strip-room above it and below it, the features' own top padding
+     (.section) taken back so it does not add to the room below. */
+  .what { --strip-room: 36px; display: flex; flex-direction: column; margin-bottom: calc(var(--strip-room) - 14px - clamp(72px, 10vw, 132px)); }
+  .strip {
+    --tile-w: clamp(160px, 22vw, 210px);
+    position: relative; order: 2; top: auto; margin-top: var(--strip-room); transform: translateX(-50%);
+  }
+}
 .rule { display: flex; width: 88px; height: 4px; margin: 0 auto 22px; border-radius: 2px; overflow: hidden; }
 .rule i { display: block; height: 100%; }
 .rule i:nth-child(1) { width: 30%; background: var(--lime); }

@@ -1,0 +1,233 @@
+---
+// The marketing video's stage: the hero's globe, the cost layer, the store screenshots
+// and the words, all drawn from one clock. It exists only under `astro dev` — a build
+// makes no page here — and video/render.mjs captures it frame by frame.
+//
+//   /video/en/?t=12.5            one moment
+//   /video/en/?play              in real time, looping
+//   /video/tr/?f=landscape       16:9 instead of 9:16
+
+import '@fontsource-variable/inter';
+import type { Lang } from '../../i18n';
+import { heroJourney, flagSvg, STOPS } from '../../data/journey';
+import { COPY, USD_PER } from '../../../video/copy';
+import cost from '../../../video/assets/cost.json';
+
+export function getStaticPaths() {
+  return import.meta.env.DEV ? [{ params: { lang: 'en' } }, { params: { lang: 'tr' } }] : [];
+}
+
+const lang = Astro.params.lang as Lang;
+const c = COPY[lang];
+const journey = heroJourney(lang);
+const LOCALE: Record<Lang, string> = { en: 'en-US', tr: 'tr-TR' };
+const perMonth = lang === 'en' ? '/mo' : '/ay';
+
+const totalUsd = STOPS.reduce((sum, s) => sum + s.amount * USD_PER[s.currency], 0);
+const total = Math.round(totalUsd / USD_PER[c.home.currency]);
+const money = (v: number) =>
+  new Intl.NumberFormat(LOCALE[lang], { style: 'currency', currency: c.home.currency, currencyDisplay: 'narrowSymbol', maximumFractionDigits: 0 }).format(v);
+const refFlag = ((cost as unknown as { flags: Record<string, string> }).flags)[c.reference.code].replace('<svg ', '<svg preserveAspectRatio="xMidYMid slice" width="100%" height="100%" ');
+const captions = [c.hook, c.log, c.draw, c.total, c.cost, ...c.screens.map((s) => s.caption)];
+const SCALE = ['#1FA37A', '#9AEAC4', '#4F5DDD', '#F2A93B', '#E3489C'];
+const data = { lang, locale: LOCALE[lang], journey, home: c.home, reference: c.reference, total, totalText: money(total), shots: c.screens.map((s) => s.shot) };
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <title>Nomad Budget video</title>
+  </head>
+  <body>
+    <div class="stage" data-video>
+      <canvas class="v-stars"></canvas>
+      <canvas class="v-globe"></canvas>
+      <canvas class="v-routes"></canvas>
+
+      <div class="v-pins">
+        {journey.stops.map((stop) => (
+          <div class="chip">
+            <div class="chip-body">
+              <span class="chip-flag" set:html={flagSvg(stop.code)} />
+              <span class="chip-text">
+                <span class="chip-name">{stop.name}</span>
+                <span class="chip-amount">{stop.amount}{perMonth}</span>
+              </span>
+            </div>
+          </div>
+        ))}
+        <div class="home-pin">
+          <div class="home-ring"></div>
+          <div class="chip-body home-body">
+            <span class="chip-flag" set:html={refFlag} />
+            <span class="chip-text"><span class="chip-name">{c.reference.label}</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="v-shade"></div>
+      <div class="v-scrim"></div>
+
+      <div class="v-captions">
+        {captions.map(([a, b]) => (
+          <h1 class="caption"><span>{a}</span><span class="glow">{b}</span></h1>
+        ))}
+      </div>
+
+      <div class="v-total">
+        <p class="total-label">{c.totalLabel}</p>
+        <p class="total-amount"><span class="total-value">{money(total)}</span></p>
+        <p class="total-sub">{c.totalSub}</p>
+      </div>
+
+      <div class="v-legend">
+        <div class="legend-head">
+          <div class="legend-side">
+            <span class="legend-title">{c.legendTitle}</span>
+            <span class="legend-info"><svg viewBox="0 0 24 24" fill="none" stroke="#6B7684" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></svg></span>
+          </div>
+          <div class="legend-side">
+            <span class="chip-flag legend-flag" set:html={refFlag} />
+            <span class="legend-country">{c.reference.name}</span>
+            <svg class="legend-chevron" viewBox="0 0 24 24" fill="none" stroke="#6B7684" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6" /></svg>
+          </div>
+        </div>
+        <div class="legend-bar">
+          {SCALE.map((col) => <span style={`background:${col}`} />)}
+        </div>
+        <div class="legend-words"><span>{c.bands[0]}</span><span>{c.bands[2]}</span><span>{c.bands[4]}</span></div>
+      </div>
+
+      <div class="v-phone">
+        {c.screens.map((s) => <img src={`/shots/${s.shot}.webp`} alt="" />)}
+      </div>
+
+      <div class="v-end">
+        <img class="end-icon" src="/icons/icon-512.png" alt="" />
+        <p class="end-name">{c.name}</p>
+        <p class="end-tagline">{c.tagline}</p>
+        <p class="end-cta">{c.cta}</p>
+        <p class="end-url">{c.url}</p>
+      </div>
+
+      <p class="v-sample">{c.sample}</p>
+    </div>
+
+    <script type="application/json" id="video-data" set:html={JSON.stringify(data)} />
+    <script>
+      import { startVideo } from '../../../video/director';
+      startVideo(document.querySelector<HTMLElement>('[data-video]')!);
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  /* Widths include padding and borders, so a card centred by half its width is centred. */
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; background: #040812; overflow: hidden; }
+  body { font-family: 'Inter Variable', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  p, h1 { margin: 0; }
+
+  .stage { --W: 540px; --H: 960px; position: relative; width: var(--W); height: var(--H); overflow: hidden; background: #040812; color: #fff; }
+  .stage.landscape { --W: 960px; --H: 540px; }
+  .stage > * { position: absolute; }
+  .v-stars, .v-globe, .v-routes { inset: 0; width: 100%; height: 100%; }
+  .v-pins, .v-captions { inset: 0; }
+  /* Its own layer, so a chip's z-index ranks it among chips and never lifts it over the words. */
+  .v-pins { z-index: 0; }
+  .v-shade { inset: 0; background: #040812; opacity: 0; }
+  /* The words sit over the top of the planet when it is close in. */
+  .v-scrim { left: 0; right: 0; top: 0; height: 360px; background: linear-gradient(180deg, rgba(4, 8, 18, .9) 0%, rgba(4, 8, 18, .6) 55%, rgba(4, 8, 18, 0) 100%); }
+  .landscape .v-scrim { top: 0; bottom: 0; right: auto; width: 520px; height: auto; background: linear-gradient(90deg, rgba(4, 8, 18, .88) 0%, rgba(4, 8, 18, .55) 60%, rgba(4, 8, 18, 0) 100%); }
+
+  /* --- captions ------------------------------------------------------------------------- */
+  .caption {
+    position: absolute; left: 24px; right: 24px; top: 124px;
+    text-align: center; font-size: 42px; font-weight: 800; line-height: 1.04; letter-spacing: -0.035em;
+    opacity: 0; text-wrap: balance;
+  }
+  .caption span { display: block; }
+  .caption .glow { color: #52D69B; }
+  .landscape .caption { left: 60px; right: auto; width: 420px; top: 150px; text-align: left; font-size: 46px; }
+
+  /* --- chips (the hero's, with the clock driving what CSS transitions did there) ---------- */
+  .chip, .home-pin { position: absolute; left: 0; top: 0; }
+  .chip-body {
+    position: absolute; left: 0; bottom: 11px;
+    display: flex; align-items: center; gap: 0;
+    padding: 4px; border-radius: 999px;
+    background: #fff; color: #0E1726;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, .38), 0 1px 2px rgba(0, 0, 0, .2);
+    white-space: nowrap; opacity: 0; transform-origin: 50% 100%;
+  }
+  .chip-body::after {
+    content: ''; position: absolute; left: 50%; bottom: -6px; margin-left: -6px;
+    border: 6px solid transparent; border-bottom: 0; border-top-color: #fff;
+  }
+  .chip-flag { width: 34px; height: 34px; border-radius: 50%; overflow: hidden; flex: none; box-shadow: 0 0 0 1px rgba(14, 23, 38, .08); }
+  .chip-text { display: grid; max-width: 0; opacity: 0; overflow: hidden; line-height: 1.15; }
+  .chip-name { font-size: 18px; font-weight: 700; letter-spacing: -0.01em; }
+  .chip-amount { font-size: 16.5px; font-weight: 600; color: #6B7684; font-variant-numeric: tabular-nums; }
+  .home-body .chip-text { max-width: 120px; opacity: 1; padding: 0 10px 0 8px; }
+  .home-ring { position: absolute; left: -9px; top: -9px; width: 18px; height: 18px; border-radius: 50%; background: #52D69B; box-shadow: 0 0 0 3px rgba(4, 8, 18, .55); opacity: 0; }
+
+  /* --- the total ---------------------------------------------------------------------- */
+  .v-total {
+    left: 50%; top: 262px; width: 320px; margin-left: -160px; padding: 18px 20px 16px;
+    border-radius: 26px; text-align: center; color: #0E1726;
+    background: linear-gradient(160deg, #FFFFFF 0%, #F1F5F9 100%);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, .5), 0 0 0 1px rgba(255, 255, 255, .6) inset;
+    opacity: 0; transform-origin: 50% 0;
+  }
+  .landscape .v-total { left: 60px; margin-left: 0; top: 290px; text-align: left; }
+  .total-label { font-size: 15px; font-weight: 600; color: #6B7684; }
+  .total-amount { margin-top: 4px; font-size: 46px; font-weight: 800; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
+  .total-sub { margin-top: 6px; font-size: 14px; font-weight: 600; color: #36B37E; }
+
+  /* --- the cost legend: the app's cost card (world.tsx) — a Card, "Priced against" and its
+     info button, home's flag and name, one unbroken bar, three muted words — at the size
+     a phone would show it on this stage. --------------------------------------------- */
+  .v-legend {
+    left: 24px; right: 24px; top: 250px; padding: 24px 24px 20px;
+    border-radius: 21px; background: #fff; color: #0E1726;
+    box-shadow: 0 18px 44px rgba(0, 0, 0, .45), 0 2px 6px rgba(0, 0, 0, .2); opacity: 0;
+  }
+  .landscape .v-legend { left: 60px; right: auto; width: 420px; }
+  .legend-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .legend-side { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .legend-title { font-size: 17px; line-height: 23px; font-weight: 500; }
+  .legend-info { display: grid; place-items: center; width: 31px; height: 31px; border-radius: 50%; background: #EEF1F6; flex: none; }
+  .legend-info svg { width: 18px; height: 18px; }
+  .legend-flag { width: 26px; height: 26px; }
+  .legend-country { font-size: 17px; line-height: 23px; font-weight: 600; white-space: nowrap; }
+  .legend-chevron { width: 16px; height: 16px; flex: none; }
+  .legend-bar { display: flex; margin-top: 16px; border-radius: 10px; overflow: hidden; }
+  .legend-bar span { flex: 1; height: 13px; }
+  .legend-words { display: flex; justify-content: space-between; margin-top: 5px; font-size: 14px; line-height: 18px; font-weight: 500; color: #6B7684; }
+
+  /* --- the phone ---------------------------------------------------------------------- */
+  .v-phone {
+    left: 50%; top: 250px; width: 296px; margin-left: -148px; aspect-ratio: 720 / 1558;
+    border: 8px solid #0E1726; border-radius: 44px; overflow: hidden; background: #0E1726;
+    box-shadow: 0 40px 90px rgba(0, 0, 0, .6), 0 0 0 1px rgba(255, 255, 255, .12);
+    opacity: 0;
+  }
+  .landscape .v-phone { left: auto; right: 170px; margin-left: 0; top: 24px; width: 242px; }
+  .v-phone img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; }
+
+  /* --- the end card ------------------------------------------------------------------- */
+  .v-end { inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding-bottom: 40px; }
+  .v-end > * { opacity: 0; }
+  .end-name, .end-tagline, .end-url { text-shadow: 0 2px 18px rgba(4, 8, 18, .85), 0 1px 3px rgba(4, 8, 18, .6); }
+  .end-icon { width: 132px; height: 132px; border-radius: 30px; box-shadow: 0 24px 60px rgba(0, 0, 0, .55); }
+  .end-name { margin-top: 26px; font-size: 44px; font-weight: 800; letter-spacing: -0.035em; }
+  .end-tagline { margin-top: 8px; font-size: 19px; font-weight: 600; color: #B7C2D0; }
+  .end-cta { margin-top: 30px; padding: 16px 28px; border-radius: 999px; background: #52D69B; color: #11371C; font-size: 19px; font-weight: 800; box-shadow: 0 10px 30px rgba(82, 214, 155, .35); }
+  .end-url { margin-top: 18px; font-size: 16px; font-weight: 600; color: #8B97A6; }
+
+  /* Under the caption: the foot of a vertical video is under the platforms' own buttons. */
+  .v-sample { left: 0; right: 0; top: 226px; text-align: center; font-size: 13px; font-weight: 500; color: rgba(255, 255, 255, .6); opacity: 0; }
+  .landscape .v-sample { left: 60px; right: auto; top: auto; text-align: left; bottom: 24px; }
+</style>

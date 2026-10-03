@@ -8,9 +8,9 @@ import type { Lang } from '../i18n';
 
 export type Transport = 'flight' | 'train' | 'bus' | 'ferry' | 'car';
 
-type Stop = { code: string; currency: string; amount: number; name: Record<Lang, string> };
+export type Stop = { code: string; currency: string; amount: number; name: Record<Lang, string> };
 
-const STOPS: Stop[] = [
+export const STOPS: Stop[] = [
   { code: 'FR', currency: 'EUR', amount: 2100, name: { en: 'France', tr: 'Fransa' } },
   { code: 'ES', currency: 'EUR', amount: 1550, name: { en: 'Spain', tr: 'İspanya' } },
   { code: 'MA', currency: 'MAD', amount: 14500, name: { en: 'Morocco', tr: 'Fas' } },

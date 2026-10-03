@@ -3,6 +3,9 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  # Every morning, 08:00 Turkey time: a post whose pubDate has come goes out with no push.
+  schedule:
+    - cron: '0 5 * * *'
   workflow_dispatch:
 
 permissions:
