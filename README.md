@@ -75,9 +75,10 @@ gizliyken ya da hero ekran dışındayken döngü durur.
 
 ## Açık işler
 
-- Ödeme yakalama özelliğinin (v1.0.4) ekran görüntüsü yok; yerinde uygulamanın yakalama çizimi
-  duruyor. Görüntü `Store/Screenshots/`'a konup `scripts/build-assets.mjs` → `SHOTS.capture`'a
-  dosya adı yazılır, betik yeniden çalıştırılır.
+- Ödeme yakalama özelliğinin (v1.0.4) gerçek ekran görüntüsü yok; `scripts/capture-shot.mjs`
+  panonun görüntüsüne "Waiting for your OK" bölümünü ekleyerek bir tane üretiyor (build-assets
+  onu çağırır). Gerçeği `Store/Screenshots/`'a konup `scripts/build-assets.mjs` →
+  `SHOTS.capture`'a dosya adı yazılır, betik yeniden çalıştırılır.
 - App Store rozeti şu an metin butonu. Apple'ın resmî "Download on the App Store" rozeti
   (Apple Marketing Tools) indirilip `DownloadIcon`/buton yerine konabilir.
 - Android yayınlanınca: `i18n.ts` → `hero.android` metni ve FAQ, Play butonu.

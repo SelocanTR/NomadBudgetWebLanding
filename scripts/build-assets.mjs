@@ -109,9 +109,8 @@ const SHOTS = {
   crossings: 'IMG_0173.PNG', // the crossings timeline
   pace: 'IMG_0169.PNG',      // the dashboard's spending pace
   budget: 'IMG_0190.PNG',    // the dashboard, dark, with the monthly budget bar
-  // Payment capture (v1.0.4): no capture yet. Until one is put in Store/Screenshots and
-  // named here, the app's capture artwork stands in, on the app's dark background.
-  capture: null,
+  // Payment capture (v1.0.4) has no capture of its own yet: capture-shot.mjs makes one
+  // from the dashboard, run below. Name the real one here once it is in Store/Screenshots.
 };
 /**
  * Status-bar clutter painted out, per capture, as [left, top, width, height] in the
@@ -135,17 +134,11 @@ async function paintOut(input, [left, top, width, height]) {
 }
 for (const f of fs.readdirSync(`${OUT}/shots`)) fs.rmSync(`${OUT}/shots/${f}`);
 for (const [name, file] of Object.entries(SHOTS)) {
-  if (!file) {
-    const art = await sharp(app('assets/capture/intro.webp')).resize(900).toBuffer();
-    const canvas = await sharp({ create: { width: 1170, height: 2532, channels: 3, background: '#0E1726' } })
-      .composite([{ input: art, gravity: 'centre' }]).png().toBuffer();
-    await sharp(canvas).resize(720).webp({ quality: 82 }).toFile(`${OUT}/shots/${name}.webp`);
-    continue;
-  }
   let input = app('Store/Screenshots', file);
   if (PAINT_OUT[file]) input = await paintOut(input, PAINT_OUT[file]);
   await sharp(input).resize(720).webp({ quality: 82 }).toFile(`${OUT}/shots/${name}.webp`);
 }
+if (!SHOTS.capture) await import('./capture-shot.mjs');
 
 // --- illustrations ------------------------------------------------------------------------
 for (const name of ['slide-money', 'slide-plan', 'slide-journey', 'import', 'all-set', 'pro', 'reminders']) {
