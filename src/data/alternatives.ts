@@ -10,6 +10,8 @@
 //   version includes" says what matters.
 // - No logos, no screenshots of their apps: names only.
 // - Re-check every three months; an app that gains a feature makes a stale row a wrong one.
+// - No notes about the page itself ("we make Nomad Budget", "how this was checked", "apps we
+//   don't compare and why"): the reader came to choose an app, and the user had them removed.
 //
 // A comparison is built only under `astro dev` until `published` is true; then it joins
 // the hub, the sitemap, llms.txt and the footer by itself.
