@@ -1,11 +1,22 @@
+import { execSync } from 'node:child_process';
 import { SITE, pathFor, blogPath, type Lang } from '../i18n';
 import { allPosts, postsIn, alternatesOf, urlOf, isoDate } from '../blog';
+
+// The home pages change only with a commit. The site is rebuilt every morning, and a
+// lastmod that moves with every build is one search engines learn to ignore.
+function lastCommit(): string {
+  try {
+    return execSync('git log -1 --format=%cs', { encoding: 'utf8' }).trim() || isoDate(new Date());
+  } catch {
+    return isoDate(new Date());
+  }
+}
 
 // Every page a search engine should know, each naming its other-language alternate: the
 // two home pages, and — once there is something in them — the blog and its posts.
 export async function GET() {
   const langs: Lang[] = ['en', 'tr'];
-  const today = new Date().toISOString().slice(0, 10);
+  const homeDate = lastCommit();
   const posts = await allPosts();
 
   const url = (path: string, lastmod: string, alternates: Partial<Record<Lang, string>>) => {
@@ -18,7 +29,7 @@ export async function GET() {
 
   const homes = { en: pathFor('en'), tr: pathFor('tr') };
   const blogs = { en: blogPath('en'), tr: blogPath('tr') };
-  const entries = langs.map((l) => url(pathFor(l), today, homes));
+  const entries = langs.map((l) => url(pathFor(l), homeDate, homes));
   for (const l of langs) {
     const own = postsIn(l, posts);
     if (!own.length) continue;

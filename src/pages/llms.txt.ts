@@ -1,11 +1,13 @@
-import { SITE, type Lang } from '../i18n';
+import { SITE, STRINGS, appStoreUrl, blogPath, type Lang } from '../i18n';
 import { allPosts, holdOf, postsIn, urlOf } from '../blog';
 
 // What AI assistants read first: the app in a paragraph and a list, the pages, and the
 // blog's posts, which join the list by themselves as they are published.
 const BASE = `# Nomad Budget
 
-> Nomad Budget is an expense tracker app for digital nomads, expats and long-term travellers — people whose money lives in more than one country. It keeps one wallet per country in its own currency, stores every entry at the exchange rate of the day it was paid, and adds everything up in the main currency the user chooses. It shows where the user has been, and what each country cost, on a 3D globe.
+> ${STRINGS.en.meta.description}
+
+It is for people whose money lives in more than one country. Every entry is stored at the exchange rate of the day it was paid, and everything adds up in the main currency the user chooses; the globe shows where the user has been and what each country cost.
 
 - Platform: iPhone (App Store: https://apps.apple.com/app/id6803787746). Not on Android yet.
 - Price: free; Pro is an optional in-app subscription (country comparison built from the user's own spending, cost-of-a-month estimates, unlimited goals / recurring transactions / shared wallets, category and country budgets).
@@ -21,7 +23,9 @@ const BASE = `# Nomad Budget
 - [Nomad Budget (English)](https://nomadbudget.rubeeks.co/): features, privacy, free vs Pro, FAQ
 - [Nomad Budget (Türkçe)](https://nomadbudget.rubeeks.co/tr/): the same in Turkish
 - [Privacy Policy](https://legal.rubeeks.co/nomadbudget/privacy.en.html)
-- [Terms of Use](https://legal.rubeeks.co/nomadbudget/terms.en.html)`;
+- [Terms of Use](https://legal.rubeeks.co/nomadbudget/terms.en.html)
+- [App Store](${appStoreUrl('en')})
+- [YouTube: Nomad Budget](https://www.youtube.com/@NomadBudgetInt): a short video of the app's globe`;
 
 const NAME: Record<Lang, string> = { en: 'Blog (English)', tr: 'Blog (Türkçe)' };
 
@@ -31,7 +35,7 @@ export async function GET() {
     .map((l) => postsIn(l, posts))
     .filter((own) => own.length)
     .map((own) =>
-      [`## ${NAME[own[0].lang]}`, '', ...own.map((p) => `- [${p.entry.data.title}](${SITE}${urlOf(p)}): ${p.entry.data.description}`)].join('\n'),
+      [`## ${NAME[own[0].lang]}`, '', `All posts: ${SITE}${blogPath(own[0].lang)} · RSS: ${SITE}${blogPath(own[0].lang)}rss.xml`, '', ...own.map((p) => `- [${p.entry.data.title}](${SITE}${urlOf(p)}): ${p.entry.data.description}`)].join('\n'),
     );
   const body = [BASE, ...sections].join('\n\n') + '\n';
   return new Response(body, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });

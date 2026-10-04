@@ -9,7 +9,9 @@ const org = {
   '@type': 'Organization',
   '@id': `${SITE}/#org`,
   name: 'Rubeeks',
-  url: 'https://rubeeks.co',
+  // rubeeks.co itself has no site yet (the name does not resolve): an organisation whose
+  // address leads nowhere is weaker than none. Back to https://rubeeks.co once it does.
+  url: SITE + '/',
   email: CONTACT,
   logo: `${SITE}/icons/icon-512.png`,
 };

@@ -7,6 +7,11 @@ on:
   schedule:
     - cron: '0 5 * * *'
   workflow_dispatch:
+    inputs:
+      indexnow_all:
+        description: 'Send every page to IndexNow, not only the ones changed in the last two days'
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -35,3 +40,17 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v5
+
+  # After the site is live: tell Bing which pages just changed (scripts/indexnow.mjs).
+  # A job of its own, so a failure here never holds back a deploy.
+  indexnow:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+      - run: node scripts/indexnow.mjs
+        env:
+          INDEXNOW_ALL: ${{ inputs.indexnow_all && '1' || '' }}
