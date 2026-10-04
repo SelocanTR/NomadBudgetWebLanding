@@ -1,10 +1,10 @@
 ---
 // A longer page in the comparison section: the round-up and the guides (data/guides.ts).
-// The comparison pages' frame — cover, the "we make Nomad Budget" note, sources with a
+// The comparison pages' frame — cover, sources with a
 // date — around sections of prose, lists and tables.
 import { Image, getImage } from 'astro:assets';
 import Base from '../layouts/Base.astro';
-import { STRINGS, CONTACT, appStoreUrl } from '../i18n';
+import { STRINGS, appStoreUrl } from '../i18n';
 import { ALTERNATIVES_PATH, coverOf, linked } from '../data/alternatives';
 import { guidePath, visibleGuides, type Guide } from '../data/guides';
 import { allPosts, postsIn, urlOf, formatDate, minRead } from '../blog';
@@ -53,13 +53,6 @@ const ld = alternativeLd({ title: guide.title, description: guide.description, u
       <Image class="post-cover" src={cover} alt={guide.coverAlt} widths={[720, 1080, 1440]} sizes="(max-width: 760px) 100vw, 720px" loading="eager" fetchpriority="high" />
     )}
 
-    <aside class="post-note">
-      <p>
-        We make Nomad Budget, so read this as one side’s view. Everything about other apps and
-        services comes from their own pages, listed at the end; if something is wrong or out of
-        date, write to <a href={`mailto:${CONTACT}`}>{CONTACT}</a> and we will fix it.
-      </p>
-    </aside>
 
     <div class="prose">
       {guide.intro.map((p) => <p set:html={linked(p)} />)}

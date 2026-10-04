@@ -8,7 +8,7 @@
 // the blog's latest posts for whoever wants to read on.
 import { Image, getImage } from 'astro:assets';
 import Base from '../layouts/Base.astro';
-import { STRINGS, CONTACT, appStoreUrl } from '../i18n';
+import { STRINGS, appStoreUrl } from '../i18n';
 import {
   ROWS, OURS, ALTERNATIVES_PATH, alternativePath, visibleAlternatives, coverOf, linked, type Alternative,
 } from '../data/alternatives';
@@ -67,15 +67,6 @@ const ld = alternativeLd({ title: alt.title, description: alt.description, url: 
       />
     )}
 
-    <!-- One paragraph: the note is a two-column grid (mark, text), and loose text plus a
-         link would land in separate cells. -->
-    <aside class="post-note">
-      <p>
-        We make Nomad Budget, so read this as one side’s view. We have tried to be fair and to
-        show where {alt.name} is the better choice. Every claim about {alt.name} comes from the
-        sources at the end; if something is wrong or out of date, write to <a href={`mailto:${CONTACT}`}>{CONTACT}</a> and we will fix it.
-      </p>
-    </aside>
 
     <div class="prose">
       {alt.intro.map((p) => <p set:html={linked(p)} />)}

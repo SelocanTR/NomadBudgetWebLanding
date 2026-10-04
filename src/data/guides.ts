@@ -59,7 +59,7 @@ export const GUIDES: Guide[] = [
     coverAlt: 'A row of five small stylised wallets in different colours on the window ledge of an airport lounge, planes softly blurred outside.',
     intro: [
       'There is no single best travel budget app, because there is no single way to travel. A week away with friends, a three-month trip and a life spread across countries ask different things of an app.',
-      'So this list is sorted by how you travel, not ranked. We make one of the apps on it, Nomad Budget, and say so where it appears. Everything about the others comes from their own App Store listings and websites, checked on the date above.',
+      'So this list is sorted by how you travel, not ranked.',
     ],
     sections: [
       {

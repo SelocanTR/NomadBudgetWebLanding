@@ -3,7 +3,6 @@
    own frame rather than the page. */
 
 .alt-checked { margin-top: 18px; }
-.alt .post-note a { color: var(--ink); text-underline-offset: 2px; }
 
 .alt-verdict { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 40px; }
 .alt-pick { padding: 20px 22px; border-radius: 20px; background: var(--surface); box-shadow: var(--glass-shadow); }
@@ -87,4 +86,3 @@ section:has(> .alt-hub) + section:has(> .alt-hub) { margin-top: 48px; }
 }
 .alt-hub a:hover { box-shadow: var(--shadow); }
 .alt-hub .post-draft { margin-left: 6px; }
-.alt-elsewhere { max-width: 760px; margin-top: 56px; }

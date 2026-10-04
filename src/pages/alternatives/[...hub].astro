@@ -18,8 +18,6 @@ export function getStaticPaths() {
 
 const list = visibleAlternatives();
 const guides = visibleGuides();
-// Linked from the note on splitting apps only while it is on the site.
-const roundup = guides.find((g) => g.slug === 'best-travel-budget-apps');
 const published = list.some((a) => a.published) || guides.some((g) => g.published);
 const names = list.map((a) => a.name);
 const named = names.length > 4 ? `${names.slice(0, 4).join(', ')} and more` : names.length > 1 ? `${names.slice(0, -1).join(', ')} and ${names.at(-1)}` : names[0] ?? 'other apps';
@@ -43,8 +41,7 @@ const ld = alternativesHubLd({
         <h1>Looking for another travel budget app?</h1>
         <p>
           Nomad Budget next to the apps people most often move from: what each is built for,
-          where each is the better choice, and how to bring your history along. Checked against
-          each app’s own pages, with the date on every comparison.
+          where each is the better choice, and how to bring your history along.
         </p>
       </header>
       {cover && (
@@ -86,12 +83,5 @@ const ld = alternativesHubLd({
       </section>
     )}
 
-    <section class="alt-elsewhere prose" aria-labelledby="elsewhere-title">
-      <h2 id="elsewhere-title">Apps we don’t compare one to one, and why</h2>
-      <ul>
-        <li><strong>Splitwise and Tricount</strong> are for splitting bills in a group and settling who owes whom. Nomad Budget has shared wallets, but no bill splitting; if splitting is what you need, they are the better tools.{roundup && <> Both are in the <a href={guidePath(roundup)}>round-up</a>.</>}</li>
-        <li><strong>Polarsteps</strong> follows your route and turns it into a travel diary. It is made for remembering a trip rather than following its money, so it sits next to an expense tracker rather than in place of one.</li>
-      </ul>
-    </section>
   </div>
 </Base>
