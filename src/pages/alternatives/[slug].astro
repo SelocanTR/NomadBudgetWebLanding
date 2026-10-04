@@ -1,0 +1,20 @@
+---
+// One page of the comparison section: an app compared with Nomad Budget, or one of the
+// longer guides. Both share /alternatives/<slug>/; the slugs never overlap.
+import AlternativePage from '../../components/AlternativePage.astro';
+import GuidePage from '../../components/GuidePage.astro';
+import { visibleAlternatives, type Alternative } from '../../data/alternatives';
+import { visibleGuides, type Guide } from '../../data/guides';
+
+export function getStaticPaths() {
+  return [
+    ...visibleAlternatives().map((alt) => ({ params: { slug: alt.slug }, props: { alt } })),
+    ...visibleGuides().map((guide) => ({ params: { slug: guide.slug }, props: { guide } })),
+  ];
+}
+
+const { alt, guide } = Astro.props as { alt?: Alternative; guide?: Guide };
+---
+
+{alt && <AlternativePage alt={alt} />}
+{guide && <GuidePage guide={guide} />}

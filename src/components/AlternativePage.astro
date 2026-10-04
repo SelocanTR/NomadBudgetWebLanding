@@ -1,0 +1,186 @@
+---
+// One comparison: Nomad Budget next to one other app. The verdict first (who should pick
+// which), then the table, then what each does better, how to move, and the sources —
+// with the date they were checked, since the other app keeps changing.
+//
+// The way to the app stays quiet: links inside the sentences (see `linked` in
+// data/alternatives.ts), one plain line under the table, the usual box at the end, and
+// the blog's latest posts for whoever wants to read on.
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import { STRINGS, CONTACT, appStoreUrl } from '../i18n';
+import {
+  ROWS, OURS, ALTERNATIVES_PATH, alternativePath, visibleAlternatives, coverOf, linked, type Alternative,
+} from '../data/alternatives';
+import { allPosts, postsIn, urlOf, formatDate, minRead } from '../blog';
+import { alternativeLd } from '../seo';
+import '../styles/blog.css';
+import '../styles/post-card.css';
+import '../styles/alternatives.css';
+
+interface Props { alt: Alternative }
+const { alt } = Astro.props;
+const s = STRINGS.en;
+const path = alternativePath(alt);
+const checked = new Date(`${alt.checked}T12:00:00Z`);
+const checkedText = checked.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+const others = visibleAlternatives().filter((a) => a.slug !== alt.slug);
+const reading = postsIn('en', await allPosts()).slice(0, 2);
+const cover = coverOf(alt.slug);
+const og = cover ? (await getImage({ src: cover, width: 1200, height: 630, fit: 'cover', format: 'jpg' })).src : undefined;
+const ld = alternativeLd({ title: alt.title, description: alt.description, url: path, modified: alt.checked, name: alt.name, image: og });
+---
+
+<Base
+  lang="en"
+  title={`${alt.title} — Nomad Budget`}
+  description={alt.description}
+  path={path}
+  alternates={{ en: path }}
+  ogImage={og}
+  ogType="article"
+  jsonLd={ld}
+  noindex={!alt.published}
+  solidHeader
+>
+  <article class="post alt">
+    <header class="post-head">
+      <a class="post-back" href={ALTERNATIVES_PATH}>← All comparisons</a>
+      <p class="post-topic">Comparison</p>
+      <h1>{alt.title}</h1>
+      <p class="post-lede">{alt.description}</p>
+      <p class="post-meta alt-checked">
+        <span>Checked <time datetime={alt.checked}>{checkedText}</time></span>
+        {!alt.published && <span class="post-draft">Draft</span>}
+      </p>
+    </header>
+
+    {cover && (
+      <Image
+        class="post-cover"
+        src={cover}
+        alt={alt.coverAlt}
+        widths={[720, 1080, 1440]}
+        sizes="(max-width: 760px) 100vw, 720px"
+        loading="eager"
+        fetchpriority="high"
+      />
+    )}
+
+    <!-- One paragraph: the note is a two-column grid (mark, text), and loose text plus a
+         link would land in separate cells. -->
+    <aside class="post-note">
+      <p>
+        We make Nomad Budget, so read this as one side’s view. We have tried to be fair and to
+        show where {alt.name} is the better choice. Every claim about {alt.name} comes from the
+        sources at the end; if something is wrong or out of date, write to <a href={`mailto:${CONTACT}`}>{CONTACT}</a> and we will fix it.
+      </p>
+    </aside>
+
+    <div class="prose">
+      {alt.intro.map((p) => <p set:html={linked(p)} />)}
+    </div>
+
+    <section class="alt-verdict" aria-labelledby="verdict-title">
+      <h2 id="verdict-title" class="sr-only">Which one is for you</h2>
+      <div class="alt-pick">
+        <p class="alt-pick-label">Choose {alt.name} if…</p>
+        <p set:html={linked(alt.pickThem)} />
+      </div>
+      <div class="alt-pick alt-pick-us">
+        <p class="alt-pick-label">Choose Nomad Budget if…</p>
+        <p set:html={linked(alt.pickUs)} />
+      </div>
+    </section>
+
+    <section aria-labelledby="table-title">
+      <h2 id="table-title" class="alt-h2">{alt.name} and Nomad Budget, side by side</h2>
+      <div class="alt-table-wrap" role="region" aria-labelledby="table-title" tabindex="0">
+        <table class="alt-table">
+          <thead>
+            <tr>
+              <th scope="col"><span class="sr-only">Feature</span></th>
+              <th scope="col">{alt.name}</th>
+              <th scope="col">Nomad Budget</th>
+            </tr>
+          </thead>
+          <tbody>
+            {ROWS.map(([key, label]) => (
+              <tr>
+                <th scope="row">{label}</th>
+                <td data-app={alt.name}>{alt.row[key] ?? '—'}</td>
+                <td data-app="Nomad Budget">{OURS[key]}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="alt-table-note">
+        “Not stated in its listing” means we couldn’t confirm it from {alt.name}’s own pages, not that it is missing.
+      </p>
+      <p class="alt-try">
+        The quickest way to judge is with your own spending: <a href={appStoreUrl('en')} rel="noopener">Nomad Budget is free on iPhone</a>, and works without an account.
+      </p>
+    </section>
+
+    <div class="prose">
+      <h2>Where {alt.name} is stronger</h2>
+      <ul>{alt.theyDoBetter.map((t) => <li set:html={linked(t)} />)}</ul>
+
+      <h2>What Nomad Budget does differently</h2>
+      <ul>{alt.weDoDifferently.map((t) => <li set:html={linked(t)} />)}</ul>
+
+      <h2>{alt.moving.title}</h2>
+      {alt.moving.body.map((p) => <p set:html={linked(p)} />)}
+
+      <h2>Sources</h2>
+      <p>Checked on {checkedText}. {alt.name} is made by {alt.maker}; it is named here only to compare.</p>
+      <ul class="alt-sources">
+        {alt.sources.map((src) => <li><a href={src.url} rel="nofollow noopener">{src.label}</a></li>)}
+        <li><a href="/">Nomad Budget</a> and its <a href="/#faq">FAQ</a></li>
+      </ul>
+    </div>
+
+    <aside class="post-cta">
+      <img src="/icons/coin-96.webp" width="48" height="48" alt="" loading="lazy" />
+      <div>
+        <h2>{s.blog.cta.title}</h2>
+        <p>{s.blog.cta.body}</p>
+      </div>
+      <a class="btn btn-lime" href={appStoreUrl('en')} rel="noopener">{s.nav.download}</a>
+    </aside>
+  </article>
+
+  {others.length > 0 && (
+    <section class="post-related container" aria-labelledby="more-title">
+      <h2 id="more-title">Other comparisons</h2>
+      <ul>
+        {others.map((a) => (
+          <li>
+            <a href={alternativePath(a)}>
+              <span class="post-topic">{a.name}</span>
+              <span class="post-related-title">{a.title}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  {reading.length > 0 && (
+    <section class="post-related container" aria-labelledby="reading-title">
+      <h2 id="reading-title">From the blog</h2>
+      <ul>
+        {reading.map((p) => (
+          <li>
+            <a href={urlOf(p)}>
+              <span class="post-topic">{s.blog.topics[p.entry.data.topic]}</span>
+              <span class="post-related-title">{p.entry.data.title}</span>
+              <span class="post-related-meta">{formatDate(p.entry.data.pubDate, 'en')} · {minRead(p)}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+</Base>

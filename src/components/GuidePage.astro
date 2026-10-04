@@ -1,0 +1,141 @@
+---
+// A longer page in the comparison section: the round-up and the guides (data/guides.ts).
+// The comparison pages' frame — cover, the "we make Nomad Budget" note, sources with a
+// date — around sections of prose, lists and tables.
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import { STRINGS, CONTACT, appStoreUrl } from '../i18n';
+import { ALTERNATIVES_PATH, coverOf, linked } from '../data/alternatives';
+import { guidePath, visibleGuides, type Guide } from '../data/guides';
+import { allPosts, postsIn, urlOf, formatDate, minRead } from '../blog';
+import { alternativeLd } from '../seo';
+import '../styles/blog.css';
+import '../styles/post-card.css';
+import '../styles/alternatives.css';
+
+interface Props { guide: Guide }
+const { guide } = Astro.props;
+const s = STRINGS.en;
+const path = guidePath(guide);
+const checkedText = new Date(`${guide.checked}T12:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+const others = visibleGuides().filter((g) => g.slug !== guide.slug);
+const reading = postsIn('en', await allPosts()).slice(0, 2);
+const cover = coverOf(guide.slug);
+const og = cover ? (await getImage({ src: cover, width: 1200, height: 630, fit: 'cover', format: 'jpg' })).src : undefined;
+const ld = alternativeLd({ title: guide.title, description: guide.description, url: path, modified: guide.checked, image: og });
+---
+
+<Base
+  lang="en"
+  title={`${guide.title} — Nomad Budget`}
+  description={guide.description}
+  path={path}
+  alternates={{ en: path }}
+  ogImage={og}
+  ogType="article"
+  jsonLd={ld}
+  noindex={!guide.published}
+  solidHeader
+>
+  <article class="post alt">
+    <header class="post-head">
+      <a class="post-back" href={ALTERNATIVES_PATH}>← All comparisons</a>
+      <p class="post-topic">{guide.kicker}</p>
+      <h1>{guide.title}</h1>
+      <p class="post-lede">{guide.description}</p>
+      <p class="post-meta alt-checked">
+        <span>Checked <time datetime={guide.checked}>{checkedText}</time></span>
+        {!guide.published && <span class="post-draft">Draft</span>}
+      </p>
+    </header>
+
+    {cover && (
+      <Image class="post-cover" src={cover} alt={guide.coverAlt} widths={[720, 1080, 1440]} sizes="(max-width: 760px) 100vw, 720px" loading="eager" fetchpriority="high" />
+    )}
+
+    <aside class="post-note">
+      <p>
+        We make Nomad Budget, so read this as one side’s view. Everything about other apps and
+        services comes from their own pages, listed at the end; if something is wrong or out of
+        date, write to <a href={`mailto:${CONTACT}`}>{CONTACT}</a> and we will fix it.
+      </p>
+    </aside>
+
+    <div class="prose">
+      {guide.intro.map((p) => <p set:html={linked(p)} />)}
+
+      {guide.sections.map((sec) => (
+        <>
+          <h2 id={sec.id}>{sec.h2}</h2>
+          {sec.body?.map((p) => <p set:html={linked(p)} />)}
+          {sec.list && <ul>{sec.list.map((t) => <li set:html={linked(t)} />)}</ul>}
+          {sec.table && (
+            <div class="alt-table-wrap alt-table-wide" role="region" aria-label={sec.h2} tabindex="0">
+              <table class="alt-table">
+                <thead><tr>{sec.table.head.map((h) => <th scope="col">{h}</th>)}</tr></thead>
+                <tbody>
+                  {sec.table.rows.map((row) => (
+                    <tr>
+                      {row.map((cell, i) => (i === 0
+                        ? <th scope="row" set:html={linked(cell)} />
+                        : <td data-app={sec.table!.head[i]} set:html={linked(cell)} />))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+          {sec.after?.map((p) => <p set:html={linked(p)} />)}
+        </>
+      ))}
+
+      <h2>Sources</h2>
+      <p>Checked on {checkedText}. Other apps and services are named here only to describe and compare them.</p>
+      <ul class="alt-sources">
+        {guide.sources.map((src) => <li><a href={src.url} rel="nofollow noopener">{src.label}</a></li>)}
+      </ul>
+    </div>
+
+    <aside class="post-cta">
+      <img src="/icons/coin-96.webp" width="48" height="48" alt="" loading="lazy" />
+      <div>
+        <h2>{s.blog.cta.title}</h2>
+        <p>{s.blog.cta.body}</p>
+      </div>
+      <a class="btn btn-lime" href={appStoreUrl('en')} rel="noopener">{s.nav.download}</a>
+    </aside>
+  </article>
+
+  {others.length > 0 && (
+    <section class="post-related container" aria-labelledby="more-title">
+      <h2 id="more-title">More guides</h2>
+      <ul>
+        {others.map((g) => (
+          <li>
+            <a href={guidePath(g)}>
+              <span class="post-topic">{g.kicker}</span>
+              <span class="post-related-title">{g.title}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  {reading.length > 0 && (
+    <section class="post-related container" aria-labelledby="reading-title">
+      <h2 id="reading-title">From the blog</h2>
+      <ul>
+        {reading.map((p) => (
+          <li>
+            <a href={urlOf(p)}>
+              <span class="post-topic">{s.blog.topics[p.entry.data.topic]}</span>
+              <span class="post-related-title">{p.entry.data.title}</span>
+              <span class="post-related-meta">{formatDate(p.entry.data.pubDate, 'en')} · {minRead(p)}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+</Base>

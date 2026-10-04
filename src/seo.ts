@@ -130,3 +130,45 @@ export function postLd(
     crumbs([['Nomad Budget', pathFor(lang)], ['Blog', blogPath(lang)], [post.title, post.url]]),
   ];
 }
+
+// --- the comparison pages --------------------------------------------------------------
+// A comparison is a web page about the app (and, by name, another one); the hub lists them.
+
+export function alternativeLd(page: { title: string; description: string; url: string; modified: string; name?: string; image?: string }): object[] {
+  return [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'WebPage',
+      name: page.title,
+      description: page.description,
+      url: abs(page.url),
+      inLanguage: 'en',
+      dateModified: page.modified,
+      ...(page.image && { image: abs(page.image) }),
+      about: [{ '@id': `${SITE}/#app` }, ...(page.name ? [{ '@type': 'MobileApplication', name: page.name }] : [])],
+      publisher: org,
+      isPartOf: { '@id': `${SITE}/#website` },
+    },
+    crumbs([['Nomad Budget', '/'], ['Comparisons', '/alternatives/'], [page.title, page.url]]),
+  ];
+}
+
+export function alternativesHubLd(page: { title: string; description: string; url: string; image?: string; items: { name: string; url: string }[] }): object[] {
+  return [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'CollectionPage',
+      name: page.title,
+      description: page.description,
+      url: abs(page.url),
+      inLanguage: 'en',
+      ...(page.image && { image: abs(page.image) }),
+      publisher: org,
+      mainEntity: {
+        '@type': 'ItemList',
+        itemListElement: page.items.map((it, i) => ({ '@type': 'ListItem', position: i + 1, name: it.name, url: abs(it.url) })),
+      },
+    },
+    crumbs([['Nomad Budget', '/'], ['Comparisons', page.url]]),
+  ];
+}

@@ -1,0 +1,90 @@
+/* The comparison pages: the blog's reading column, plus the verdict cards and the table.
+   The table keeps three columns down to phone width; below that it scrolls inside its
+   own frame rather than the page. */
+
+.alt-checked { margin-top: 18px; }
+.alt .post-note a { color: var(--ink); text-underline-offset: 2px; }
+
+.alt-verdict { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 40px; }
+.alt-pick { padding: 20px 22px; border-radius: 20px; background: var(--surface); box-shadow: var(--glass-shadow); }
+.alt-pick-us { background: var(--panel); }
+.alt-pick-label { font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.alt-pick-us .alt-pick-label { color: var(--lime-deep); }
+.alt-pick p:last-child { margin-top: 8px; font-size: 16.5px; line-height: 1.55; color: var(--ink-soft); }
+@media (max-width: 640px) { .alt-verdict { grid-template-columns: 1fr; } }
+
+.alt-h2 { margin-top: 56px; font-size: clamp(25px, 3vw, 31px); line-height: 1.2; }
+
+.alt-table-wrap {
+  margin-top: 20px; overflow-x: auto; border-radius: 20px;
+  background: var(--surface); box-shadow: var(--glass-shadow);
+}
+.alt-table-wrap:focus-visible { outline: 2px solid var(--lime); outline-offset: 2px; }
+.alt-table { width: 100%; min-width: 520px; border-collapse: collapse; font-size: 15px; line-height: 1.45; }
+.alt-table th, .alt-table td { padding: 12px 14px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--border); }
+.alt-table tbody tr:last-child > * { border-bottom: 0; }
+.alt-table thead th { font-size: 14px; font-weight: 700; color: var(--ink); background: var(--surface-muted); }
+.alt-table tbody th { width: 26%; font-weight: 600; color: var(--ink); }
+.alt-table td { width: 37%; color: var(--ink-soft); }
+/* Our column, tinted the way the app marks the current choice. */
+.alt-table td:last-child, .alt-table thead th:last-child { background: color-mix(in srgb, var(--lime) 8%, transparent); }
+/* On a phone two columns of sentences don't fit side by side, and a sideways scroll hides
+   our own column. Each feature becomes a small card instead: its name, then each app's
+   answer under the app's name (from data-app). */
+@media (max-width: 640px) {
+  .alt-table-wrap { overflow: visible; }
+  .alt-table { min-width: 0; }
+  .alt-table, .alt-table tbody, .alt-table tr, .alt-table th, .alt-table td { display: block; width: auto; }
+  .alt-table thead { display: none; }
+  .alt-table tr { padding: 14px 16px; border-bottom: 1px solid var(--border); }
+  .alt-table tbody tr:last-child { border-bottom: 0; }
+  .alt-table th, .alt-table td { padding: 0; border: 0; }
+  .alt-table tbody th { width: auto; font-size: 15.5px; }
+  .alt-table td { margin-top: 8px; padding: 8px 10px; border-radius: 12px; }
+  .alt-table td::before {
+    content: attr(data-app); display: block; margin-bottom: 2px;
+    font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted);
+  }
+  .alt-table td:last-child::before { color: var(--lime-deep); }
+}
+.alt-try { margin-top: 14px; font-size: 16px; line-height: 1.55; color: var(--ink-soft); }
+.alt-try a { color: var(--acc-lime); font-weight: 600; text-underline-offset: 3px; }
+.alt-try a:hover { color: var(--ink); }
+/* A guide's table (the round-up): any number of columns, none of them ours. */
+.alt-table-wide .alt-table { min-width: 600px; }
+.alt-table-wide .alt-table tbody th, .alt-table-wide .alt-table td { width: auto; }
+.alt-table-wide .alt-table td:last-child { background: none; }
+.alt-table-wide .alt-table thead th, .alt-table-wide .alt-table thead th:last-child { background: var(--surface-muted); }
+.alt-table th a { color: var(--ink); text-decoration-color: var(--border); text-underline-offset: 3px; }
+@media (max-width: 640px) {
+  .alt-table-wide .alt-table { min-width: 0; }
+  .alt-table-wide .alt-table td { margin-top: 4px; padding: 4px 0; }
+  .alt-table-wide .alt-table td:last-child::before { color: var(--muted); }
+}
+.prose .alt-table-wrap { margin-top: 1.2em; }
+.alt-table-note { margin-top: 10px; font-size: 14px; color: var(--muted); }
+
+.alt-sources a { word-break: break-word; }
+
+/* The hub. */
+.alt-hub-head {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 420px); gap: clamp(28px, 4vw, 56px); align-items: center;
+  margin-bottom: clamp(36px, 5vw, 56px);
+}
+.alt-hub-head .blog-head { margin-bottom: 0; }
+.alt-hub-h2 { margin: 0 0 18px; font-size: clamp(22px, 2.4vw, 26px); }
+section:has(> .alt-hub) + section:has(> .alt-hub) { margin-top: 48px; }
+.alt-hub-cover { display: block; width: 100%; height: auto; border-radius: 22px; box-shadow: var(--shadow); }
+@media (max-width: 900px) {
+  .alt-hub-head { grid-template-columns: 1fr; }
+  .alt-hub-cover { max-width: 520px; }
+}
+.alt-hub { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); }
+.alt-hub a {
+  display: grid; gap: 6px; height: 100%; padding: 22px 24px; border-radius: 20px;
+  background: var(--surface); box-shadow: var(--glass-shadow); text-decoration: none;
+  transition: box-shadow .25s ease;
+}
+.alt-hub a:hover { box-shadow: var(--shadow); }
+.alt-hub .post-draft { margin-left: 6px; }
+.alt-elsewhere { max-width: 760px; margin-top: 56px; }

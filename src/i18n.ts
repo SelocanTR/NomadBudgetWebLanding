@@ -77,7 +77,7 @@ export type Strings = {
   };
   faq: { title: string; items: { q: string; a: string }[] };
   final: { title: string; body: string };
-  footer: { tagline: string; legal: string; privacy: string; terms: string; kvkk?: string; disclaimer: string; licenses: string; contact: string; imagery: string; rights: string };
+  footer: { tagline: string; legal: string; privacy: string; terms: string; kvkk?: string; disclaimer: string; licenses: string; contact: string; compare: string; imagery: string; rights: string };
   notFound: { title: string; body: string; home: string };
   blog: Blog;
 };
@@ -327,6 +327,7 @@ const en: Strings = {
     disclaimer: 'Disclaimer',
     licenses: 'Licences',
     contact: 'Contact',
+    compare: 'Compare apps',
     imagery: 'Earth imagery: NASA Blue Marble. Borders: Natural Earth. Sample figures on this page are illustrative.',
     rights: 'Rubeeks',
   },
@@ -611,6 +612,7 @@ const tr: Strings = {
     disclaimer: 'Sorumluluk Reddi',
     licenses: 'Lisanslar',
     contact: 'İletişim',
+    compare: 'Uygulama karşılaştırmaları (EN)',
     imagery: 'Dünya görüntüsü: NASA Blue Marble. Sınırlar: Natural Earth. Bu sayfadaki örnek rakamlar temsilîdir.',
     rights: 'Rubeeks',
   },

@@ -1,0 +1,97 @@
+---
+// The comparison section's front page: the guides (the round-up first), then every
+// one-to-one comparison, and a word on the apps that aren't compared because they do
+// something else. A rest route only so the page can be left out: in production it is
+// built once something in the section is published, and not at all before.
+import { Image, getImage } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import { ALTERNATIVES_PATH, HUB_COVER_ALT, alternativePath, coverOf, visibleAlternatives } from '../../data/alternatives';
+import { guidePath, visibleGuides } from '../../data/guides';
+import { alternativesHubLd } from '../../seo';
+import '../../styles/blog.css';
+import '../../styles/post-card.css';
+import '../../styles/alternatives.css';
+
+export function getStaticPaths() {
+  return visibleAlternatives().length + visibleGuides().length ? [{ params: { hub: undefined } }] : [];
+}
+
+const list = visibleAlternatives();
+const guides = visibleGuides();
+// Linked from the note on splitting apps only while it is on the site.
+const roundup = guides.find((g) => g.slug === 'best-travel-budget-apps');
+const published = list.some((a) => a.published) || guides.some((g) => g.published);
+const names = list.map((a) => a.name);
+const named = names.length > 4 ? `${names.slice(0, 4).join(', ')} and more` : names.length > 1 ? `${names.slice(0, -1).join(', ')} and ${names.at(-1)}` : names[0] ?? 'other apps';
+const title = 'Travel budget apps compared — Nomad Budget';
+const description = `Nomad Budget next to ${named}: what each is built for, where each is stronger, and how to move your history.`;
+const cover = coverOf('hub');
+const og = cover ? (await getImage({ src: cover, width: 1200, height: 630, fit: 'cover', format: 'jpg' })).src : undefined;
+const ld = alternativesHubLd({
+  title, description, url: ALTERNATIVES_PATH, image: og,
+  items: [...guides.map((g) => ({ name: g.title, url: guidePath(g) })), ...list.map((a) => ({ name: a.title, url: alternativePath(a) }))],
+});
+---
+
+<Base lang="en" title={title} description={description} path={ALTERNATIVES_PATH} alternates={{ en: ALTERNATIVES_PATH }} ogImage={og} jsonLd={ld} noindex={!published} solidHeader>
+  <div class="blog-page container">
+    <!-- The picture sits beside the words, not under them as a banner: full width it
+         outweighed the page (the user found it too big). -->
+    <div class="alt-hub-head">
+      <header class="blog-head">
+        <p class="kicker">Comparisons</p>
+        <h1>Looking for another travel budget app?</h1>
+        <p>
+          Nomad Budget next to the apps people most often move from: what each is built for,
+          where each is the better choice, and how to bring your history along. Checked against
+          each app’s own pages, with the date on every comparison.
+        </p>
+      </header>
+      {cover && (
+        <Image class="alt-hub-cover" src={cover} alt={HUB_COVER_ALT} widths={[480, 720, 960]} sizes="(max-width: 900px) 100vw, 420px" loading="eager" fetchpriority="high" />
+      )}
+    </div>
+
+    {guides.length > 0 && (
+      <section aria-labelledby="guides-title">
+        <h2 id="guides-title" class="alt-hub-h2">Guides</h2>
+        <ul class="alt-hub">
+          {guides.map((g) => (
+            <li>
+              <a href={guidePath(g)}>
+                <span class="post-topic">{g.kicker} {!g.published && <span class="post-draft">Draft</span>}</span>
+                <span class="post-related-title">{g.title}</span>
+                <span class="post-related-meta">{g.description}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    {list.length > 0 && (
+      <section aria-labelledby="apps-title">
+        <h2 id="apps-title" class="alt-hub-h2">One app at a time</h2>
+        <ul class="alt-hub">
+          {list.map((a) => (
+            <li>
+              <a href={alternativePath(a)}>
+                <span class="post-topic">{a.name} {!a.published && <span class="post-draft">Draft</span>}</span>
+                <span class="post-related-title">{a.title}</span>
+                <span class="post-related-meta">{a.description}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    <section class="alt-elsewhere prose" aria-labelledby="elsewhere-title">
+      <h2 id="elsewhere-title">Apps we don’t compare one to one, and why</h2>
+      <ul>
+        <li><strong>Splitwise and Tricount</strong> are for splitting bills in a group and settling who owes whom. Nomad Budget has shared wallets, but no bill splitting; if splitting is what you need, they are the better tools.{roundup && <> Both are in the <a href={guidePath(roundup)}>round-up</a>.</>}</li>
+        <li><strong>Polarsteps</strong> follows your route and turns it into a travel diary. It is made for remembering a trip rather than following its money, so it sits next to an expense tracker rather than in place of one.</li>
+      </ul>
+    </section>
+  </div>
+</Base>

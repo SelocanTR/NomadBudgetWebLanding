@@ -1,6 +1,8 @@
 import { execSync } from 'node:child_process';
 import { SITE, pathFor, blogPath, type Lang } from '../i18n';
 import { allPosts, postsIn, alternatesOf, urlOf, isoDate } from '../blog';
+import { ALTERNATIVES_PATH, alternativePath, publishedAlternatives } from '../data/alternatives';
+import { guidePath, publishedGuides } from '../data/guides';
 
 // The home pages change only with a commit. The site is rebuilt every morning, and a
 // lastmod that moves with every build is one search engines learn to ignore.
@@ -37,6 +39,17 @@ export async function GET() {
     for (const p of own) {
       entries.push(url(urlOf(p), isoDate(p.entry.data.updatedDate ?? p.entry.data.pubDate), alternatesOf(p, posts)));
     }
+  }
+
+  // The comparisons and guides: English only, each dated by when it was last checked.
+  const section = [
+    ...publishedGuides().map((g) => ({ path: guidePath(g), checked: g.checked })),
+    ...publishedAlternatives().map((a) => ({ path: alternativePath(a), checked: a.checked })),
+  ];
+  if (section.length) {
+    const newest = section.map((p) => p.checked).sort().at(-1)!;
+    entries.push(url(ALTERNATIVES_PATH, newest, { en: ALTERNATIVES_PATH }));
+    for (const p of section) entries.push(url(p.path, p.checked, { en: p.path }));
   }
 
   const body = `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">${entries.join('')}</urlset>`;

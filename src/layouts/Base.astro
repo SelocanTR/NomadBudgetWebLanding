@@ -3,6 +3,8 @@ import '@fontsource-variable/inter';
 import '../styles/global.css';
 import { STRINGS, SITE, APP_STORE_ID, appStoreUrl, pathFor, blogPath, type Lang } from '../i18n';
 import { allPosts, postsIn } from '../blog';
+import { ALTERNATIVES_PATH, publishedAlternatives } from '../data/alternatives';
+import { publishedGuides } from '../data/guides';
 import QRCode from 'qrcode';
 
 interface Props {
@@ -49,6 +51,8 @@ const otherPath = alternates[other] ?? pathFor(other);
 const home = pathFor(lang);
 // The blog is in the menu once it has something to read.
 const hasBlog = postsIn(lang, await allPosts()).length > 0;
+// The comparisons are English only; the footer points to them from both languages.
+const hasAlternatives = publishedAlternatives().length + publishedGuides().length > 0;
 const qr = await QRCode.toString(appStoreUrl(lang), { type: 'svg', margin: 0, errorCorrectionLevel: 'M', color: { dark: '#0E1726', light: '#FFFFFF' } });
 ---
 
@@ -156,6 +160,7 @@ const qr = await QRCode.toString(appStoreUrl(lang), { type: 'svg', margin: 0, er
               <li><a href="mailto:nomadbudget@rubeeks.co">nomadbudget@rubeeks.co</a></li>
               <li><a href={appStoreUrl(lang)} rel="noopener">App Store</a></li>
               {hasBlog && <li><a href={blogPath(lang)}>{s.nav.blog}</a></li>}
+              {hasAlternatives && <li><a href={ALTERNATIVES_PATH} hreflang="en">{s.footer.compare}</a></li>}
               <li><a href={otherPath} hreflang={other} lang={other}>{s.nav.otherLang}</a></li>
             </ul>
           </div>

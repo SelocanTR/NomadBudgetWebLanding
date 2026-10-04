@@ -1,5 +1,7 @@
 import { SITE, STRINGS, appStoreUrl, blogPath, type Lang } from '../i18n';
 import { allPosts, holdOf, postsIn, urlOf } from '../blog';
+import { ALTERNATIVES_PATH, alternativePath, publishedAlternatives } from '../data/alternatives';
+import { guidePath, publishedGuides } from '../data/guides';
 
 // What AI assistants read first: the app in a paragraph and a list, the pages, and the
 // blog's posts, which join the list by themselves as they are published.
@@ -37,6 +39,15 @@ export async function GET() {
     .map((own) =>
       [`## ${NAME[own[0].lang]}`, '', `All posts: ${SITE}${blogPath(own[0].lang)} · RSS: ${SITE}${blogPath(own[0].lang)}rss.xml`, '', ...own.map((p) => `- [${p.entry.data.title}](${SITE}${urlOf(p)}): ${p.entry.data.description}`)].join('\n'),
     );
+  const items = [
+    ...publishedGuides().map((g) => ({ title: g.title, path: guidePath(g), description: g.description, checked: g.checked })),
+    ...publishedAlternatives().map((a) => ({ title: a.title, path: alternativePath(a), description: a.description, checked: a.checked })),
+  ];
+  if (items.length) {
+    sections.push(
+      [`## Comparisons with other apps`, '', `All comparisons: ${SITE}${ALTERNATIVES_PATH}`, '', ...items.map((p) => `- [${p.title}](${SITE}${p.path}): ${p.description} (checked ${p.checked})`)].join('\n'),
+    );
+  }
   const body = [BASE, ...sections].join('\n\n') + '\n';
   return new Response(body, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
 }
