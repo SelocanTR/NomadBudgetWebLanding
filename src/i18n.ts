@@ -75,8 +75,15 @@ export type Strings = {
     pro: { name: string; tagline: string; items: string[] };
     note: string;
   };
-  faq: { title: string; items: { q: string; a: string }[] };
-  final: { title: string; body: string };
+  /** `ask`: the line under the questions, then the words of the mail link after it. */
+  faq: { eyebrow: string; title: string; body: string; ask: [string, string]; items: { q: string; a: string }[] };
+  final: {
+    title: string;
+    body: string;
+    /** The boarding pass the closing call is printed on: its label, the two ends of the
+     *  route (the codes are the app's own, NMD to BGT) and the fields on it. */
+    pass: { kicker: string; from: string; fromNote: string; to: string; toNote: string; fields: [string, string][]; gate: [string, string]; close: string };
+  };
   footer: { tagline: string; legal: string; privacy: string; terms: string; kvkk?: string; disclaimer: string; licenses: string; contact: string; compare: string; imagery: string; rights: string };
   notFound: { title: string; body: string; home: string };
   blog: Blog;
@@ -262,7 +269,10 @@ const en: Strings = {
     note: 'Pro is an optional in-app subscription, monthly or yearly; the yearly plan starts with a free trial. If it ends, nothing you recorded is lost.',
   },
   faq: {
+    eyebrow: 'FAQ',
     title: 'Questions, answered',
+    body: 'What people ask before they download, answered short.',
+    ask: ['Still wondering about something?', 'Write to us'],
     items: [
       {
         q: 'What is Nomad Budget?',
@@ -318,7 +328,14 @@ const en: Strings = {
       },
     ],
   },
-  final: { title: 'Your next country is waiting.', body: 'Start with the one you’re in.' },
+  final: {
+    title: 'Your next country is waiting.',
+    body: 'Start with the one you’re in.',
+    pass: {
+      kicker: 'Boarding pass', from: 'From', fromNote: 'Where you are', to: 'To', toNote: 'Where you go next',
+      fields: [['Passenger', 'You'], ['Class', 'Free'], ['Boarding', 'Now']], gate: ['Gate', 'App Store'], close: 'Close',
+    },
+  },
   footer: {
     tagline: 'The expense tracker for a life across borders.',
     legal: 'Legal',
@@ -546,7 +563,10 @@ const tr: Strings = {
     note: 'Pro, isteğe bağlı aylık ya da yıllık bir uygulama içi aboneliktir; yıllık plan ücretsiz denemeyle başlar. Sona ererse kaydettiğin hiçbir şey kaybolmaz.',
   },
   faq: {
+    eyebrow: 'SSS',
     title: 'Sık sorulan sorular',
+    body: 'İndirmeden önce en çok sorulanlar, kısaca cevaplarıyla.',
+    ask: ['Aklında başka bir soru mu var?', 'Bize yaz'],
     items: [
       {
         q: 'Nomad Budget nedir?',
@@ -602,7 +622,14 @@ const tr: Strings = {
       },
     ],
   },
-  final: { title: 'Sıradaki ülken seni bekliyor.', body: 'İçinde bulunduğunla başla.' },
+  final: {
+    title: 'Sıradaki ülken seni bekliyor.',
+    body: 'İçinde bulunduğunla başla.',
+    pass: {
+      kicker: 'Biniş kartı', from: 'Nereden', fromNote: 'Bulunduğun ülke', to: 'Nereye', toNote: 'Gideceğin yer',
+      fields: [['Yolcu', 'Sen'], ['Sınıf', 'Ücretsiz'], ['Biniş', 'Şimdi']], gate: ['Kapı', 'App Store'], close: 'Kapat',
+    },
+  },
   footer: {
     tagline: 'Sınır tanımayan bir hayat için harcama takibi.',
     legal: 'Yasal',
