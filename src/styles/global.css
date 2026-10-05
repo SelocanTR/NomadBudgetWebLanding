@@ -532,11 +532,59 @@ html:not(.at-top) .what .box::before { opacity: .86; }
   .step:not(:last-child)::after { top: 58px; bottom: -24px; left: 22px; right: auto; border-top: 0; border-left: 2px dashed color-mix(in srgb, var(--acc-lime) 60%, transparent); }
 }
 
-.people { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: 1fr; gap: 16px; }
-/* Who it's for: the app's round profile avatar beside a line about them. */
-/* Every card the same size and laid out the same: the avatar in one place, the title
-   and its line starting at the same height beside it. */
-.person { display: flex; gap: 16px; align-items: flex-start; padding: 22px; border-radius: 22px; }
+.people { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: 1fr; gap: 22px 24px; }
+/* Who it's for, as luggage tags hung on the page at slight angles: the site's glass card
+   with the boarding pass's band down its end (the light theme's night band, the dark
+   theme's pale one, the four accents along its edge) and a metal eyelet punched through
+   its top corner; the app's round profile avatar sits on the seam between band and card, centred top
+   to bottom, the line about them beside it, and a barcode printed down the far edge.
+   Every tag the same size and laid out the same. A hover straightens and lifts it. */
+.person {
+  position: relative; transform: rotate(var(--tilt, 0deg));
+  filter: drop-shadow(0 1px 1px rgba(12, 24, 36, .07)) drop-shadow(0 8px 14px rgba(12, 24, 36, .08));
+  transition: transform .45s cubic-bezier(.2, .7, .2, 1), filter .45s cubic-bezier(.2, .7, .2, 1);
+}
+.person:hover {
+  transform: translateY(-4px) rotate(0);
+  filter: drop-shadow(0 2px 3px rgba(12, 24, 36, .06)) drop-shadow(0 16px 24px rgba(12, 24, 36, .12));
+}
+@media (prefers-reduced-motion: reduce) { .person { transition: none; } }
+.tag {
+  --end: 52px;
+  --stripe: 4px;
+  --band: linear-gradient(160deg, #312D5C 0%, #24335A 50%, #1B4441 100%);
+  position: relative; display: flex; align-items: center; height: 100%;
+  padding: 22px 38px 22px calc(var(--end) + var(--stripe) / 2 + 32px + 18px);
+  border-radius: 22px;
+  border: 1px solid var(--glass-rim);
+  background:
+    linear-gradient(180deg, var(--lime) 0 25%, var(--blue) 25% 50%, var(--magenta) 50% 75%, var(--orange) 75% 100%) var(--end) 0 / var(--stripe) 100% no-repeat,
+    var(--band) 0 0 / var(--end) 100% no-repeat,
+    var(--glass-glare), var(--glass-fill);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  backdrop-filter: blur(18px) saturate(140%);
+}
+/* The eyelet in the band's top corner, clear of the avatar: a metal ring round a hole the
+   page's colour, shaded inside. One element of borders and shadows, no mask, so it stays
+   crisp and in one piece while the page is zoomed. */
+.tag::before {
+  content: ''; position: absolute; left: 8px; top: 8px; width: 20px; height: 20px; box-sizing: border-box;
+  border-radius: 50%; border: 3.5px solid #DDE1E7; background: var(--bg);
+  box-shadow: inset 0 1px 2px rgba(12, 24, 36, .45), 0 0 0 1px rgba(12, 24, 36, .28), 0 1px 2px rgba(12, 24, 36, .25);
+}
+@media (prefers-color-scheme: dark) {
+  .tag { --band: linear-gradient(160deg, #E1DDEC 0%, #DCE3ED 50%, #D1E8DE 100%); }
+  .tag::before { border-color: #8C96A4; box-shadow: inset 0 1px 2px rgba(0, 0, 0, .6), 0 0 0 1px rgba(12, 24, 36, .35), 0 1px 2px rgba(12, 24, 36, .3); }
+}
+/* On the seam, whatever the card's height. */
+.tag .avatars { position: absolute; left: calc(var(--end) + var(--stripe) / 2 - 32px); top: calc(50% - 32px); }
+/* The barcode down the far edge, faint. */
+.tag::after {
+  content: ''; position: absolute; right: 14px; top: 18px; bottom: 18px; width: 9px; opacity: .2;
+  background: repeating-linear-gradient(180deg,
+    var(--ink) 0 2px, transparent 2px 4px, var(--ink) 4px 5px, transparent 5px 8px,
+    var(--ink) 8px 11px, transparent 11px 12px, var(--ink) 12px 13px, transparent 13px 17px);
+}
 .avatars { position: relative; flex: none; width: 64px; height: 64px; }
 .avatars img {
   display: block; width: 64px; height: 64px; border-radius: 50%; object-fit: cover;
@@ -557,13 +605,16 @@ html:not(.at-top) .what .box::before { opacity: .86; }
 /* Privacy as a vault: the hero's night sky between the light sections, a lime glow
    rising in one corner, and the promises listed on it plainly, not in cards. The same
    in both themes; the rim and the glow keep it apart from a dark page. */
+/* The sections either side bring their own padding; the panel adds none of its own, so
+   the space round it is the space between any two sections. */
+#privacy { padding-block: 0; }
 .privacy-panel {
   position: relative; overflow: hidden;
   padding: clamp(32px, 5.5vw, 64px); border-radius: 32px;
   background:
     radial-gradient(60% 80% at 100% 0%, rgba(82, 214, 155, .22) 0%, rgba(82, 214, 155, .06) 45%, rgba(4, 8, 18, 0) 70%),
     /* The night sky dimmed here so the stars stay behind the words. */
-    linear-gradient(rgba(4, 8, 18, .6), rgba(4, 8, 18, .6)),
+    linear-gradient(rgba(4, 8, 18, .4), rgba(4, 8, 18, .4)),
     url('/art/stars.png') 0 0 / 600px 600px repeat,
     var(--space);
   border: 1px solid rgba(255, 255, 255, .08);
@@ -996,7 +1047,7 @@ html:not(.at-top) .what .box::before { opacity: .86; }
   .step::before { grid-row: span 2; }
   .step h3 { margin-top: 0; font-size: 18px; }
   .step p { margin-top: 4px; font-size: 15px; }
-  .person { padding: 18px; }
+  .tag { padding: 18px 34px 18px calc(var(--end) + var(--stripe) / 2 + 32px + 14px); }
 
   .privacy-panel { padding: 28px 18px 20px; border-radius: 28px; }
   .privacy-panel h2 { font-size: 30px; }

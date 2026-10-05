@@ -15,6 +15,10 @@ const store = appStoreUrl(lang);
 const AVATARS = [['avatar_2'], ['avatar_7'], ['avatar_1'], ['avatar_6'], ['avatar_3'], ['avatar_4', 'avatar_8']];
 /** The vehicle the trip turns into at each stop, one per feature (the hero's sprites);
  *  no two stops in a row share one, so every arrival changes it. */
+/** Who it's for, as luggage tags: each tag's colour, the four accents in turn, and the
+ *  slight angle it hangs at. */
+const TAG_ACCENTS = ['lime', 'blue', 'magenta', 'orange'];
+const TAG_TILTS = [-1.2, .8, -.5, 1, -.9, .6];
 const ROUTE_VEHICLES = ['train', 'ferry', 'bus', 'flight', 'car', 'bus', 'train', 'flight'];
 /** The strip's polaroids lie as if dropped on a table: each its own tilt (degrees) and
  *  lift (px), by its place on the strip, so a tile and its repeat match and the loop is seamless. */
@@ -135,13 +139,15 @@ const latest = postsIn(lang, await allPosts()).slice(0, 3);
       </div>
       <div class="people">
         {s.audience.items.map((p, i) => (
-          <article class="person glass">
-            <div class="avatars" aria-hidden="true">
-              {AVATARS[i].map((a) => <img src={`/avatars/${a}.webp`} width="64" height="64" alt="" loading="lazy" decoding="async" />)}
-            </div>
-            <div>
-              <h3>{p.title}</h3>
-              <p>{p.body}</p>
+          <article class={`person c-${TAG_ACCENTS[i % TAG_ACCENTS.length]}`} style={`--tilt: ${TAG_TILTS[i % TAG_TILTS.length]}deg`}>
+            <div class="tag">
+              <div class="avatars" aria-hidden="true">
+                {AVATARS[i].map((a) => <img src={`/avatars/${a}.webp`} width="64" height="64" alt="" loading="lazy" decoding="async" />)}
+              </div>
+              <div>
+                <h3>{p.title}</h3>
+                <p>{p.body}</p>
+              </div>
             </div>
           </article>
         ))}
