@@ -102,23 +102,23 @@ for (const t of ['flight', 'train', 'bus', 'ferry', 'car']) {
 // Plain iPhone captures (1170×2532), not the store's composed images: the page frames them
 // itself. Scaled, never cropped, so the phone's proportions hold (720×1558).
 const SHOTS = {
-  total: 'IMG_0179.PNG',     // a country wallet: tenge and dollars side by side
+  total: 'IMG_0200.PNG',    // a country wallet: tenge and dollars side by side
   entry: 'IMG_0180.PNG',     // the calculator entry
   journey: 'IMG_0170.PNG',   // the route on the globe
   compare: 'IMG_0177.PNG',   // Poland against Thailand
   crossings: 'IMG_0173.PNG', // the crossings timeline
   pace: 'IMG_0169.PNG',      // the dashboard's spending pace
-  budget: 'IMG_0190.PNG',    // the dashboard, dark, with the monthly budget bar
+  budget: 'IMG_0197.PNG',    // the dashboard, dark, with the monthly budget bar
   // Payment capture (v1.0.4) has no capture of its own yet: capture-shot.mjs makes one
   // from the dashboard, run below. Name the real one here once it is in Store/Screenshots.
 };
 /**
  * Status-bar clutter painted out, per capture, as [left, top, width, height] in the
- * original's pixels: IMG_0190 was taken from a TestFlight build and carries "◀ TestFlight"
- * under the clock. Each row of the patch takes the colour just right of it, so the
- * page's gradient carries on underneath.
+ * original's pixels, e.g. "◀ TestFlight" under the clock of a capture taken from a
+ * TestFlight build (IMG_0190 had it: [18, 80, 320, 60]). Each row of the patch takes the
+ * colour just right of it, so the page's gradient carries on underneath.
  */
-const PAINT_OUT = { 'IMG_0190.PNG': [18, 80, 320, 60] };
+const PAINT_OUT = {};
 async function paintOut(input, [left, top, width, height]) {
   const { data, info } = await sharp(input).extract({ left: left + width + 8, top, width: 16, height }).raw().toBuffer({ resolveWithObject: true });
   const patch = Buffer.alloc(width * height * 3);
