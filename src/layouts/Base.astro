@@ -48,6 +48,9 @@ const canonical = new URL(path, SITE).href;
 const og = new URL(ogImage, SITE).href;
 // The language switch goes to this page in the other language, or to that language's home.
 const otherPath = alternates[other] ?? pathFor(other);
+// Turkish is off the switch for now: the English pages offer no way over to it (the
+// Turkish pages stay up, linked for search engines by hreflang, and still offer English).
+const showSwitch = other !== 'tr';
 const home = pathFor(lang);
 // The blog is in the menu once it has something to read.
 const hasBlog = postsIn(lang, await allPosts()).length > 0;
@@ -119,7 +122,7 @@ const qr = await QRCode.toString(appStoreUrl(lang), { type: 'svg', margin: 0, er
           <a class="btn btn-lime btn-small" href={appStoreUrl(lang)} rel="noopener">
             {s.nav.download}
           </a>
-          <a class="lang" href={otherPath} hreflang={other} lang={other} aria-label={s.nav.otherLang}><span class="long" aria-hidden="true">{s.nav.otherLang}</span><span class="short" aria-hidden="true">{other.toUpperCase()}</span></a>
+          {showSwitch && <a class="lang" href={otherPath} hreflang={other} lang={other} aria-label={s.nav.otherLang}><span class="long" aria-hidden="true">{s.nav.otherLang}</span><span class="short" aria-hidden="true">{other.toUpperCase()}</span></a>}
         </div>
       </div>
     </header>
@@ -161,7 +164,7 @@ const qr = await QRCode.toString(appStoreUrl(lang), { type: 'svg', margin: 0, er
               <li><a href={appStoreUrl(lang)} rel="noopener">App Store</a></li>
               {hasBlog && <li><a href={blogPath(lang)}>{s.nav.blog}</a></li>}
               {hasAlternatives && <li><a href={ALTERNATIVES_PATH} hreflang="en">{s.footer.compare}</a></li>}
-              <li><a href={otherPath} hreflang={other} lang={other}>{s.nav.otherLang}</a></li>
+              {showSwitch && <li><a href={otherPath} hreflang={other} lang={other}>{s.nav.otherLang}</a></li>}
             </ul>
           </div>
         </div>
