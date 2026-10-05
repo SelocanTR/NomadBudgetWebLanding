@@ -1,7 +1,7 @@
 ---
 import '@fontsource-variable/inter';
 import '../styles/global.css';
-import { STRINGS, SITE, APP_STORE_ID, appStoreUrl, pathFor, blogPath, type Lang } from '../i18n';
+import { STRINGS, SITE, APP_STORE_ID, appStoreUrl, pathFor, blogPath, ogCard, type Lang } from '../i18n';
 import { allPosts, postsIn } from '../blog';
 import { ALTERNATIVES_PATH, publishedAlternatives } from '../data/alternatives';
 import { publishedGuides } from '../data/guides';
@@ -35,7 +35,7 @@ const {
   noindex = false,
   path = pathFor(lang),
   alternates = { en: pathFor('en'), tr: pathFor('tr') },
-  ogImage = `/og-${lang}.jpg`,
+  ogImage = ogCard(lang),
   ogType = 'website',
   preloadGlobe = false,
   solidHeader = false,

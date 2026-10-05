@@ -14,9 +14,11 @@ const W = 1200, H = 630;
 const RAD = Math.PI / 180;
 const flags = JSON.parse(fs.readFileSync('src/data/flags.json', 'utf8'));
 
+/** The hero's headline (i18n.ts → hero.title) set in three lines, the ones from `glow`
+ *  on in the accent, as the page sets its second half. */
 const COPY = {
-  en: { title: ['Your money,', 'wherever you are.'], sub: 'One wallet per country. One total in yours.', chip: ['Georgia', '₾3,100/mo'] },
-  tr: { title: ['Paran,', 'neredeysen orada.'], sub: 'Her ülkeye bir cüzdan. Senin para biriminde tek toplam.', chip: ['Gürcistan', '₾3.100/ay'] },
+  en: { title: ['The expense tracker', 'for life', 'across borders.'], glow: 1, sub: 'One wallet per country. One total in yours.', chip: ['Georgia', '₾3,100/mo'] },
+  tr: { title: ['Sınır tanımayan', 'bir hayat için', 'harcama takibi.'], glow: 2, sub: 'Her ülkeye bir cüzdan. Senin para biriminde tek toplam.', chip: ['Gürcistan', '₾3.100/ay'] },
 };
 
 // --- the planet -----------------------------------------------------------------------
@@ -110,9 +112,8 @@ for (const [lang, t] of Object.entries(COPY)) {
     <circle cx="20" cy="20" r="20" fill="#C9804F"/>
     <text x="54" y="28" font-family="Segoe UI" font-weight="700" font-size="26" fill="#fff">Nomad Budget</text>
   </g>
-  <text x="64" y="252" font-family="Segoe UI" font-weight="800" font-size="72" letter-spacing="-2" fill="#fff">${esc(t.title[0])}</text>
-  <text x="64" y="334" font-family="Segoe UI" font-weight="800" font-size="72" letter-spacing="-2" fill="#52D69B">${esc(t.title[1])}</text>
-  <text x="64" y="392" font-family="Segoe UI" font-size="26" fill="#C9D3E0">${esc(t.sub)}</text>
+  ${t.title.map((line, i) => `<text x="64" y="${226 + i * 74}" font-family="Segoe UI" font-weight="800" font-size="64" letter-spacing="-1.8" fill="${i >= t.glow ? '#52D69B' : '#fff'}">${esc(line)}</text>`).join('\n  ')}
+  <text x="64" y="${226 + (t.title.length - 1) * 74 + 60}" font-family="Segoe UI" font-size="26" fill="#C9D3E0">${esc(t.sub)}</text>
 
 </svg>`;
   const coin = await sharp('public/icons/coin-96.webp').resize(40, 40).png().toBuffer();

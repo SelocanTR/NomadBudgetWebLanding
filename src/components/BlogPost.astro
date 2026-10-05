@@ -5,7 +5,7 @@
 import { Image, getImage } from 'astro:assets';
 import { render } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import { STRINGS, appStoreUrl, blogPath, type Lang } from '../i18n';
+import { STRINGS, appStoreUrl, blogPath, ogCard, type Lang } from '../i18n';
 import { AUTHOR } from '../author';
 import {
   allPosts, alternatesOf, holdOf, relatedTo, urlOf, formatDate, isoDate, minRead, type Post,
@@ -24,7 +24,7 @@ const { Content } = await render(post.entry);
 const related = relatedTo(post, posts);
 
 // The share card: the cover cut to 1200×630, or the language's own card.
-const og = d.cover ? (await getImage({ src: d.cover, width: 1200, height: 630, fit: 'cover', format: 'jpg' })).src : `/og-${lang}.jpg`;
+const og = d.cover ? (await getImage({ src: d.cover, width: 1200, height: 630, fit: 'cover', format: 'jpg' })).src : ogCard(lang);
 const photo = await getImage({ src: AUTHOR.photo, width: 400, height: 400, format: 'jpg' });
 const published = isoDate(d.pubDate);
 const modified = isoDate(d.updatedDate ?? d.pubDate);

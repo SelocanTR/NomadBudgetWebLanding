@@ -8,6 +8,11 @@ export const APP_STORE_ID = '6803787746';
 export const CONTACT = 'nomadbudget@rubeeks.co';
 export const LEGAL = 'https://legal.rubeeks.co/nomadbudget';
 
+/** The site's social card (public/og-*.jpg, from scripts/build-og.mjs). Raise `v` each
+ *  time the cards are rebuilt: X, Facebook and the CDN keep a card by its address, and
+ *  only a new address makes them fetch the new one. */
+export const ogCard = (lang: Lang) => `/og-${lang}.jpg?v=2`;
+
 export const appStoreUrl = (lang: Lang) =>
   `https://apps.apple.com/${lang === 'tr' ? 'tr' : 'us'}/app/nomad-budget/id${APP_STORE_ID}`;
 
