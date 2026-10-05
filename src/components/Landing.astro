@@ -661,8 +661,11 @@ const latest = postsIn(lang, await allPosts()).slice(0, 3);
   // The features' trip. The middle of the screen is where the reader is; the vehicle
   // follows it down the line between the stops but lingers at each one and hurries
   // between them, so it pulls in beside a feature while that feature is being read.
-  // It turns round when the reader scrolls back up, and every time it pulls into a stop,
-  // going either way, it turns into that stop's vehicle. Only where the two columns stand side by side (the CSS hides the
+  // It turns round when the reader scrolls back up, a clear way back rather than the
+  // wheel's own little bounces, and turns as a car does, mirrored in place, not spun on
+  // its nose; it never goes faster than a steady pace, so a quick flick up does not send
+  // it racing back past the stops. Every time it pulls into a stop, going either way, it
+  // turns into that stop's vehicle. Only where the two columns stand side by side (the CSS hides the
   // route elsewhere). With reduced motion there is no vehicle: the line is drawn whole.
   const features = document.querySelector<HTMLElement>('.features');
   const route = features?.querySelector<HTMLElement>('.route');
@@ -679,8 +682,14 @@ const latest = postsIn(lang, await allPosts()).slice(0, 3);
     /** The first stop's height inside the features block. */
     let first = 0;
     let y = 0;
-    let angle = 90;
-    let heading = 90;
+    /** Which way it faces: 1 down the route, -1 back up it; and the mirror it is drawn
+     *  with now, easing from one to the other as it turns. */
+    let facing = 1;
+    let mirror = 1;
+    /** How far back the reader must go before it turns round (px). */
+    const TURN = 14;
+    /** Its top speed, px per ms. */
+    const PACE = 1.4;
     /** The stop whose vehicle is showing. */
     let shown = -1;
     let last = 0;
@@ -725,9 +734,11 @@ const latest = postsIn(lang, await allPosts()).slice(0, 3);
       const from = y;
       // A little weight behind it: it eases after the reader rather than jumping with
       // every notch of the wheel.
-      y += gap * (1 - Math.exp(-dt / 110));
-      if (Math.abs(gap) > 1.5) heading = gap > 0 ? 90 : -90;
-      angle += (heading - angle) * (1 - Math.exp(-dt / 140));
+      const step = gap * (1 - Math.exp(-dt / 110));
+      y += Math.max(-PACE * dt, Math.min(PACE * dt, step));
+      if (gap > TURN) facing = 1;
+      else if (gap < -TURN) facing = -1;
+      mirror += (facing - mirror) * (1 - Math.exp(-dt / 120));
       // The vehicle changes as it pulls in, not when the reader passes the stop: the
       // last stop it reached this frame — one it is sitting at, or one a fast scroll
       // carried it over — or on the first frame the nearest one.
@@ -743,11 +754,11 @@ const latest = postsIn(lang, await allPosts()).slice(0, 3);
         const name = kinds[at % kinds.length];
         for (const [key, img] of sprites) img.classList.toggle('is-on', key === name);
       }
-      vehicle.style.transform = `translate3d(-50%, calc(${y.toFixed(1)}px - 50%), 0) rotate(${angle.toFixed(1)}deg)`;
+      vehicle.style.transform = `translate3d(-50%, calc(${y.toFixed(1)}px - 50%), 0) rotate(90deg) scaleX(${mirror.toFixed(3)})`;
       fill.style.clipPath = `inset(0 0 ${Math.max(0, stops[stops.length - 1] - y).toFixed(1)}px 0)`;
       articles.forEach((a, i) => a.classList.toggle('is-reached', y >= stops[i] - 2));
       vehicle.classList.toggle('is-tappable', next() >= 0);
-      const settled = Math.abs(gap) < 0.3 && Math.abs(heading - angle) < 0.3;
+      const settled = Math.abs(gap) < 0.3 && Math.abs(facing - mirror) < 0.005;
       if (!settled && visible) frame = requestAnimationFrame(draw);
       else last = 0;
     };
