@@ -1,5 +1,5 @@
-// The words on screen, per language. A caption is two lines: white, then lime (the
-// hero's title does the same). The trip's total is in the viewer's `home.currency`; the
+// The words on screen, per language — the landing's own: the hero's title and audiences,
+// the features' titles. A caption is two lines: white, then lime (the hero's title does the same). The trip's total is in the viewer's `home.currency`; the
 // cost layer prices every country against `reference` — the trip's last stop, as the
 // app's automatic reference follows the latest stay (and Mexico, mid-priced, is the one
 // that spreads the countries over all five bands; the US painted nearly all of them
@@ -10,9 +10,12 @@ import type { Lang } from '../src/i18n';
 export type Caption = [string, string];
 
 export type VideoCopy = {
+  /** The hero's eyebrow, one audience at a time in the opening; all three on the end card. */
+  audiences: [string, string, string];
+  /** The hero's title. */
   hook: Caption;
-  log: Caption;
-  draw: Caption;
+  currencies: Caption;
+  journey: Caption;
   total: Caption;
   totalLabel: string;
   totalSub: string;
@@ -23,6 +26,7 @@ export type VideoCopy = {
   legendTitle: string;
   /** The app's own band words (world.cost.band.*), cheapest first. */
   bands: [string, string, string, string, string];
+  /** The landing's feature titles, over the landing's own screenshots. */
   screens: { shot: string; caption: Caption }[];
   name: string;
   tagline: string;
@@ -33,22 +37,21 @@ export type VideoCopy = {
 
 export const COPY: Record<Lang, VideoCopy> = {
   en: {
-    hook: ['Money in', '9 countries?'],
-    log: ['Log it in', 'any currency'],
-    draw: ['Watch your journey', 'draw itself'],
-    total: ['One total,', 'in yours'],
+    audiences: ['For digital nomads', 'For expats', 'For long-term travellers'],
+    hook: ['The expense tracker', 'for life across borders.'],
+    currencies: ['Every country,', 'in its own currency.'],
+    journey: ['Your journey', 'on a globe.'],
+    total: ['One wallet per country.', 'One total.'],
     totalLabel: 'Trip total',
     totalSub: '9 countries · 8 currencies',
-    cost: ['See where it', 'goes further'],
+    cost: ['Compare countries', 'before you go.'],
     home: { currency: 'USD' },
     reference: { code: 'MX', name: 'Mexico', label: 'You’re here' },
     legendTitle: 'Priced against',
     bands: ['half or less', 'cheaper', 'about the same', 'dearer', 'twice or more'],
     screens: [
-      { shot: 'entry', caption: ['Add an expense', 'in seconds'] },
-      { shot: 'pace', caption: ['Know your', 'spending pace'] },
-      { shot: 'compare', caption: ['Compare countries', 'side by side'] },
-      { shot: 'crossings', caption: ['Every border', 'you cross'] },
+      { shot: 'entry', caption: ['Log it', 'in seconds.'] },
+      { shot: 'capture', caption: ['Payments that', 'add themselves.'] },
     ],
     name: 'Nomad Budget',
     tagline: 'Multi-Currency Expense Tracker',
@@ -57,22 +60,21 @@ export const COPY: Record<Lang, VideoCopy> = {
     sample: 'Sample journey · illustrative figures',
   },
   tr: {
-    hook: ['Paran', '9 ülkede mi?'],
-    log: ['Her para biriminde', 'kaydet'],
-    draw: ['Yolculuğun', 'kendiliğinden çizilsin'],
-    total: ['Tek toplam,', 'senin para biriminde'],
+    audiences: ['Dijital göçebeler için', 'Gurbetçiler için', 'Uzun süre gezenler için'],
+    hook: ['Sınır tanımayan bir hayat için', 'harcama takibi.'],
+    currencies: ['Her ülke,', 'kendi para biriminde.'],
+    journey: ['Yolculuğun', 'bir kürede.'],
+    total: ['Her ülkeye bir cüzdan.', 'Tek toplam.'],
     totalLabel: 'Yolculuk toplamı',
     totalSub: '9 ülke · 8 para birimi',
-    cost: ['Paran nerede', 'daha çok yeter, gör'],
+    cost: ['Gitmeden önce', 'karşılaştır.'],
     home: { currency: 'TRY' },
     reference: { code: 'MX', name: 'Meksika', label: 'Buradasın' },
     legendTitle: 'Karşılaştırma',
     bands: ['yarısı veya altı', 'daha ucuz', 'aşağı yukarı aynı', 'daha pahalı', 'iki katı veya üstü'],
     screens: [
-      { shot: 'entry', caption: ['Harcamayı', 'saniyeler içinde gir'] },
-      { shot: 'pace', caption: ['Harcama temponu', 'hep bil'] },
-      { shot: 'compare', caption: ['Ülkeleri', 'yan yana karşılaştır'] },
-      { shot: 'crossings', caption: ['Geçtiğin', 'her sınır'] },
+      { shot: 'entry', caption: ['Saniyeler içinde', 'kaydet.'] },
+      { shot: 'capture', caption: ['Kendi kendine', 'eklenen ödemeler.'] },
     ],
     name: 'Nomad Budget',
     tagline: 'Çok Dövizli Harcama Takibi',

@@ -21,16 +21,23 @@ const beat = (k: number) => DROP + k * BEAT;
 
 const FIRST = beat(-11);          // France is reached
 const DEPART = beat(-10);         // the first crossing sets off
-/** Beats per crossing, the long ones longer; twenty of them bring Mexico in on beat 10. */
-const LEG_BEATS = [2, 2, 2, 2, 3, 2, 2, 5];
+/**
+ * Beats per crossing, by how far it goes: three for a hop next door, more for the long
+ * flights (Morocco–Turkey 35°, Georgia–Thailand 55°, Indonesia–Mexico 145°). Two beats a
+ * crossing had the planet whipping round faster than the eye could follow — it read as a
+ * glitch. Thirty-three of them bring Turkey in on the drop and Mexico in on beat 23.
+ */
+const LEG_BEATS = [3, 3, 4, 3, 5, 3, 3, 9];
 /** How far round the planet turns to France as the video opens, degrees. */
-const OPENING_SPIN = 70;
-const HOLD = 0.28;                // at a stop before setting off again, s
-const TOTAL = beat(12);
-const COST = beat(20);
-const SCREENS = beat(32);
+const OPENING_SPIN = 40;
+const HOLD = 0.4;                 // at a stop before setting off again, s
+const TOTAL = beat(24);
+const COST = beat(32);
+const SCREENS = beat(40);
 const END = beat(48);
 export const DURATION = 39.6;
+/** When the opening's eyebrow changes audience. */
+const AUDIENCES = [0, beat(-9), beat(-4)];
 
 // --- the cost scale (the app's costScale.ts) -------------------------------------------------
 const BAND_MAX = [0.5, 0.8, 1.25, 2];
@@ -42,6 +49,17 @@ const costBand = (ratio: number) => {
 
 // --- easing ----------------------------------------------------------------------------------
 const sine = (x: number) => (1 - Math.cos(Math.PI * clamp(x, 0, 1))) / 2;
+/**
+ * Speeds up over the first `a` of the way, cruises, slows over the last `a`: its top
+ * speed is 1 / (1 − a) of the average, where an ease-in-out sine peaks at π/2 of it.
+ */
+const glide = (x: number, a = 0.28) => {
+  x = clamp(x, 0, 1);
+  const v = 1 / (1 - a);
+  if (x < a) return (v * x * x) / (2 * a);
+  if (x > 1 - a) return 1 - (v * (1 - x) * (1 - x)) / (2 * a);
+  return v * (x - a / 2);
+};
 const outCubic = (x: number) => 1 - Math.pow(1 - clamp(x, 0, 1), 3);
 const inCubic = (x: number) => Math.pow(clamp(x, 0, 1), 3);
 const outBack = (x: number) => {
@@ -120,14 +138,14 @@ export async function startVideo(root: HTMLElement) {
   const legAngle = legs.map((_, i) => angleBetween(anchors[i], anchors[i + 1]));
 
   const arrivals = [FIRST];
-  let k = -9;
+  let k = -10;                     // DEPART's beat
   for (const b of LEG_BEATS) arrivals.push(beat((k += b)));
   const departures = legs.map((_, i) => (i === 0 ? DEPART : arrivals[i] + HOLD));
   /** When a stop's chip folds back to its flag: the next stop is reached, or the trip is over. */
   const chipEnds = stops.map((_, i) => arrivals[i + 1] ?? TOTAL);
 
   // A long crossing pulls back a little, so the planet turning under it reads slower.
-  const zoomFor = (k: number) => clamp(0.72 / (legAngle[k] * RAD), 0.85, 1.8);
+  const zoomFor = (k: number) => clamp(0.72 / (legAngle[k] * RAD), 0.78, 1.8);
   /** The view centre that puts `p` at the focus, at zoom `z`. */
   const cameraFor = (p: [number, number], z: number): [number, number] => {
     const r = R0 * z;
@@ -145,42 +163,33 @@ export async function startVideo(root: HTMLElement) {
     const lon1 = nearestTurn(pts[i * 2], pts[i * 2 + 2]);
     return [pts[i * 2] + (lon1 - pts[i * 2]) * u, pts[i * 2 + 1] + (pts[i * 2 + 3] - pts[i * 2 + 1]) * u];
   };
-  const progressAt = (t: number) => legs.map((_, k) => sine((t - departures[k]) / (arrivals[k + 1] - departures[k])));
+  const progressAt = (t: number) => legs.map((_, k) => glide((t - departures[k]) / (arrivals[k + 1] - departures[k])));
   const vehicleAt = (t: number) => {
     for (let k = 0; k < legs.length; k++) if (t >= departures[k] && t < arrivals[k + 1]) return k;
     return null;
   };
 
-  // While the total is up the planet turns slowly from Mexico to a little east of home,
-  // over the whole section: the cost layer then starts a short turn from home, never
-  // half the planet away (the reference is Mexico, where the trip ends).
+  // From Mexico — the end of the trip and the cost layer's home — the planet only ever
+  // turns one way: easing into a slow drift east under the total, picking up a little for
+  // the cost layer's wave, steady to the end. (It used to turn 60° east under the total and
+  // swing back to Mexico in a second and a half for the cost layer: the jolt read as a fault.)
   const [mxLon, mxLat] = cameraFor(anchors[stops.length - 1], zoomFor(legs.length - 1));
-  const TOTAL_TO: [number, number] = [homeAt[0] + 60, 16];
-  const totalView = (t: number): [number, number] => {
-    const u = sine((t - TOTAL) / (COST - TOTAL));
-    return [mxLon + (nearestTurn(mxLon, TOTAL_TO[0]) - mxLon) * u, lerp(mxLat, TOTAL_TO[1], u)];
-  };
-  const HOMEWARD = 1.6;
-  /**
-   * Past home, the planet keeps turning east after the spreading wave, at a steady
-   * DRIFT degrees a second once it has picked up speed — to the end of the video.
-   */
-  const DRIFT = 14, RAMP = 1.2;
+  const SLOW = 4, FAST = 11;   // degrees a second
+  const speed = (t: number) => SLOW * smoothstep(TOTAL - 0.4, TOTAL + 1.6, t) + (FAST - SLOW) * smoothstep(COST, COST + 2.5, t);
+  // Its integral, a value per frame (and one past the end), summed once.
+  const turned: number[] = [0];
+  for (let f = 1; f <= Math.ceil(DURATION * FPS) + 1; f++) turned.push(turned[f - 1] + speed((f - 0.5) / FPS) / FPS);
   const drift = (t: number) => {
-    const u = Math.max(0, t - COST - HOMEWARD);
-    return DRIFT * (u < RAMP ? (u * u) / (2 * RAMP) : u - RAMP / 2);
+    const f = clamp(t * FPS, 0, turned.length - 2);
+    const i = Math.floor(f);
+    return lerp(turned[i], turned[i + 1], f - i);
   };
 
   type Target = { lon: number; lat: number; zoom: number; tau: number };
-  /** 16:9 looks a little west of where it means, so what it means sits right of centre, clear of the words. */
-  const aside = landscape ? Math.asin(focus.x / R0) / RAD : 0;
+  // (16:9 needs no turn of its own past the trip: the planet already sits right of the words.)
   const target = (t: number): Target => {
-    const g = look(t);
-    return t >= TOTAL ? { ...g, lon: g.lon - aside } : g;
-  };
-  const look = (t: number): Target => {
     if (t < FIRST) {
-      const u = 1 - sine(t / FIRST);
+      const u = 1 - glide(t / FIRST, 0.4);
       return { lon: anchors[0][0] + OPENING_SPIN * u, lat: anchors[0][1] - 12 * u, zoom: 1, tau: 1 };
     }
     if (t < TOTAL) {
@@ -195,17 +204,8 @@ export async function startVideo(root: HTMLElement) {
       const [lon, lat] = cameraFor(anchors[at], z);
       return { lon, lat, zoom: z, tau: 320 };
     }
-    if (t < COST) {
-      const [lon, lat] = totalView(t);
-      return { lon, lat, zoom: 0.9, tau: 250 };
-    }
-    // Home, then on east with the wave.
-    const [fromLon, fromLat] = totalView(COST);
-    const a = sine((t - COST) / HOMEWARD);
-    const d = drift(t);
-    const toLon = homeAt[0] + d;
-    const toLat = lerp(homeAt[1] * 0.8, 12, smoothstep(0, 90, d));
-    return { lon: fromLon + (nearestTurn(fromLon, toLon) - fromLon) * a, lat: lerp(fromLat, toLat, a), zoom: 1, tau: 200 };
+    const lat = lerp(mxLat, 12, sine((t - TOTAL) / (SCREENS - TOTAL)));
+    return { lon: mxLon + drift(t), lat, zoom: t < COST ? 0.9 : 1, tau: 300 };
   };
 
   // --- the camera, stepped a frame at a time -------------------------------------------------
@@ -242,13 +242,16 @@ export async function startVideo(root: HTMLElement) {
   const shots = qa<HTMLImageElement>('.v-phone img');
   const endParts = qa<HTMLElement>('.v-end > *');
   const sample = q<HTMLElement>('.v-sample');
+  const roll = q<HTMLElement>('.eyebrow-roll');
+  const rollWords = qa<HTMLElement>('.eyebrow-word');
+  let rollWidths: number[] | null = null;
   const money = new Intl.NumberFormat(data.locale, { style: 'currency', currency: home.currency, currencyDisplay: 'narrowSymbol', maximumFractionDigits: 0 });
 
   const screenAt = (i: number) => SCREENS + 4 * i * BEAT;
   const captionTimes: [number, number][] = [
-    [0.3, beat(-6)],
-    [beat(-6), DROP],
-    [DROP, TOTAL],
+    [0.3, DROP],
+    [DROP, beat(12)],
+    [beat(12), TOTAL],
     [TOTAL, COST],
     [COST, SCREENS],
     ...shots.map((_, i): [number, number] => [screenAt(i), i === shots.length - 1 ? END : screenAt(i + 1)]),
@@ -278,7 +281,7 @@ export async function startVideo(root: HTMLElement) {
       renderer.setFill(i, since >= 0 ? smoothstep(0, 0.4, since) * tripAlpha : 0, since >= 0 ? 1 - smoothstep(0.3, 1.5, since) : 0);
     });
     const costMix = smoothstep(COST + 0.4, COST + 0.8, t);
-    renderer.setCost(costMix, homeAt, 185 * sine((t - COST - 0.7) / 4.8));
+    renderer.setCost(costMix, homeAt, 185 * sine((t - COST - 0.7) / 4.2));
     renderer.render(v);
 
     const vehicle = t < TOTAL ? vehicleAt(t) : null;
@@ -325,6 +328,22 @@ export async function startVideo(root: HTMLElement) {
       const below = (caption: number, card: number) => (H - heights!.captions[caption] - card - GAP) / 2 + heights!.captions[caption] + GAP;
       totalCard.style.top = `${below(3, heights.total).toFixed(1)}px`;
       legend.style.top = `${below(4, heights.legend).toFixed(1)}px`;
+    }
+
+    // The opening's eyebrow, as the landing's: the audience in it leaves upwards, the pill
+    // eases to the width of the next, and the next rises into it.
+    {
+      rollWidths ??= rollWords.map((el) => el.offsetWidth);
+      const now = AUDIENCES.filter((a) => t >= a).length - 1;
+      rollWords.forEach((el, i) => {
+        const inn = i === 0 ? 1 : smoothstep(AUDIENCES[i] + 0.12, AUDIENCES[i] + 0.45, t);
+        const out = i === AUDIENCES.length - 1 ? 0 : smoothstep(AUDIENCES[i + 1] - 0.2, AUDIENCES[i + 1] + 0.06, t);
+        el.style.opacity = (inn * (1 - out)).toFixed(3);
+        el.style.transform = `translateY(${((1 - inn) * 0.6 - out * 0.6).toFixed(3)}em)`;
+        el.style.filter = `blur(${(3 * Math.max(1 - inn, out)).toFixed(2)}px)`;
+      });
+      const grow = now === 0 ? 1 : outCubic((t - AUDIENCES[now] + 0.1) / 0.5);
+      roll.style.width = `${lerp(rollWidths[Math.max(0, now - 1)], rollWidths[now], grow).toFixed(1)}px`;
     }
 
     captions.forEach((el, i) => {
@@ -384,7 +403,7 @@ export async function startVideo(root: HTMLElement) {
   };
 
   await ready;
-  (window as unknown as { __video: object }).__video = { fps: FPS, frames, duration: DURATION, seek, marks: { FIRST, DROP, TOTAL, COST, SCREENS, END, arrivals } };
+  (window as unknown as { __video: object }).__video = { fps: FPS, frames, duration: DURATION, seek, camera: () => ({ ...cam }), marks: { FIRST, DROP, TOTAL, COST, SCREENS, END, arrivals } };
 
   if (params.has('play')) {
     const start = performance.now();
