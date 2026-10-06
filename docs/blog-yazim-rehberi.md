@@ -286,6 +286,7 @@ Kaynak: Medium, 2021 (tam okunanlar: *You Don't Need Bitcoin to Become Rich…* 
    push edilen yazı tarihi gelince kendiliğinden yayına girer (§2 "Kendiliğinden yayın").
 9. **Rehberi güncelle:** yeni öğrenilen gerçek §1 tablosuna, konu durumu §2'ye, yeni doğrulanmış
    kaynak §7'ye.
+10. **X postları** (§11): yazının TR halinden 2–5 post, `from` = yayın günü.
 
 ---
 
@@ -406,3 +407,38 @@ higgsfield generate wait <job-id>                          # → sonuç PNG adre
   detail. Only remove the logo from … Change nothing else." (tek denemede tuttu).
 - Sahneler tekrar etmesin: kafe masası, pencere pervazı, balkon, daire girişi, çalışma masası
   kullanıldı (§2 tablosundaki yazı sırasıyla); yeni yazıda farklı bir yer seç.
+
+---
+
+## 11. X postları
+
+Her yazıdan X (Twitter) postları çıkarılır; uygulamanın admin panelindeki **X paylaşımları**
+kuyruğuna düşer, admin oradan paylaşır ya da geçer (2026-10-04 kararı).
+
+- **Yalnız Türkçe.** Kaynak TR yazı; adres `/tr/blog/<slug>/`.
+- **Dosya:** `C:\NomadBudget\supabase\social\x-posts.tr.json` — her post `key`, `slug`,
+  `from` (yazının `pubDate`'i), `format` (hesap / ipucu / istatistik / karşı-görüş / hikâye /
+  soru / liste) ve `parts` (tek tweet ya da thread). Thread'in son parçasında `{link}`.
+- **Yazı başına 2–5 post:** en fazla bir thread, gerisi tek tweet. Her tweet ≤ 280 karakter
+  (link 23 sayılır).
+- **Hesap postlarında `$`,** yuvarlak örnek olduğu açıkça yazılır ("Yuvarlak örnek: …").
+  `$` yanıltacaksa (ör. yaşanan ülkenin parasıyla hesap) para simgesi konmaz.
+- §1 ASLA kuralları burada da geçerli; yazıda olmayan olgu, rakam, anekdot posta girmez.
+  Uygulamadan en fazla beş posttan birinde söz edilir.
+- **Ekleme:** JSON'a yaz → `node scripts/build-social-seed.mjs` (C:\NomadBudget'ta; uzunluğu ve
+  tarihi kontrol eder) → çıkan `supabase/social/x-posts.tr.sql` Supabase SQL editöründe
+  çalıştırılır. Yeniden çalıştırmak güvenli: metin güncellenir, paylaşıldı/geçildi durumu
+  korunur.
+
+### Reddit
+
+Aynı kuyrukta, **Sosyal medya** ekranının Reddit sekmesinde (2026-10-04 kararı).
+
+- **Yalnız İngilizce,** kaynak EN yazı. Dosya: `supabase/social/reddit-posts.en.json` — her post
+  `key`, `slug` (EN), `from`, `format`, `subreddit`, `title` (≤ 300 karakter) ve `body`
+  (Markdown).
+- **Hiç link yok, uygulamadan hiç söz yok** (build kontrol eder). Post kendi başına değer taşır:
+  deneyim + hesap + sonda topluluğa bir soru.
+- **Yazı başına 1–2 post,** her biri tek bir subreddit için; aynı metin birden fazla
+  subreddit'e gitmez. Kullanılanlar: digitalnomad, solotravel, travel, TravelHacks, expats,
+  expatFIRE, remotework.
