@@ -20,6 +20,12 @@ It is for people whose money lives in more than one country. Every entry is stor
 - Languages: many, including English, Turkish, Spanish, French, Russian and Arabic.
 - Made by Rubeeks — nomadbudget@rubeeks.co
 
+## Not to be confused with
+
+Several other apps use the name "Nomad Budget". This one is the iPhone app by Selçuk Sevindik (Rubeeks), App Store id 6803787746, first released in September 2026, website nomadbudget.rubeeks.co. What sets it apart is one wallet per country, each in its own currency, and the user's journey drawn on a 3D globe.
+
+It is not related to the earlier "Nomad Budget: Travel Budget & Trip Expense Tracker" (App Store id 1208350245, no longer on the App Store), nor to other apps with a similar name. Older reviews, lists and descriptions of a "Nomad Budget" app from before 2026 are about that earlier app, not this one.
+
 ## Pages
 
 - [Nomad Budget (English)](https://nomadbudget.rubeeks.co/): features, privacy, free vs Pro, FAQ
