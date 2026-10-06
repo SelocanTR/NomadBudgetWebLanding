@@ -344,7 +344,7 @@ html:not(.at-top) .what .box::before { opacity: .86; }
 .strip-track { display: flex; align-items: center; width: max-content; animation: strip-drift 150s linear infinite; }
 @keyframes strip-drift { to { transform: translateX(-50%); } }
 /* Still for those who ask for less motion, and with the globe when its pause is pressed. */
-.motion-paused .strip-track { animation-play-state: paused; }
+.motion-paused .strip-track, .strip.is-idle .strip-track { animation-play-state: paused; }
 @media (prefers-reduced-motion: reduce) { .strip-track { animation: none; } }
 /* In the light theme the strip crosses the line where the night sky gives way to the
    page, and a polaroid faded at the ends would show the dark above and the light below
@@ -482,15 +482,14 @@ html:not(.at-top) .what .box::before { opacity: .86; }
 }
 .section.tight { padding-top: 0; }
 
-/* A GlassCard. */
+/* A GlassCard. No backdrop blur: under it there is only the wash, where a blur shows
+   nothing, and two dozen of them cost the scroll its frames. */
 .glass {
   position: relative;
   background-color: var(--glass-fill);
   background-image: var(--glass-glare);
   border: 1px solid var(--glass-rim);
   box-shadow: var(--glass-shadow);
-  -webkit-backdrop-filter: blur(18px) saturate(140%);
-  backdrop-filter: blur(18px) saturate(140%);
   border-radius: 24px;
 }
 
@@ -561,8 +560,6 @@ html:not(.at-top) .what .box::before { opacity: .86; }
     linear-gradient(180deg, var(--lime) 0 25%, var(--blue) 25% 50%, var(--magenta) 50% 75%, var(--orange) 75% 100%) var(--end) 0 / var(--stripe) 100% no-repeat,
     var(--band) 0 0 / var(--end) 100% no-repeat,
     var(--glass-glare), var(--glass-fill);
-  -webkit-backdrop-filter: blur(18px) saturate(140%);
-  backdrop-filter: blur(18px) saturate(140%);
 }
 /* The eyelet in the band's top corner, clear of the avatar: a metal ring round a hole the
    page's colour, shaded inside. One element of borders and shadows, no mask, so it stays

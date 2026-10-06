@@ -338,10 +338,13 @@ export async function startHero(root: HTMLElement) {
   };
   pauseButton.addEventListener('click', () => setPlaying(!playing));
 
+  // Only while a good part of the hero is on screen: once the reader has scrolled it
+  // mostly away, what is left of it sits under the next section's card, and drawing the
+  // planet there would only cost the scroll its frames.
   new IntersectionObserver((entries) => {
-    visible = entries.some((e) => e.isIntersecting);
+    visible = entries.some((e) => e.isIntersecting && e.intersectionRatio >= 0.2);
     schedulefr();
-  }).observe(root);
+  }, { threshold: [0, 0.2] }).observe(root);
 
   let resizeTimer = 0;
   new ResizeObserver(() => {

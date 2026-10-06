@@ -298,6 +298,15 @@ const latest = postsIn(lang, await allPosts()).slice(0, 3);
 </section>
 
 <script>
+  // The strip drifts only while it is on screen: under the card's frosted glass every
+  // step of it is blurred again, work the page should not pay for further down.
+  const strip = document.querySelector<HTMLElement>('.strip');
+  if (strip) {
+    new IntersectionObserver(([entry]) => strip.classList.toggle('is-idle', !entry.isIntersecting)).observe(strip);
+  }
+</script>
+
+<script>
   // The FAQ's answers slide open and shut instead of jumping, and one open at a time:
   // opening a question closes the one that was open. <details> keeps doing the work
   // (keyboard, find-in-page, no-JS): the script only animates the answer's height around
