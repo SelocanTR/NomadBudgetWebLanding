@@ -1,0 +1,100 @@
+---
+// The App Store product page header's stage (21:9): the hero's globe on a loop, no
+// words. Like the marketing video's, it exists only under `astro dev`, and
+// `node video/render.mjs --page cover` captures it.
+//
+//   /video/cover/en/?t=12.5        one moment
+//   /video/cover/en/?play          in real time, looping
+//   /video/cover/en/?guides        Apple's art safe area drawn over it
+
+import '@fontsource-variable/inter';
+import { STRINGS, type Lang } from '../../../i18n';
+import { heroJourney, flagSvg } from '../../../data/journey';
+
+export function getStaticPaths() {
+  return import.meta.env.DEV ? [{ params: { lang: 'en' } }, { params: { lang: 'tr' } }] : [];
+}
+
+const lang = Astro.params.lang as Lang;
+const journey = heroJourney(lang);
+const perMonth = STRINGS[lang].hero.perMonth;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <title>Nomad Budget cover</title>
+  </head>
+  <body>
+    <div class="stage" data-video>
+      <canvas class="v-stars"></canvas>
+      <canvas class="v-globe"></canvas>
+      <canvas class="v-routes"></canvas>
+
+      <div class="v-pins">
+        {journey.stops.map((stop) => (
+          <div class="chip">
+            <div class="chip-body">
+              <span class="chip-flag" set:html={flagSvg(stop.code)} />
+              <span class="chip-text">
+                <span class="chip-name">{stop.name}</span>
+                <span class="chip-amount">{stop.amount}{perMonth}</span>
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div class="v-guides"><div class="safe"></div><div class="phone"></div></div>
+    </div>
+
+    <script type="application/json" id="cover-data" set:html={JSON.stringify({ journey })} />
+    <script>
+      import { startCover } from '../../../../video/cover';
+      startCover(document.querySelector<HTMLElement>('[data-video]')!);
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; background: #040812; overflow: hidden; }
+  body { font-family: 'Inter Variable', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+
+  /* 960 × 411.5 at 4× is 3840 × 1646. */
+  .stage { position: relative; width: 960px; height: calc(1646px / 4); overflow: hidden; background: #040812; }
+  .stage > * { position: absolute; inset: 0; }
+  .v-stars, .v-globe, .v-routes { width: 100%; height: 100%; }
+  .v-pins { z-index: 0; }
+
+  /* The marketing video's chips, a size up: an iPhone shows the middle 2490 px of the
+     frame about 390 pt wide, so a chip's name comes out at about 15 pt. */
+  .chip { position: absolute; left: 0; top: 0; }
+  .chip-body {
+    position: absolute; left: 0; bottom: 11px;
+    display: flex; align-items: center; gap: 0;
+    padding: 5px; border-radius: 999px;
+    background: #fff; color: #0E1726;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, .38), 0 1px 2px rgba(0, 0, 0, .2);
+    white-space: nowrap; opacity: 0; transform-origin: 50% 100%;
+  }
+  .chip-body::after {
+    content: ''; position: absolute; left: 50%; bottom: -6px; margin-left: -6px;
+    border: 6px solid transparent; border-bottom: 0; border-top-color: #fff;
+  }
+  .chip-flag { width: 46px; height: 46px; border-radius: 50%; overflow: hidden; flex: none; box-shadow: 0 0 0 1px rgba(14, 23, 38, .08); }
+  .chip-text { display: grid; max-width: 0; opacity: 0; overflow: hidden; line-height: 1.15; }
+  .chip-name { font-size: 24px; font-weight: 700; letter-spacing: -0.01em; }
+  .chip-amount { font-size: 21px; font-weight: 600; color: #6B7684; font-variant-numeric: tabular-nums; }
+
+  .v-guides { display: none; pointer-events: none; z-index: 100; }
+  .show-guides .v-guides { display: block; }
+  .v-guides .safe {
+    position: absolute; left: calc(1097px / 4); top: calc(493px / 4); width: calc(1646px / 4); height: calc(661px / 4);
+    outline: 1px solid #39FF14; background: rgba(57, 255, 20, .06);
+  }
+  /* What an iPhone shows (measured from App Store Connect's preview). */
+  .v-guides .phone { position: absolute; left: calc(673px / 4); top: 0; width: calc(2494px / 4); height: 100%; outline: 1px dashed #FFD60A; }
+</style>

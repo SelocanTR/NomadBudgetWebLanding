@@ -77,8 +77,9 @@ export class RouteLayer {
   /**
    * `progress[i]` is how much of leg i is drawn (0..1). `vehicle` is the leg whose head
    * carries its vehicle, `stops` how many stops have been reached, `anchors` their places.
+   * `fade`, if given, dims each leg and each stop on its own (the cover video's trail).
    */
-  draw(v: View, legs: Leg[], progress: number[], vehicle: number | null, stops: number, anchors: [number, number][], alpha: number) {
+  draw(v: View, legs: Leg[], progress: number[], vehicle: number | null, stops: number, anchors: [number, number][], alpha: number, fade?: { legs: number[]; stops: number[] }) {
     const { ctx, dpr } = this;
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -86,13 +87,13 @@ export class RouteLayer {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
     legs.forEach((leg, i) => {
-      if (progress[i] > 0) this.line(leg, progress[i], v, alpha);
+      if (progress[i] > 0) this.line(leg, progress[i], v, alpha * (fade?.legs[i] ?? 1));
     });
 
     // Dots on the stops reached.
     for (let i = 0; i < stops; i++) {
       const [x, y, c] = project(anchors[i][0], anchors[i][1], v.lon0, v.lat0);
-      const a = limb(c) * alpha;
+      const a = limb(c) * alpha * (fade?.stops[i] ?? 1);
       if (a <= 0) continue;
       ctx.globalAlpha = a;
       ctx.beginPath();
@@ -106,9 +107,9 @@ export class RouteLayer {
 
     // Badges on the crossings made, the vehicle on the one being made.
     legs.forEach((leg, i) => {
-      if (progress[i] >= 1 && i !== vehicle) this.badge(leg, v, alpha);
+      if (progress[i] >= 1 && i !== vehicle) this.badge(leg, v, alpha * (fade?.legs[i] ?? 1));
     });
-    if (vehicle !== null && progress[vehicle] > 0 && progress[vehicle] < 1) this.vehicle(legs[vehicle], progress[vehicle], v, alpha);
+    if (vehicle !== null && progress[vehicle] > 0 && progress[vehicle] < 1) this.vehicle(legs[vehicle], progress[vehicle], v, alpha * (fade?.legs[vehicle] ?? 1));
     ctx.globalAlpha = 1;
   }
 
