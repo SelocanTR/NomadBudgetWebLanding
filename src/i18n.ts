@@ -152,7 +152,7 @@ const en: Strings = {
         title: ['Payments that', 'add themselves.'],
         body:
           'Set up an iPhone automation once, and every Apple Pay payment and bank text message is handed to Nomad Budget as it happens: the amount, the currency and the shop, waiting for your OK. Nothing is recorded until you confirm it.',
-        points: ['Apple Pay and bank text messages', 'Nothing saved until you confirm', 'What is read never leaves your phone'],
+        points: ['Apple Pay and bank text messages', 'Nothing saved until you confirm', 'What is caught never leaves your phone'],
       },
       {
         key: 'journey',
@@ -237,7 +237,7 @@ const en: Strings = {
     title: ['Your spending.', 'Not your bank.'],
     body: 'You enter what you spend; Nomad Budget tells you what it means. No bank login, no ads, no third-party tracking.',
     items: [
-      { title: 'No bank connection', body: 'Nomad Budget never asks for your bank login or card details. Payments caught from your bank’s messages are read on your phone and wait for your OK.' },
+      { title: 'No bank connection', body: 'Nomad Budget never asks for your bank login or card details. Payments caught from your bank’s messages are handled on your phone and wait for your OK.' },
       { title: 'Your data isn’t sold', body: 'No ads, no data brokers, no third-party analytics. Usage is measured on our own server, never with your amounts or notes.' },
       { title: 'Location stays coarse', body: 'Only the country is read, to pick the right wallet. Your position is never stored or read in the background.' },
       { title: 'Yours to delete', body: 'Try it without an account, and delete your account and all its data from inside the app at any time.' },
@@ -446,7 +446,7 @@ const tr: Strings = {
         title: ['Kendi kendine', 'eklenen ödemeler.'],
         body:
           'Bir iPhone otomasyonunu bir kez kur; her Apple Pay ödemesi ve banka SMS’i olduğu anda Nomad Budget’a gelir: tutar, para birimi ve dükkân, senin onayını bekler. Sen onaylamadan hiçbir şey kaydedilmez.',
-        points: ['Apple Pay ve banka SMS’leri', 'Onaylamadan hiçbir şey kaydedilmez', 'Okunan hiçbir şey telefonundan çıkmaz'],
+        points: ['Apple Pay ve banka SMS’leri', 'Onaylamadan hiçbir şey kaydedilmez', 'Yakalanan hiçbir şey telefonundan çıkmaz'],
       },
       {
         key: 'journey',
@@ -531,7 +531,7 @@ const tr: Strings = {
     title: ['Senin harcaman.', 'Bankan değil.'],
     body: 'Sen ne harcadığını girersin; Nomad Budget ne anlama geldiğini söyler. Banka şifresi yok, reklam yok, üçüncü taraf takibi yok.',
     items: [
-      { title: 'Banka bağlantısı yok', body: 'Nomad Budget banka şifreni ya da kart bilgini asla istemez. Bankanın mesajlarından yakalanan ödemeler telefonunda okunur ve senin onayını bekler.' },
+      { title: 'Banka bağlantısı yok', body: 'Nomad Budget banka şifreni ya da kart bilgini asla istemez. Bankanın mesajlarından yakalanan ödemeler telefonunda işlenir ve senin onayını bekler.' },
       { title: 'Verin satılmaz', body: 'Reklam yok, veri simsarı yok, üçüncü taraf analiz yok. Kullanım kendi sunucumuzda ölçülür; tutarların ve notların asla bu ölçüme girmez.' },
       { title: 'Konum kaba kalır', body: 'Doğru cüzdanı seçmek için yalnızca ülke okunur. Konumun saklanmaz, arka planda okunmaz.' },
       { title: 'Silmek senin elinde', body: 'Hesap açmadan dene; hesabını ve tüm verini istediğin an uygulama içinden sil.' },
