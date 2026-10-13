@@ -5,13 +5,16 @@
 import { STRINGS, SITE, CONTACT, APP_STORE_ID, appStoreUrl, pathFor, blogPath, type Lang } from './i18n';
 import { AUTHOR } from './author';
 
+// The publisher's own page at rubeeks.co (SelocanTR/SelocanTR.github.io) introduces the app
+// and carries the same Organization under the same @id, so the two pages describe one
+// entity. Change both together.
+const ORG_ID = 'https://rubeeks.co/#org';
+
 const org = {
   '@type': 'Organization',
-  '@id': `${SITE}/#org`,
+  '@id': ORG_ID,
   name: 'Rubeeks',
-  // rubeeks.co itself has no site yet (the name does not resolve): an organisation whose
-  // address leads nowhere is weaker than none. Back to https://rubeeks.co once it does.
-  url: SITE + '/',
+  url: 'https://rubeeks.co/',
   email: CONTACT,
   logo: `${SITE}/icons/icon-512.png`,
 };
@@ -36,7 +39,7 @@ export function jsonLd(lang: Lang): object[] {
       sameAs: [`https://apps.apple.com/app/id${APP_STORE_ID}`, 'https://www.youtube.com/@NomadBudgetInt'],
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD', category: 'free' },
       featureList: s.features.items.map((f) => `${f.title[0]} ${f.title[1]}`),
-      publisher: { '@id': `${SITE}/#org` },
+      publisher: { '@id': ORG_ID },
     },
     { '@context': 'https://schema.org', ...org },
     {
@@ -46,7 +49,7 @@ export function jsonLd(lang: Lang): object[] {
       name: 'Nomad Budget',
       url: SITE + '/',
       inLanguage: lang,
-      publisher: { '@id': `${SITE}/#org` },
+      publisher: { '@id': ORG_ID },
     },
     {
       '@context': 'https://schema.org',
@@ -76,7 +79,7 @@ function person(lang: Lang, photo: string) {
     description: STRINGS[lang].blog.authorBio,
     image: abs(photo),
     sameAs: [AUTHOR.medium],
-    worksFor: { '@id': `${SITE}/#org` },
+    worksFor: { '@id': ORG_ID },
   };
 }
 
