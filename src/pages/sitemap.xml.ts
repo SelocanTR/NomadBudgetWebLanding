@@ -3,6 +3,7 @@ import { SITE, pathFor, blogPath, type Lang } from '../i18n';
 import { allPosts, postsIn, alternatesOf, urlOf, isoDate } from '../blog';
 import { ALTERNATIVES_PATH, alternativePath, publishedAlternatives } from '../data/alternatives';
 import { guidePath, publishedGuides } from '../data/guides';
+import { LEGAL, LEGAL_PAGES, legalPath } from '../legal';
 
 // The home pages change only with a commit. The site is rebuilt every morning, and a
 // lastmod that moves with every build is one search engines learn to ignore.
@@ -15,7 +16,8 @@ function lastCommit(): string {
 }
 
 // Every page a search engine should know, each naming its other-language alternate: the
-// two home pages, and — once there is something in them — the blog and its posts.
+// two home pages, the legal pages, and — once there is something in them — the blog and
+// its posts.
 export async function GET() {
   const langs: Lang[] = ['en', 'tr'];
   const homeDate = lastCommit();
@@ -50,6 +52,12 @@ export async function GET() {
     const newest = section.map((p) => p.checked).sort().at(-1)!;
     entries.push(url(ALTERNATIVES_PATH, newest, { en: ALTERNATIVES_PATH }));
     for (const p of section) entries.push(url(p.path, p.checked, { en: p.path }));
+  }
+
+  // The legal pages, dated by when the documents' current version took effect.
+  const both = (slug?: string) => ({ en: legalPath('en', slug), tr: legalPath('tr', slug) });
+  for (const slug of [undefined, ...LEGAL_PAGES]) {
+    for (const l of langs) entries.push(url(legalPath(l, slug), LEGAL.effective, both(slug)));
   }
 
   const body = `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">${entries.join('')}</urlset>`;

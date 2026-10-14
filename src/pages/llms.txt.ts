@@ -30,8 +30,8 @@ It is not related to the earlier "Nomad Budget: Travel Budget & Trip Expense Tra
 
 - [Nomad Budget (English)](https://nomadbudget.rubeeks.co/): features, privacy, free vs Pro, FAQ
 - [Nomad Budget (Türkçe)](https://nomadbudget.rubeeks.co/tr/): the same in Turkish
-- [Privacy Policy](https://legal.rubeeks.co/nomadbudget/privacy.en.html)
-- [Terms of Use](https://legal.rubeeks.co/nomadbudget/terms.en.html)
+- [Privacy Policy](https://nomadbudget.rubeeks.co/legal/privacy/)
+- [Terms of Use](https://nomadbudget.rubeeks.co/legal/terms/)
 - [App Store](${appStoreUrl('en')})
 - [YouTube: Nomad Budget](https://www.youtube.com/@NomadBudgetInt): a short video of the app's globe`;
 

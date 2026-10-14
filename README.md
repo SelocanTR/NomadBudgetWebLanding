@@ -37,6 +37,19 @@ node scripts/build-og.mjs       # public/og-en.jpg, og-tr.jpg (1200×630 paylaş
 ```
 
 Uygulamada küre, sprite ya da mağaza görselleri değişince ikisi yeniden çalıştırılır.
+
+## Yasal sayfalar
+
+`/legal/` ve `/tr/legal/` altında: kullanım koşulları, gizlilik, KVKK, sorumluluk reddi,
+lisanslar ve hesap silme. Metinler uygulamanın `src/legal` verisinden (ve
+`legal/delete-account.html`'den) `src/data/legal.json`'a üretilip commit'lenir:
+
+```bash
+node scripts/build-legal.mjs    # uygulamada export-legal.mjs her çalıştığında
+```
+
+Eski kopyalar `legal.rubeeks.co/nomadbudget/` (PortyLegal deposu) mağaza linkleri için
+yayında kalır; canonical'ları buraya bakar. Davet linkleri (`join`, `.well-known`) orada kalır.
 `APP=/başka/yol node scripts/build-assets.mjs` ile farklı bir uygulama klasörü verilebilir.
 
 ## Hero küresi

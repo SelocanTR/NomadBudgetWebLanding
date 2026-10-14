@@ -1,0 +1,46 @@
+---
+// /legal/: every document in the page's language, one row each, then the
+// account-deletion page.
+import Base from '../layouts/Base.astro';
+import { formatDate } from '../blog';
+import { LEGAL, LEGAL_LABELS, legalDoc, legalPath } from '../legal';
+import type { Lang } from '../i18n';
+import '../styles/blog.css';
+import '../styles/legal.css';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const l = LEGAL_LABELS[lang];
+const rows = [
+  ...LEGAL.slugs.map((slug) => ({ slug, title: legalDoc(lang, slug).title, summary: legalDoc(lang, slug).summary })),
+  { slug: 'delete-account', title: LEGAL.deleteAccount[lang].title, summary: l.deleteSummary },
+];
+---
+
+<Base
+  lang={lang}
+  title={`${l.index} — ${LEGAL.appName}`}
+  description={l.lede}
+  path={legalPath(lang)}
+  alternates={{ en: legalPath('en'), tr: legalPath('tr') }}
+  solidHeader
+>
+  <article class="post legal">
+    <header class="post-head">
+      <p class="kicker">{LEGAL.appName}</p>
+      <h1>{l.index}</h1>
+      <p class="post-lede">{l.lede}</p>
+      <p class="legal-meta">{l.meta(LEGAL.version, formatDate(new Date(LEGAL.effective), lang))}</p>
+    </header>
+    <ul class="legal-docs">
+      {rows.map((r) => (
+        <li>
+          <a href={legalPath(lang, r.slug)}>
+            <span class="legal-docs-title">{r.title}</span>
+            <span class="legal-docs-summary">{r.summary}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </article>
+</Base>

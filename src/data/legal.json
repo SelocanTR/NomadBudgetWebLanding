@@ -1,0 +1,1207 @@
+{
+  "appName": "Nomad Budget",
+  "publisher": "Rubeeks (rubeeks.co)",
+  "contact": "nomadbudget@rubeeks.co",
+  "version": "3.0",
+  "effective": "2026-10-13",
+  "slugs": [
+    "terms",
+    "privacy",
+    "kvkk",
+    "disclaimer",
+    "licenses"
+  ],
+  "docs": {
+    "en": {
+      "terms": {
+        "slug": "terms",
+        "title": "Terms of Use",
+        "summary": "The rules for using the app",
+        "intro": [
+          "These Terms of Use (\"Terms\") govern your use of the Nomad Budget mobile application and its related services (the \"App\"), provided by Rubeeks (rubeeks.co) (\"we\", \"us\").",
+          "By creating an account or using the App you confirm that you have read and accepted these Terms. If you do not accept them, please do not use the App."
+        ],
+        "sections": [
+          {
+            "title": "Definitions",
+            "body": [
+              [
+                "**App:** the Nomad Budget mobile application, its backend services and all of their components.",
+                "**User:** the natural person who uses the App, with or without an account.",
+                "**Content:** the transactions, wallets, categories, budgets, goals, recurring rules, notes, visits and crossings a User enters into the App, including records brought in from a file the User chooses to import.",
+                "**Pro:** Nomad Budget Pro, the optional paid subscription described in the \"Pro Subscription and Fees\" section."
+              ]
+            ]
+          },
+          {
+            "title": "What the Service Is",
+            "body": [
+              "Nomad Budget is a record-keeping and analysis tool for multi-currency personal budgeting. It stores the data you enter, converts it between currencies, and produces summaries, charts, a map of the countries you have spent in and a route between them from it.",
+              "The App is not a bank, payment institution, electronic money institution or investment firm. It does not connect to any bank account, does not move or hold money, and does not act as an intermediary. Every record is entered or confirmed by you: even a payment the App reads from a notification or a Shortcuts automation does not become a record until you confirm it (see \"Capturing Payments\")."
+            ]
+          },
+          {
+            "title": "Accounts and Security",
+            "body": [
+              "To create an account you must be at least 18 years old, or act with the consent of your parent or guardian. The App is not directed at people under 18.",
+              "If you create a full account, you must register with a valid email address that belongs to you.",
+              "You may also create an account with Sign in with Apple or Sign in with Google. The provider then confirms your identity to us and passes on an address: with Google, the address of your Google account; with Apple, your own or the private relay address you asked Apple to substitute for it. No password exists for such an account, so there is none for you to keep secret and none for us to hold.",
+              "You may also use the App as a guest, without an account. A guest session lives only on the device it was started on: there is no email address and no password to sign back in with, so signing out of it — or losing the device, or uninstalling the App — ends that account and everything in it for good. You can turn a guest session into a full account at any time without losing anything you have entered. Anything that involves another person (sharing a wallet, or joining an invitation) requires a full account.",
+              "You are responsible for keeping your password confidential and for everything done through your account. If you suspect unauthorised access, change your password immediately and notify us at nomadbudget@rubeeks.co.",
+              "One person, one account: you may not transfer or share your account with third parties."
+            ]
+          },
+          {
+            "title": "Acceptable Use",
+            "body": [
+              "When using the App, you agree not to:",
+              [
+                "Use it for any unlawful purpose or in breach of applicable law.",
+                "Attempt to access another user's account or circumvent any security measure.",
+                "Place an unreasonable load on the services through automated tools, or attempt to disrupt them.",
+                "Reverse engineer, decompile or create unauthorised derivative works of the App (mandatory statutory exceptions reserved).",
+                "Process third parties' personal data unlawfully through the App."
+              ]
+            ]
+          },
+          {
+            "title": "Your Content",
+            "body": [
+              "All Content you enter belongs to you. We claim no ownership over it.",
+              "You grant us permission to process your Content solely so that we can provide the service to you — storing it, syncing it, converting it and producing summaries and charts. This permission is limited to providing the service: we do not use your Content for marketing, and we do not sell or share it.",
+              "You are responsible for the accuracy and lawfulness of your Content."
+            ]
+          },
+          {
+            "title": "Importing Your History",
+            "body": [
+              "You can bring records in from a CSV or Excel file — an export from another app or a sheet of your own. The file is opened through your device's file picker and read on the device; only the rows you confirm are written to your records, as ordinary transactions you can edit or delete afterwards. The file itself is never uploaded or kept.",
+              "You are responsible for having the right to use the file you import and for the accuracy of what it contains. Names of other services whose exports the App recognises belong to their owners; the App is not affiliated with or endorsed by them.",
+              "With Pro you can also take your records out as a CSV file. The file is created on your device and goes only where you send it from your device's share sheet; we do not receive or keep a copy. Exporting in the App is not the only way to get your data: your right to data portability does not depend on Pro (see the Privacy Policy)."
+            ]
+          },
+          {
+            "title": "Capturing Payments",
+            "body": [
+              "If you wish, the App can prepare draft entries from the payments your bank or wallet app tells you about. The feature is off by default and works only if you turn it on: on Android, by granting the device's notification access and choosing in the App which sources are read (bank text messages and/or the bank and wallet apps you confirm on a list); on iOS, by setting up a Shortcuts automation yourself that passes a payment or a message to the App.",
+              "The message is interpreted on your device and waits as a draft. A draft is not written to your records until you confirm it: by checking it in the filled-in entry form and saving it, or — for a payment from a merchant whose last two payments in a row you filed under the same category — by pressing \"Add\" on the draft or on its notification, which records it as it was read, under that category and in your only wallet in its currency, without opening the form. You can take back an entry added this way from the same place (on its notification, for 24 hours), and edit or delete it like any other record. On iOS, a payment added from a notification without opening the App is recorded the next time you open the App. Drafts you do not confirm are deleted automatically after 14 days.",
+              "Reading messages is automatic and can be wrong: the amount, currency, merchant, date or kind of transaction may be misread, or a payment may not be noticed at all. Checking a draft before you save it, or before you press \"Add\", is your responsibility. Banks and apps may change their message formats without notice; the feature is not promised to work with any particular bank or app, and the App is not affiliated with them.",
+              "If you choose, you can help improve capture for everyone: by sharing the message formats the App learned from your corrections, or by sending us a message it read wrong. Neither happens unless you use it; what is sent, and what is not, is set out in the Privacy Policy.",
+              "You can turn the feature off at any time with the switches in the App, in your device's notification access settings, or by deleting the Shortcuts automation."
+            ]
+          },
+          {
+            "title": "Sharing a Wallet",
+            "body": [
+              "You can invite other people into wallets of your own. Nothing is shared until you create an invitation yourself; there is no sharing by default.",
+              "There are two kinds of invitation, and either can be revoked at any time before it is used. A **QR code** is for showing face to face: it lasts 15 minutes, can be used once, and whoever scans it joins the wallets it names directly — so treat it as a key and let only the person you mean to invite scan it. A **link** is for sending in a message: it lasts 7 days and lets nobody in on its own — whoever uses it only sends a request to join, and they reach none of your wallets unless you see their display name and approve the request. Only one request can be approved per link, and revoking a link cancels its pending requests too.",
+              "Someone you let in sees that wallet's records in full, and an editor can also add and change them. You remain responsible for what you choose to share; the person you invite is responsible for what they do with it.",
+              "You may remove a member at any time and their access ends immediately, and a member may leave the same way. Removing someone does not undo what they have already seen. If the owner's Pro ends and the wallet is not the one shared wallet the free plan includes, its members cannot open it until the owner's Pro is back; nothing in it is deleted (see \"Pro Subscription and Fees\").",
+              "Both sides of a share need a full account: a guest session can neither invite nor join, because the other person would otherwise be trusting an account that cannot be reached again."
+            ]
+          },
+          {
+            "title": "Pro Subscription and Fees",
+            "body": [
+              "The App can be used free of charge and carries no advertising. Nomad Budget Pro (\"Pro\") is an optional, paid subscription that unlocks additional features. What Pro includes is described on the Pro screen in the App at the time you subscribe.",
+              "Pro is offered as a monthly and a yearly plan. The price of each, in your local currency and including any taxes the store applies, is shown in the App before you confirm the purchase. The yearly plan may be offered to new subscribers with a free trial; its length is shown on the Pro screen before you confirm the purchase. The store decides whether you are eligible, and a trial can generally be used once per store account. Nothing is charged during the trial. Unless you cancel before it ends (on the App Store, at least 24 hours before), the subscription converts to the paid yearly plan when the trial ends and the yearly price is charged. If you cancel during the trial, Pro stays active until the trial ends and nothing is charged.",
+              "Payment is taken by Apple (App Store) or Google (Google Play), from the account you use with that store, when you confirm the purchase. The store's own terms of sale apply to the payment. We never see or store your card or bank details.",
+              [
+                "**Automatic renewal:** a subscription renews automatically at the end of each period, for a period of the same length and at the then-current price, and the store charges your account for it — unless you cancel before the renewal. On the App Store, that means at least 24 hours before the current period ends.",
+                "**Cancelling:** you can cancel at any time in your App Store or Google Play subscription settings, which the \"Manage subscription\" button on the Pro screen opens. Cancelling stops the next renewal; Pro stays active until the end of the period you have already paid for. Deleting the App, or your account, does not cancel a subscription — it has to be cancelled in the store.",
+                "**Failed payments:** if the store cannot collect a renewal, it keeps trying for a while. Where the store offers a grace period, Pro stays active during it; after that Pro is suspended until the payment goes through (on Google Play, the subscription is put on hold), and the subscription ends if the store stops trying. Updating your payment method in the store restores Pro without a new purchase.",
+                "**Refunds:** payments are collected by Apple or Google, so refund requests are made to them and decided under their policies; we cannot issue refunds directly. Because Pro is a digital service that starts as soon as you subscribe, to the extent the law allows the statutory right of withdrawal ends once that supply has begun. Any mandatory consumer rights you have are unaffected.",
+                "**Price changes:** if the price of a plan changes, you will be told in advance as the store's rules require, and where the store asks for your agreement the new price applies only once you have given it."
+              ],
+              "Pro belongs to the Nomad Budget account you are signed into when you subscribe, and is available on every device where you sign in to that account. \"Restore purchases\" on the Pro screen attaches a subscription made with your store account to the account you are signed into. A guest session cannot subscribe: before a purchase you are asked to link the session to an account with Apple, Google or email, because signing out of a guest session ends that account. Linking does not change your account; your data stays as it is.",
+              "The free plan has some limits (for example the number of goals, recurring transactions or shared wallets), and some features are part of Pro only (for example category and country budgets, and exporting your records as a CSV file; a monthly total budget is free); the current limits are shown in the App when you reach one. Keeping records — adding entries, country wallets, currencies and offline use — is never limited on any plan.",
+              "If Pro ends (by cancellation, non-renewal or refund), none of your data is deleted. What the free plan includes keeps working — the first goal and the first three recurring transactions you created (ones you have paused yourself do not count), and the first wallet you shared — and what you created beyond it is paused until Pro is back: a paused goal's progress is not tracked, though the money in its savings pot stays fully usable; a paused recurring transaction is not posted and does not remind you, and what falls due meanwhile is skipped — it is not added when Pro is back; category and country budgets are not tracked and send no alerts, while the monthly budget stays free; and the members of a paused shared wallet cannot open it. Paused items can still be deleted. Creating new ones beyond the free plan's limits is not possible, and Pro-only insights are locked again.",
+              "We may change which features Pro includes. A change that takes away something you are paying for applies no earlier than your next renewal, so that you can cancel before it. Nothing will be charged for use you have already made of a feature while it was free."
+            ]
+          },
+          {
+            "title": "Third-Party Services and Data",
+            "body": [
+              "The App relies on third-party infrastructure and data sources: Supabase Inc. for hosting and authentication, Apple or Google where you choose to sign in with your Apple ID or Google account, the App Store, Google Play and RevenueCat for Pro subscriptions, Expo together with Apple (APNs) and Google (FCM) for delivering notifications you have allowed, Expo for delivering updates to the App's own code, open exchange-rate services for live rates, open data published by official statistical institutions for cross-country price comparisons, and public-domain imagery and geometry from NASA and Natural Earth for the globe.",
+              "The availability, timeliness and accuracy of these sources are outside our control. See the \"Licenses and Data Sources\" document for the full list and their licences."
+            ]
+          },
+          {
+            "title": "Availability and Changes",
+            "body": [
+              "We do not warrant that the App will be uninterrupted, error-free or always available. Maintenance, updates, infrastructure failures and events beyond our control may cause interruptions.",
+              "We may add, change or remove features. If we discontinue the service entirely, we will give reasonable advance notice by email so that you can export your data."
+            ]
+          },
+          {
+            "title": "Disclaimer of Warranties",
+            "body": [
+              "The App is provided \"as is\" and \"as available\". To the fullest extent permitted by law, no warranties of any kind are given, express or implied, including fitness for a particular purpose, uninterrupted availability and freedom from error.",
+              "The calculations, conversions, estimates and comparisons the App produces are informational. See the \"Financial Disclaimer\" document for detail."
+            ]
+          },
+          {
+            "title": "Limitation of Liability",
+            "body": [
+              "To the fullest extent permitted by law, we are not liable for loss of profit, loss of data, business interruption, or indirect or consequential damages.",
+              "The consequences of any financial decision you make on the basis of data in the App are yours alone.",
+              "Nothing in this section limits liability for our wilful misconduct or gross negligence, or any non-waivable rights you have under consumer protection law."
+            ]
+          },
+          {
+            "title": "Closing Your Account",
+            "body": [
+              "You can close your account at any time from within the App: Settings → Delete Account. This permanently deletes your account and all of your data and cannot be undone. Wallets you had shared disappear for the people you shared them with at the same moment.",
+              "If you can no longer open the App, you can ask us to close the account by writing to nomadbudget@rubeeks.co from its email address, as described in the Privacy Policy and on https://legal.rubeeks.co/nomadbudget/delete-account.",
+              "A guest session is closed by signing out of it, which does the same thing: with no email and no password there is nothing left to sign back in with, so signing out erases that account and its records.",
+              "Closing your account does not cancel a Pro subscription. Cancel it in your App Store or Google Play settings first, or the store will keep renewing it. Closing the account does not by itself give rise to a refund.",
+              "We may suspend or terminate an account in case of serious or repeated breach of these Terms. Where legally possible we will notify you first and give you a reasonable opportunity to export your data."
+            ]
+          },
+          {
+            "title": "Changes to These Terms",
+            "body": [
+              "We may update these Terms. For material changes we will notify you in the App or by email before they take effect, and ask for your acceptance again where required.",
+              "Continuing to use the App after such notice means you accept the updated Terms. If you do not accept them, you may close your account."
+            ]
+          },
+          {
+            "title": "Governing Law and Disputes",
+            "body": [
+              "These Terms are governed by the laws of the Republic of Türkiye. The courts and enforcement offices of the Republic of Türkiye have jurisdiction over disputes.",
+              "Users who qualify as consumers may, within the applicable monetary thresholds, apply to the Consumer Arbitration Committee or the Consumer Court at their place of residence. Users resident in the European Union retain the rights granted by the mandatory consumer provisions of their own country."
+            ]
+          },
+          {
+            "title": "Contact",
+            "body": [
+              "For any question or request regarding these Terms, write to nomadbudget@rubeeks.co."
+            ]
+          }
+        ]
+      },
+      "privacy": {
+        "slug": "privacy",
+        "title": "Privacy Policy",
+        "summary": "What we collect and why",
+        "intro": [
+          "Nomad Budget holds your financial records, so privacy is not an afterthought here. This policy explains what data we process, why, and what rights you have over it.",
+          "In short: we do not sell your data, we show no advertising, the App runs no third-party analytics or tracking, and you can delete your account and everything in it from inside the App at any time. We do measure how the App is used, on our own server and without content such as amounts or notes (see \"Usage data\")."
+        ],
+        "sections": [
+          {
+            "title": "Who Is Responsible",
+            "body": [
+              "The party responsible for processing your data (the data controller) is Rubeeks (rubeeks.co).",
+              "Contact: nomadbudget@rubeeks.co"
+            ]
+          },
+          {
+            "title": "Data We Process",
+            "body": [
+              "**Account data:** your email address, a cryptographic hash of your password (never the password itself), your account creation date, session information, and the version and date of the consent you gave at sign-up. An account created with Sign in with Apple or Sign in with Google has no password hash at all: what is held instead is the identifier the provider issues for you in this App, together with the address it passed on — with Apple, a private relay alias if you chose to hide your own; with Google, always the address of your Google account. Your name is written to your profile as a starting display name you are free to change. Apple offers it once, on the very first sign-in and never again; Google offers it on every sign-in, but it is read only the first time, so a display name you changed later is never overwritten.",
+              "**The financial records you enter:** wallets (name, country, currency, opening balance), transactions (amount, currency, date, type, category, note, event tag), categories, budgets, goals and recurring rules.",
+              "**Your travel records:** the visits and crossings you confirm or enter for the map — which country, the first and last day there, where you arrived from and left for, how you travelled, and which of your transactions was the ticket — and the countries you mark as visited from memory. The App suggests these from the dates and countries of your transactions; nothing is recorded until you confirm or enter it.",
+              "**Files you import (optional):** when you choose to import a CSV or Excel file, it is opened through your device's file picker and read on the device. Only the rows you confirm are written to your records, as ordinary transactions. The file is neither uploaded nor retained, and the App can reach no file you did not pick.",
+              "**Captured payments (optional):** if you turn on payment capture (see the Terms of Use, \"Capturing Payments\"), on Android the App uses the device's notification access to read, on the device, the notifications of the sources you switched on — the SMS apps, for bank text messages, and the bank and wallet apps you confirm on a list. To offer you that list at setup, the App checks which of the bank and wallet apps on a list built into it are installed on your device; it does not access the list of the other apps on your device, and this information does not leave your device. A notification with no amount of money in it is let go the moment it is read and written nowhere; one with an amount waits on the device until the App is opened, and is deleted there and then if it turns out not to be a payment. The notifications of apps that do not announce payments, such as social, chat, video and news apps, are never read. Of an app you have not decided on yet, its name and how many notifications with an amount it has sent are kept on the device, to be listed for you; if it is a bank, a wallet or an app the App does not know, and the notification is not a person's message, its latest notifications with an amount — at most two — are also held on the device for at most 48 hours, so that the App can show you the payment and ask whether that app should be read. If you agree, they become drafts; if you decline, or the time runs out, they are deleted. An app you chose not to have read is not read at all. So that a second message about the same payment — such as a purchase abroad posted days later in your bank's own currency — does not make another draft, the amount, currency, time and merchant of the payments you recently confirmed, dismissed or entered by hand are kept on the device for at most 11 days; a copy of your recurring entries, to compare against, the last four digits of the cards you chose not to have read, and the moment the reader last saw a notification (not the notification itself), so that the App can tell you if it has stopped, are kept on the device too. A draft is marked with the country the phone was in when the payment came in, from its last known location kept on the device. To tell whether a waiting draft has already been entered from another of your devices, or in a shared wallet, the App reads only those days' records from the server; the draft itself is not sent. On iOS the App cannot read other apps' notifications; it receives only the amount, merchant or message text that a Shortcuts automation you set up passes to it. Either way, the message text, the draft made from it and the patterns the App learns from your bank's message format stay on your device and are not sent to our servers — unless you choose to send them, as described below under \"Bank message formats you share\" and \"Payment messages you send us\". So does what the App remembers about each merchant to fill in the category the next time, and to offer the \"Add\" button: the category you last filed it under, how many of its payments in a row you filed there, and the last amount and currency; on iOS a copy of these is also kept where the Shortcuts action can read it, on the device. What is needed to take back an entry added with \"Add\" is kept on the device for 24 hours. When you confirm a draft, only the transaction you save (amount, currency, date, category, note and wallet) is stored, like any other record.",
+              "**Profile:** the display name and the avatar you pick. These are the only things another person sees about you when you share a wallet — or, when you send a request to join through a sharing link, the person who receives it — and your email address is never shown to another user. If you have no display name yet, you are asked for one when sending a request, and it is written to your profile.",
+              "**Guest sessions:** you can use the App without creating an account. A guest account holds the same records, and the same record of the consent you gave, as a full one, but it has no email address and no password: the session stored on that single device is the only thing that reaches it. Signing out therefore deletes the account and everything in it, irreversibly. Adding an email and a password later turns the very same account into a full one, with nothing moved and nothing lost.",
+              "**Preferences:** interface language, theme and base currency.",
+              "**Subscriptions (Pro):** so that the App can tell whether you have Pro, it registers your account's identifier — a random ID, never your email address — with RevenueCat, our subscription provider, whenever you are signed in. If you subscribe, the store (Apple or Google) takes the payment and reports the purchase to RevenueCat and, through it, to us: the plan, the store, the dates of purchase, renewal and expiry, whether it will renew, billing problems and refunds, the store's transaction identifiers, and the price and currency charged. RevenueCat also receives the technical data such a request carries: the App and operating-system version, the store country and the device's IP address. With Google Play, the store sends these updates as notifications through a messaging service in Google Cloud (Pub/Sub) set up for the App, from which RevenueCat collects them; a notification carries the store's purchase reference, the plan and the kind of change, not your name or email address. We never receive your card or bank details or the name on your store account.",
+              "**Technical data kept on your device:** your session token, the local cache that makes offline use possible, records queued while you have no connection, a random installation ID, usage data not yet sent, payment drafts waiting for your confirmation, the categories remembered for the merchants of captured payments, and the code of a sharing link you opened before you had an account. These stay on your device; what belongs to your account is removed when you sign out, and everything when you uninstall the App.",
+              "**Usage data:** to understand how the App is used and to find and fix errors, the App records on our own server which steps were seen and how they ended: for example how far into the welcome screens someone got, how a sign-up or sign-in attempt ended (including the error code), the setup steps, what opened the entry form and whether it was saved, the answers to the permissions the App itself asks for (notifications, location), which feature opened the Pro screen and how a purchase ended, whether a sharing invitation was opened and used, and unexpected errors (an error message with email addresses, long numbers and identifiers stripped out, and a short technical trace). Each record carries the App version, whether the device runs iOS or Android, the interface language, the time, the random installation ID and — when you are signed in — your account. Amounts, notes, category and wallet names, location and contact details never go into it. The installation ID is a random value the App makes on first launch; it is not a device or advertising identifier and is deleted when you uninstall the App. If the App ended unexpectedly the last time it ran — a crash, the App not responding, or the system closing it while it was on screen — the App sends a crash report on the next launch. On Android it comes from the record Android keeps of how the App's process ended; on iOS from MetricKit, the diagnostics framework built into iOS, which also reports when the App froze for several seconds or used too much processor time. A report holds the cause the system recorded, the time, the memory in use, the screen the App was on (its name, never what it showed), the technical trace of the code involved, and the device's make, model, operating system version and memory size. No third-party crash-reporting service is involved.",
+              "**Notifications (optional):** if you allow them, your device registers a push token with us, together with whether it is an iOS or an Android device, so that we can tell you when someone acts in a wallet you share, when one of your monthly budgets reaches 80% of its limit or goes over it, when someone asks to join through one of your sharing links, and when a request you sent is approved (you can turn budget alerts and sharing notifications off in the App's notification settings). The App's reminders — when you have not logged anything for a while, once if you have logged nothing since setup, and when a recurring transaction is due — and the notifications asking you to confirm a captured payment are created by your device itself; they need neither a token nor a server, and can be turned off in the notification settings. Some carry buttons — adding a captured payment or taking it back, confirming or skipping a recurring transaction or entering the amount it came to, saying you spent nothing today — and pressing one does what the same choice in the App would, even if the App is closed. On iOS, when setup ends, the App asks — without showing you a permission prompt — for notifications to be delivered quietly (without sound or banner) to Notification Center; iOS offers you to keep or turn this off with the first quiet notification. You can withdraw the permission at any time in your device settings.",
+              "**Messages you send us (optional):** when you use \"Send feedback\" in the App, we receive what you write, the kind you picked (problem, idea or other), the email address you give for a reply if you give one, and the device context the form shows you before sending: the App version, whether the device runs iOS or Android and which version, the device model and the interface language — together with your account and whether it is a guest or a Pro account. Only we read it, and only to answer you and to improve the App. The same applies if you write to nomadbudget@rubeeks.co instead.",
+              "**Bank message formats you share (optional):** nothing is shared unless you turn on \"Share learned formats\" on the App's payment capture screen and agree in the dialog that follows. Then the formats this device has learned from payments you corrected — and those it learns later — are sent to our server with your account and the app, or the sender name, they came from. A format is your bank's fixed wording with the amount, the merchant and every figure replaced by placeholders, and with your name removed before it leaves the device; amounts, merchants, dates, card digits and balances are never in it. A format is used by other people's copies of the App only after three different accounts have sent the same one and we have reviewed it; an approved format holds nothing about any of them. You can turn sharing off at any time, and what has not been sent by then is dropped.",
+              "**Payment messages you send us (optional):** when you use \"Send this message to the developer\" on a captured payment, we receive the message and its notification title as the form shows them — masked on your device before you see them (every figure, address, account number and link path, your own name and, for money between people, the other person's name) and as you then edited them — together with what the App read from it (the kind of payment, the currency, how it was read and, unless the money went between people, the merchant), the note you add, the app it came from, the App version, whether the device runs iOS or Android, the interface language and your account. Not the amount, date, card or place. Only we read it, to fix how that bank's messages are read and to test the App. At most ten can be sent a day.",
+              "**Camera (optional, QR codes only):** the camera opens only when you choose to scan a sharing invitation, and only to read the code in front of it. No photo or video is taken, stored or transmitted.",
+              "**Location (optional, country only):** if you grant permission, your device's approximate location (coarse, city-level accuracy at most) is used to determine which country you are in, and the transactions you record and the countries you visit are marked with that two-letter country code. To turn the location into a country, the App uses the geocoding service built into your device's operating system, provided by Apple (iOS) or Google (Android): your approximate coordinates are sent to that service for the lookup, and only the country comes back. Your coordinates are never stored and never sent to our servers. You can decline the permission, or withdraw it at any time in your device settings — the country is then inferred from your wallets and the rest of the App works exactly as before.",
+              "What we do not collect:",
+              [
+                "Bank or card details — the App connects to no financial institution, and payment for Pro is handled entirely by Apple or Google.",
+                "Location history or coordinate logs — beyond the country described above, nothing about your location is retained.",
+                "Contacts, photos or any file on your device other than one you explicitly pick to import.",
+                "Your text messages and other apps' notifications — the App has no permission to read SMS; notifications are read only if you turn on payment capture, on the device as described above, and are not sent to our servers — except a message you choose to send us yourself, as described above.",
+                "Advertising identifiers or cross-app tracking data.",
+                "Third-party analytics, crash-reporting or marketing SDK data — the App contains none of these."
+              ]
+            ]
+          },
+          {
+            "title": "Purposes and Legal Bases",
+            "body": [
+              [
+                "**Creating and securing your account** — performance of a contract (KVKK Art. 5/2-c; GDPR Art. 6(1)(b)).",
+                "**Storing, syncing and displaying your records** — performance of a contract.",
+                "**Currency conversion, budget and goal tracking, summaries and charts** — performance of a contract.",
+                "**Drawing your map and route from your records, and pricing your own spending pattern against other countries** — performance of a contract.",
+                "**Deriving the country from your location, to mark your spending and fill the map and the country comparisons** — explicit consent (KVKK Art. 5/1; GDPR Art. 6(1)(a)). This consent is given only through the device permission and can be withdrawn at any time in your device settings.",
+                "**Preparing draft entries on your device from your bank's and wallet app's payment notifications, or from a Shortcuts automation you set up** — explicit consent (KVKK Art. 5/1; GDPR Art. 6(1)(a)), given on Android through the device's notification access and the sources you switch on in the App, and on iOS by your setting up the automation, and withdrawable at any time in the same places.",
+                "**Preventing abuse, debugging and keeping the service secure** — legitimate interest (KVKK Art. 5/2-f; GDPR Art. 6(1)(f)).",
+                "**Measuring how the App is used, finding the steps where people get stuck and the errors they meet, and improving the App (usage data)** — legitimate interest (KVKK Art. 5/2-f; GDPR Art. 6(1)(f)). You can object to this processing (see \"Your Rights\").",
+                "**Answering the messages you send us and fixing the problems you report, including payment messages the App read wrong** — legitimate interest (KVKK Art. 5/2-f; GDPR Art. 6(1)(f)).",
+                "**Improving payment capture for everyone with the bank message formats you choose to share** — explicit consent (KVKK Art. 5/1; GDPR Art. 6(1)(a)), given with the \"Share learned formats\" switch and withdrawn with it.",
+                "**Letting you share a wallet with someone you invite, answer requests to join that come through a link, and join a wallet you are invited to** — performance of a contract.",
+                "**Selling Pro, checking whether you have it, and handling renewals, cancellations, refunds and restored purchases** — performance of a contract.",
+                "**Sending push notifications about activity in a wallet you share, requests to join and your budgets, and showing reminders** — explicit consent (KVKK Art. 5/1; GDPR Art. 6(1)(a)), given through your device's notification permission and withdrawable at any time in your device settings.",
+                "**Sending service messages you cannot opt out of (email confirmation, password reset)** — performance of a contract.",
+                "**Complying with legal obligations and responding to lawful requests** — legal obligation (KVKK Art. 5/2-ç; GDPR Art. 6(1)(c))."
+              ],
+              "We do not use your data for profiling, automated decision-making or marketing."
+            ]
+          },
+          {
+            "title": "Where Your Data Is Stored and International Transfers",
+            "body": [
+              "Your account and records, usage data, the messages you send us and the bank message formats you share are hosted on servers operated by Supabase Inc. (AWS ap-northeast-2 — Seoul, South Korea). Your data is therefore transferred outside Türkiye (KVKK Art. 9).",
+              "South Korea is covered by an adequacy decision of the European Commission. The transfer is necessary to provide the service and is protected by our contract with the hosting provider and by technical safeguards.",
+              "When fetching exchange rates, only currency codes are sent to the rate service; no personal data and no transaction details ever leave the App for that purpose. The country illustrations on the map are fetched from our hosting provider's storage by country code alone.",
+              "Push notifications are handed to Expo's push service and from there to Apple (APNs) or Google (FCM) for delivery. Those providers receive your push token and the text of the message, which for an event in a shared wallet names the person who acted, the wallet, and the amount of the record, for a budget alert names the budget (its category, or your monthly budget), how much has been spent and its limit, and for a request to join or its approval names the other person's display name and the wallet. That is a transfer to the United States, made only for as long as delivering the message takes, and it stops the moment you turn notifications off in your device settings. Reminders and the confirmation notifications for captured payments are created on your device and are not sent to any of these services.",
+              "Subscription data is processed by RevenueCat, Inc. in the United States, as our data processor and under its data processing terms, which is also a transfer abroad. It covers only your account identifier and your purchases: none of your financial records, travel records or profile is sent to RevenueCat."
+            ]
+          },
+          {
+            "title": "Sharing",
+            "body": [
+              "We do not sell, rent or share your data for advertising. Data is disclosed to third parties only in the following cases:",
+              [
+                "**Hosting and authentication provider (Supabase Inc.):** as a data processor, solely to run the service.",
+                "**Sign in with Apple (Apple Inc.):** if you choose it, Apple confirms to us that the Apple ID is yours, and in doing so learns that you use the App. For that step Apple is an independent controller under its own privacy policy. Nothing about your records is sent to it.",
+                "**Sign in with Google (Google LLC):** if you choose it, Google confirms to us that the Google account is yours, and in doing so learns that you use the App. For that step Google is an independent controller under its own privacy policy. Nothing about your records is sent to it.",
+                "**Subscription provider (RevenueCat, Inc.):** as a data processor, your account identifier and your purchase data, solely to verify and manage Pro.",
+                "**App Store (Apple) and Google Play (Google):** if you subscribe, the store processes the payment as an independent controller under its own terms and privacy policy. Nothing about your records is sent to it. With Google Play, the store's notifications about a subscription (purchase reference, plan and kind of change) pass through Google Cloud Pub/Sub, run for us by Google LLC, on their way to RevenueCat.",
+                "**Email delivery:** your email address only, to deliver confirmation and password-reset messages.",
+                "**Notification delivery (Expo, Apple, Google):** your push token and the text of the notification, solely so that the message can be delivered.",
+                "**App updates (Expo):** when the App starts, it asks Expo's update service (expo.dev, 650 Industries, Inc.) whether a newer version of its own code is available for the installed version, and downloads it if so. The request carries the App's version, the platform (iOS or Android), the release channel, a random identifier the update library creates on the device (not your account, not a device or advertising identifier) and, like any internet request, your IP address. It carries none of your records.",
+                "**Country lookup (Apple, Google):** if you allow location, your device's operating system sends your approximate coordinates to Apple's (iOS) or Google's (Android) geocoding service, solely to name the country you are in. For that lookup the provider is an independent controller under its own privacy policy. Nothing about your records is sent to it.",
+                "**Other people you share a wallet with:** only what the next section describes, and only because you chose to invite them or to accept an invitation.",
+                "**Lawful requests:** where properly requested by a competent authority, to the extent the law requires."
+              ]
+            ]
+          },
+          {
+            "title": "When You Share a Wallet",
+            "body": [
+              "Sharing is off until you turn it on: no wallet of yours is visible to anybody else unless you create an invitation for it yourself.",
+              "Someone who joins sees that wallet's records in full — amounts, dates, categories, notes and the country each record was entered in — and, for each record, which member entered it. An editor can also add and change records; a viewer cannot.",
+              "What they see about you as a person is your display name and your avatar, and nothing else. Your email address is never disclosed to another user.",
+              "A QR code shown face to face lasts 15 minutes and can be used once; a link sent in a message lasts 7 days and only creates a request to join. When a request comes in you see the requester's display name and avatar; until you approve, they cannot see any of your records — while waiting they see only your display name, your avatar and the names of the wallets their request covers. You can revoke either kind of invitation before it is used. You can remove a member at any time, which ends their access immediately, and a member can leave on their own.",
+              "Both sides of a share need a full account. A guest session can neither invite nor join: a guest account can vanish with its device, and the other person would be left trusting something unreachable."
+            ]
+          },
+          {
+            "title": "Retention and Deletion",
+            "body": [
+              "Your data is retained for as long as your account exists.",
+              "When you delete your account via Settings → Delete Account, your identity record, wallets, transactions, categories, budgets, goals, recurring rules, visits, crossings and marked countries are permanently deleted. This cannot be undone.",
+              "If you can no longer open the App, you can ask us to delete your account from outside it: write to nomadbudget@rubeeks.co from the account's email address — with Sign in with Apple and a hidden address, the relay address Apple shows you — with the subject \"Delete my account\". We may ask you to confirm the request from that address, then delete the account and everything listed above within 30 days and tell you when it is done. The same steps are on https://legal.rubeeks.co/nomadbudget/delete-account. A guest account has no email address, so we cannot tell which one is yours: delete it in the App by signing out of it before you uninstall.",
+              "Deleting your account also ends the shares you had given: the wallets you shared disappear for their members at the same moment, along with your profile and your push token. Records you entered in a wallet belonging to somebody else stay where they are, because they are that person's records; they simply stop being attributed to you.",
+              "A guest session is deleted by signing out of it. That is not a sign-out in the ordinary sense — it is the deletion of the account, because nothing else reaches it — and it cannot be undone.",
+              "Your subscription record with us is deleted together with your account, and we have RevenueCat delete the customer record it holds for you at the same time. Apple and Google keep their own records of a purchase under their policies. Deleting your account does not cancel a subscription — see the Terms of Use.",
+              "Copies remaining in system backups are purged as the backup cycle rolls over, within 30 days at the latest. The local cache on your device is removed when you uninstall the App.",
+              "Messages you send us through \"Send feedback\" are kept for up to two years and then deleted. Deleting your account does not delete them, so that a report can still be answered, but they are no longer linked to any account. You can ask us to delete one sooner by writing to nomadbudget@rubeeks.co.",
+              "Payment messages you send us with \"Send this message to the developer\" are kept the same way: for up to two years, and no longer linked to any account once it is deleted. The link between your account and a format you shared is deleted with your account; a shared format that has been neither approved nor sent again for a year is deleted.",
+              "Usage data and crash reports are kept for 90 days and then deleted automatically. When you delete your account, what remains of it until then is no longer linked to any account.",
+              "A sharing invitation is deleted at the latest 14 days after it expires, together with the requests to join sent through it; of an approved request, only the wallet membership remains.",
+              "Payment drafts exist only on your device: they are deleted when you confirm or dismiss them, when you sign out, or when 14 days pass without your confirming them.",
+              "You can also request deletion by writing to nomadbudget@rubeeks.co."
+            ]
+          },
+          {
+            "title": "Security",
+            "body": [
+              "All traffic between your device and the server is encrypted with TLS. Data is stored on encrypted disks.",
+              "Every table is protected by row-level security rules: at the database level, a user can only reach their own records.",
+              "Your password is never stored in plain text — only an irreversible hash of it is kept.",
+              "No system can be absolutely secure; please protect your account with a strong, unique password."
+            ]
+          },
+          {
+            "title": "Cookies and Similar Technologies",
+            "body": [
+              "The mobile app uses no cookies. Keeping you signed in and working offline rely on your device's own secure storage and local database. The local database also holds a random installation ID, made on first launch to group usage data from the same installation; it is not shared with other apps or advertising networks, is never used to track you across apps or websites, and is deleted when you uninstall the App."
+            ]
+          },
+          {
+            "title": "Children's Privacy",
+            "body": [
+              "The App is not directed at people under 18 and we do not knowingly collect their data. If we find that we have, we delete the account and its data."
+            ]
+          },
+          {
+            "title": "Your Rights",
+            "body": [
+              "Under KVKK Art. 11 and — where it applies to you — the GDPR, you have the right to:",
+              [
+                "Learn whether your personal data is processed, and request access to it.",
+                "Have incomplete or inaccurate data corrected.",
+                "Request erasure or destruction of your data.",
+                "Request restriction of processing and object to processing.",
+                "Receive your data in a structured, commonly used format (data portability).",
+                "Claim compensation if you suffer damage from unlawful processing."
+              ],
+              "You can exercise most of your access and correction rights directly in the App: every record you have is visible, editable and deletable there.",
+              "With Pro, the App can also export your transactions as a CSV file. Data portability is a right on every plan: without Pro, write to nomadbudget@rubeeks.co and we will send your data in the same format.",
+              "You can object to the processing of usage data: write to nomadbudget@rubeeks.co and we will delete the usage data linked to your account and stop keeping any that arrives for it from then on.",
+              "For anything else, write to nomadbudget@rubeeks.co; requests are answered within 30 days at the latest. See the \"Data Protection Notice (KVKK)\" for the detailed application procedure."
+            ]
+          },
+          {
+            "title": "Changes to This Policy",
+            "body": [
+              "We may update this policy. Material changes are announced in the App or by email before they take effect. The effective date and version are always shown at the top of this document."
+            ]
+          },
+          {
+            "title": "Contact",
+            "body": [
+              "For any privacy question, request or complaint: nomadbudget@rubeeks.co"
+            ]
+          }
+        ]
+      },
+      "kvkk": {
+        "slug": "kvkk",
+        "title": "Data Protection Notice (KVKK)",
+        "summary": "Turkish Law 6698 notice",
+        "intro": [
+          "This notice is issued under Article 10 of Turkish Law No. 6698 on the Protection of Personal Data (\"KVKK\") and the related Communiqué on the Procedures and Principles for Fulfilling the Disclosure Obligation.",
+          "For a fuller account of everything the App does with data, see the \"Privacy Policy\"."
+        ],
+        "sections": [
+          {
+            "title": "Identity of the Data Controller",
+            "body": [
+              "Data controller: Rubeeks (rubeeks.co)",
+              "Contact address: nomadbudget@rubeeks.co"
+            ]
+          },
+          {
+            "title": "Categories of Personal Data Processed",
+            "body": [
+              [
+                "**Identity and contact data:** email address; the display name and avatar you choose. Where the account was created with Sign in with Apple or Sign in with Google, this also covers the identifier the provider issues and the address it passes on, which with Apple may be a private relay alias. A guest account has no email address and carries only the display name and avatar, if you set them.",
+                "**Customer transaction data:** the wallets, transactions, categories, budgets, goals and recurring rules you enter — whether typed in or imported from a file you chose — including their amounts, currencies, dates and free-text note fields.",
+                "**Travel data:** the visits and crossings you confirm or enter (country, first and last day, where from and where to, means of travel, the transaction that was the ticket) and the countries you mark as visited.",
+                "**Transaction security data:** the hash of your password (an account created with Sign in with Apple or Sign in with Google has none, because the provider confirms the identity instead), session information, account creation date, and the version and date of your consent.",
+                "**Device data:** where you have allowed notifications, your device's push token and whether it is an iOS or an Android device.",
+                "**Usage data:** the random installation ID the App makes on first launch; the screens and steps seen, how sign-in and purchase attempts ended, the answers to the permissions the App asks for and unexpected errors (an error message with personal details stripped out); crash reports — on Android from the system's record, on iOS from MetricKit, which also reports freezes and excessive processor use (the cause, memory in use, the screen's name, a technical trace, and the device's make, model, operating system version and memory size); the App version, operating system, interface language and time; your account, when you are signed in. It contains no amount, note, category, location or contact detail.",
+                "**Customer request data:** the messages you send us through the App's feedback form or by email, the payment messages you choose to send from a captured payment (masked on your device, with what the App read from them), the reply address you give, and the device context attached to them (App version, operating system and version, device model, language).",
+                "**Shared format data (optional):** the bank message formats you choose to share — your bank's fixed wording with every figure, the merchant and your name removed — and the app or sender name they came from, linked to your account.",
+                "**Purchase data:** the identifier your account is registered under with our subscription provider and, if you subscribe to Pro, the plan, the store, the dates of purchase, renewal and expiry, renewal and refund status, the store's transaction identifiers, and the price and currency charged. Card and bank details are never received.",
+                "**Sharing data:** which of your wallets you have shared with whom and in what role, which wallets you have been invited into and by whom, the requests to join you have sent or received through a link, and which member entered a given record."
+              ],
+              "When you turn on payment capture, the notification and message texts read, the drafts made from them and the message patterns learned are processed only on your device and are not transferred to us, except the formats you choose to share and the messages you choose to send us; when you confirm a draft, the transaction you save is processed as customer transaction data.",
+              "No special categories of personal data are processed. We recommend that you do not write special-category information (health, beliefs and similar) into free-text note fields."
+            ]
+          },
+          {
+            "title": "Purposes of Processing",
+            "body": [
+              [
+                "Creating your membership record and securing your account.",
+                "Providing the budgeting service: storing and syncing your records, converting currencies, producing summaries and charts, drawing your map and route, and comparing countries on the basis of your own spending.",
+                "At your request, preparing draft entries on your device from your payment notifications or your Shortcuts automation.",
+                "Running the sharing feature: creating and redeeming invitations, delivering and answering requests to join, keeping wallet memberships, and showing members who entered a record.",
+                "Selling and managing the Pro subscription: verifying purchases, renewals, cancellations, refunds and restored purchases.",
+                "Delivering mandatory service messages (email confirmation, password reset) and, where you have permitted them, push notifications about activity in a shared wallet, requests to join and your budgets, and showing reminders.",
+                "Running information security processes, debugging and preventing abuse.",
+                "Measuring how the App is used, finding the steps where people get stuck, and improving the App.",
+                "Handling requests and complaints, and complying with legal obligations."
+              ]
+            ]
+          },
+          {
+            "title": "Legal Grounds",
+            "body": [
+              "Your personal data is processed on the following grounds under KVKK Art. 5:",
+              [
+                "**Art. 5/2-c** — directly related to the conclusion or performance of a contract: creating the account and providing the service, including the Pro subscription.",
+                "**Art. 5/2-ç** — compliance with the controller's legal obligations: responding to requests from competent authorities.",
+                "**Art. 5/2-f** — legitimate interests, provided this does not harm your fundamental rights and freedoms: security, abuse prevention and debugging; improving the App with usage data that holds no content; answering the messages you send us.",
+                "**Art. 5/1** — explicit consent: deriving your country from your device's location, sending push notifications, preparing draft entries from your payment notifications, and sharing the bank message formats your device learned. Each is given through a device permission (for payment capture, also through the switches in the App or a Shortcuts automation you set up; for sharing formats, through the \"Share learned formats\" switch) and can be withdrawn at any time in the same places."
+              ]
+            ]
+          },
+          {
+            "title": "Method of Collection",
+            "body": [
+              "Your personal data is collected electronically, by automated means, as you enter it into the App yourself, from a CSV or Excel file you choose to import (read on your device), and — for location, the camera, notifications and payment capture — through the device permissions you grant and the Shortcuts automations you set up. Usage data is generated automatically by the App while you use it.",
+              "Data about you is obtained from third parties in two cases, each only if you choose it. Signing in with Apple or Google: the identifier, the email address and your name reach us from that provider — from Apple on the first sign-in only, from Google on every sign-in, though it is read only the first time. Subscribing to Pro: Apple or Google reports the purchase, and its later renewals, cancellations and refunds, to us through RevenueCat. Otherwise the one record that originates with somebody else is your membership of a wallet you were invited into, which names the person who invited you."
+            ]
+          },
+          {
+            "title": "Transfers, Including Abroad",
+            "body": [
+              "Your personal data is transferred to Supabase Inc., our hosting and authentication provider, acting as a data processor, so that the service can be provided. Its servers are servers operated by Supabase Inc. (AWS ap-northeast-2 — Seoul, South Korea); your data is therefore transferred abroad within the meaning of KVKK Art. 9.",
+              "The transfer is necessary for the performance of the contract and is protected by our agreement with the processor and by technical and administrative measures.",
+              "Where you choose Sign in with Apple or Sign in with Google, the sign-in request is transferred to Apple Inc. or Google LLC in the United States so that the provider can confirm your identity; for that step it acts as an independent controller and receives nothing about your records.",
+              "Where you have allowed notifications, your push token and the text of the notification are transferred to Expo, Apple (APNs) and Google (FCM) in the United States, solely so that the message can be delivered.",
+              "When the App starts, its version, platform and release channel, the random identifier its update library creates and your IP address are transferred to Expo in the United States, solely to check for and deliver updates to the App's own code.",
+              "Where you have allowed location, your device's operating system transfers your approximate coordinates to Apple Inc. (iOS) or Google LLC (Android) in the United States, solely so that the country you are in can be looked up; for that lookup the provider acts as an independent controller and receives nothing about your records.",
+              "Your account identifier and, if you subscribe, your purchase data are transferred to RevenueCat, Inc. in the United States, acting as a data processor, so that Pro purchases can be verified and managed. Where you subscribe, the payment itself is processed by Apple Inc. or Google LLC as an independent controller. On Google Play, notifications about the subscription (the store's purchase reference, the plan and the kind of change) pass through Google Cloud Pub/Sub, operated by Google LLC in the United States, on their way to RevenueCat.",
+              "Where you share a wallet, its records together with your display name and avatar become visible to the people you invited. That disclosure happens only on your own instruction and you can end it at any time by removing the member. When you send a request to join through a sharing link, your display name and avatar are shown to the link's owner; none of your records are.",
+              "Beyond this, your data may be transferred only to legally authorised public authorities, to the extent required by law."
+            ]
+          },
+          {
+            "title": "Retention Period",
+            "body": [
+              "Your personal data is retained for as long as your account exists. If you delete your account, the data is permanently deleted; copies in system backups are purged as the backup cycle rolls over, within 30 days at the latest. A guest account is deleted when you sign out of it, since nothing else can reach it. Purchase data is deleted together with the account, and the customer record held by RevenueCat is deleted at our request at the same time; Apple and Google keep their own purchase records under their policies.",
+              "Messages sent through the feedback form, and payment messages sent from a captured payment, are kept for up to two years and then deleted, whether or not the account still exists; once an account is deleted they are no longer linked to it. A shared bank message format that has been neither approved nor sent again for a year is deleted; your link to a format is deleted with your account.",
+              "Usage data and crash reports are kept for 90 days and then deleted; once an account is deleted it is no longer linked to it. A sharing invitation is deleted at the latest 14 days after it expires, together with the requests to join sent through it. Payment-capture drafts on your device are kept for 14 days at most.",
+              "Where a statutory retention obligation applies, the relevant data is kept only for the period and to the extent that obligation requires."
+            ]
+          },
+          {
+            "title": "Your Rights as a Data Subject (KVKK Art. 11)",
+            "body": [
+              "By applying to the data controller, you have the right to:",
+              [
+                "Learn whether your personal data is processed;",
+                "Request information if it has been processed;",
+                "Learn the purpose of processing and whether the data is used accordingly;",
+                "Know the third parties, in Türkiye or abroad, to whom the data is transferred;",
+                "Request correction if the data is incomplete or inaccurate;",
+                "Request erasure or destruction under the conditions in KVKK Art. 7;",
+                "Request that corrections and erasures be notified to third parties to whom the data was transferred;",
+                "Object to a result reached against you through analysis carried out solely by automated systems;",
+                "Claim compensation for damage arising from unlawful processing."
+              ]
+            ]
+          },
+          {
+            "title": "How to Apply",
+            "body": [
+              "In line with the Communiqué on the Procedures and Principles of Application to the Data Controller, send your request together with information identifying you to nomadbudget@rubeeks.co. Writing from the email address registered in our system speeds up identity verification.",
+              "State the subject of your request clearly. Requests are answered free of charge as soon as possible and within 30 days at the latest. If responding involves an additional cost, the fee set by the Personal Data Protection Board may be charged.",
+              "If your application is rejected, you find the answer insufficient, or no answer is given in time, you may complain to the Personal Data Protection Board within 30 days of learning the answer and in any case within 60 days of the application date."
+            ]
+          }
+        ]
+      },
+      "disclaimer": {
+        "slug": "disclaimer",
+        "title": "Financial Disclaimer",
+        "summary": "Estimates, not advice",
+        "intro": [
+          "Nomad Budget is a record-keeping and analysis tool. Every number it produces is an estimate derived from the data you entered and from open statistical sources."
+        ],
+        "sections": [
+          {
+            "title": "Not Investment or Financial Advice",
+            "body": [
+              "Nothing in the App — no summary, chart, comparison or suggestion, whether it belongs to the free App or to Pro — constitutes investment advice, financial advice, portfolio management or an investment recommendation.",
+              "Investment advice is provided by licensed institutions taking each person's risk and return preferences into account. The App holds no such licence and makes no personalised assessment."
+            ]
+          },
+          {
+            "title": "Exchange Rates",
+            "body": [
+              "Rates come from open, free exchange-rate services, are cached, and refresh periodically. They are not real-time, not binding for trading, and not the rate your bank will apply.",
+              "While offline, or when the rate service is unreachable, the last known rate is used provisionally; once a connection is back, the entry is recalculated at its own date's rate, unless you have edited it in the meantime. Converted amounts may therefore differ for a while from what actually happens on your account.",
+              "For transactions dated in the past, the nearest available historical rate is used where one exists."
+            ]
+          },
+          {
+            "title": "Cross-Country Price Comparisons",
+            "body": [
+              "Price level comparisons are based on indices derived from World Bank ICP 2021 and Eurostat data, rolled forward with inflation and exchange rates. They are a rough estimate of country averages and do not reflect differences between cities, neighbourhoods or lifestyles.",
+              "Rent is left out of every comparison: no free official source publishes it on a comparable cross-country basis, so the App neither estimates it nor prices it on either side. Where a country publishes no price survey of its own, its levels are derived from a neighbouring economy and marked as such.",
+              "The country page's estimate of what a month there costs, and the note shown when you arrive in a new country, reprice your own past spending at that country's price levels. They assume you keep the same habits rather than adapting to local prices.",
+              "These comparisons are not sufficient on their own for a decision to relocate and are no substitute for local research."
+            ]
+          },
+          {
+            "title": "The Map and the Route",
+            "body": [
+              "The countries, lengths of stay and route the map shows are read from the dates and countries of your records, together with the visits and crossings you confirm. They are a reading of your spending, not a travel log: a stay is counted from the days you spent money, so it is a floor rather than a measurement, and a crossing the App suggests is a guess until you confirm it.",
+              "The country illustrations are generated, representative artwork, not photographs of any real place."
+            ]
+          },
+          {
+            "title": "Not Tax or Legal Advice",
+            "body": [
+              "The App performs no tax calculation and gives no tax, accounting or legal advice. Your records are not official books, invoices or tax returns. Consult a qualified accountant regarding your tax obligations."
+            ]
+          },
+          {
+            "title": "Data Accuracy and Backups",
+            "body": [
+              "Every figure in the App rests on the data you entered; missing or mistaken entries affect every summary and chart.",
+              "A draft made from a payment notification or message comes from reading its text automatically and may be wrong; check the amount, currency, date and category before you confirm it. Capture may not notice every payment; do not rely on it for the completeness of your records.",
+              "We take reasonable technical measures to protect your data, but no absolute guarantee against data loss can be given. Keep a separate copy of records that are critical to you."
+            ]
+          },
+          {
+            "title": "Your Decisions",
+            "body": [
+              "The consequences of any spending, saving, relocation or investment decision you make on the basis of information in the App are yours alone. No liability is accepted for losses arising from such decisions."
+            ]
+          }
+        ]
+      },
+      "licenses": {
+        "slug": "licenses",
+        "title": "Licenses and Data Sources",
+        "summary": "Open source and data",
+        "intro": [
+          "Nomad Budget is built on open-source software and publicly available statistical data. The components and their licences are listed below."
+        ],
+        "sections": [
+          {
+            "title": "Open-Source Components",
+            "body": [
+              [
+                "React, React Native, Expo and expo-router — MIT License",
+                "Supabase JavaScript client — MIT License",
+                "TanStack Query — MIT License",
+                "NativeWind and Tailwind CSS — MIT License",
+                "i18next and react-i18next — MIT License",
+                "Zustand — MIT License",
+                "React Native Reanimated, Gesture Handler, Screens, Safe Area Context, SVG — MIT License",
+                "React Native Skia (Shopify) — MIT License",
+                "react-native-gifted-charts — MIT License",
+                "react-native-country-flag-icons — MIT License",
+                "react-native-qrcode-svg — MIT License",
+                "Google Sign-In for React Native — MIT License",
+                "RevenueCat Purchases SDK (react-native-purchases) — MIT License",
+                "SheetJS Community Edition (xlsx) — Apache License 2.0",
+                "Lucide icons — ISC License",
+                "Inter typeface (Rasmus Andersson) — SIL Open Font License 1.1"
+              ],
+              "The full licence text of each component is available from its official repository."
+            ]
+          },
+          {
+            "title": "Data Sources",
+            "body": [
+              [
+                "**World Bank** — ICP 2021 price level indices, consumer price index and official exchange rate series (CC BY 4.0).",
+                "**Eurostat** — harmonised indices of consumer prices (European Commission reuse policy).",
+                "**open.er-api.com** — live exchange rates.",
+                "**frankfurter.dev** and **fawazahmed0/currency-api** — historical exchange rates.",
+                "**NASA Earth Observatory** — Blue Marble Next Generation imagery, the surface of the globe (public domain).",
+                "**Natural Earth** — country boundaries and the world map geometry (public domain)."
+              ],
+              "Data is used as published and processed within the App to produce derived indicators. The source institutions are not responsible for those derived indicators and do not endorse the App."
+            ]
+          },
+          {
+            "title": "Illustrations",
+            "body": [
+              "The country illustrations on the map, the onboarding artwork and the empty-state objects were produced with generative image tools under licences that permit their commercial use. They are representative artwork, not photographs, and depict no real person or property."
+            ]
+          },
+          {
+            "title": "Trademarks",
+            "body": [
+              "The Nomad Budget name and logo belong to the publisher. All other trademarks and trade names mentioned belong to their respective owners; their mention implies no partnership or endorsement."
+            ]
+          }
+        ]
+      }
+    },
+    "tr": {
+      "terms": {
+        "slug": "terms",
+        "title": "Kullanım Koşulları",
+        "summary": "Kullanım kuralları",
+        "intro": [
+          "Bu Kullanım Koşulları (\"Koşullar\"), Rubeeks (rubeeks.co) (\"biz\") tarafından sunulan Nomad Budget mobil uygulaması ve buna bağlı hizmetlerin (\"Uygulama\") kullanımına ilişkin şartları düzenler.",
+          "Hesap oluşturarak veya Uygulamayı kullanarak bu Koşulları okuduğunuzu ve kabul ettiğinizi beyan edersiniz. Koşulları kabul etmiyorsanız Uygulamayı kullanmayınız."
+        ],
+        "sections": [
+          {
+            "title": "Tanımlar",
+            "body": [
+              [
+                "**Uygulama:** Nomad Budget mobil uygulaması, arka uç servisleri ve tüm alt bileşenleri.",
+                "**Kullanıcı:** Uygulamayı hesap açarak veya hesap açmadan kullanan gerçek kişi.",
+                "**İçerik:** Kullanıcının Uygulamaya girdiği işlem, cüzdan, kategori, bütçe, hedef, tekrarlayan kural, ziyaret ve geçiş kayıtları ile notlar; Kullanıcının içe aktarmayı seçtiği bir dosyadan gelen kayıtlar da buna dâhildir.",
+                "**Pro:** \"Pro Abonelik ve Ücretlendirme\" bölümünde tanımlanan, isteğe bağlı ücretli Nomad Budget Pro aboneliği."
+              ]
+            ]
+          },
+          {
+            "title": "Hizmetin Tanımı",
+            "body": [
+              "Nomad Budget, çok para birimli kişisel bütçe takibi için bir kayıt ve analiz aracıdır. Kullanıcının kendi girdiği verileri saklar, para birimleri arasında dönüştürür; bunlardan özetler, grafikler, harcama yapılan ülkelerin haritasını ve aralarındaki rotayı üretir.",
+              "Uygulama bir banka, ödeme kuruluşu, elektronik para kuruluşu veya yatırım kuruluşu değildir. Herhangi bir banka hesabına bağlanmaz, para transferi yapmaz, para saklamaz ve aracılık faaliyeti yürütmez. Her kayıt Kullanıcı tarafından girilir ya da onaylanır: Uygulamanın bir bildirimden veya bir Kestirmeler otomasyonundan okuduğu bir ödeme bile, Kullanıcı onaylamadıkça kayıt hâline gelmez (bkz. \"Ödemeleri Yakalama\")."
+            ]
+          },
+          {
+            "title": "Hesap Oluşturma ve Güvenlik",
+            "body": [
+              "Hesap oluşturmak için en az 18 yaşında olmanız veya veli/vasinizin onayıyla hareket etmeniz gerekir. Uygulama 18 yaş altındaki kişilere yönelik değildir.",
+              "Tam hesap oluşturuyorsanız, kayıt sırasında geçerli ve size ait bir e-posta adresi vermeniz gerekir.",
+              "Hesabınızı Apple ile Giriş veya Google ile Giriş kullanarak da oluşturabilirsiniz. Bu durumda kimliğinizi bize ilgili sağlayıcı doğrular ve bir e-posta adresi iletir: Google'da Google hesabınızın adresi; Apple'da ya size ait olan adres ya da Apple'dan onun yerine vermesini istediğiniz gizli yönlendirme adresi. Böyle bir hesap için şifre oluşturulmaz; dolayısıyla gizli tutmanız gereken bir şifre de, bizim sakladığımız bir şifre de yoktur.",
+              "Uygulamayı hesap açmadan, misafir olarak da kullanabilirsiniz. Misafir oturumu yalnızca başlatıldığı cihazda yaşar: geri dönmek için ne e-posta ne şifre olduğundan, oturumdan çıkmanız — ya da cihazı kaybetmeniz veya uygulamayı kaldırmanız — o hesabı ve içindeki her şeyi kalıcı olarak sonlandırır. Misafir oturumunu dilediğiniz an, girdiğiniz hiçbir şeyi kaybetmeden tam hesaba dönüştürebilirsiniz. Başka bir kişiyi ilgilendiren işlemler (cüzdan paylaşmak, bir davete katılmak) tam hesap gerektirir.",
+              "Şifrenizin gizliliğinden ve hesabınız üzerinden yapılan tüm işlemlerden siz sorumlusunuz. Hesabınıza yetkisiz erişimden şüphelenirseniz şifrenizi derhal değiştirin ve nomadbudget@rubeeks.co adresine bildirin.",
+              "Bir kişi tek hesap kullanır; hesabınızı üçüncü kişilere devredemez veya paylaşamazsınız."
+            ]
+          },
+          {
+            "title": "Kullanım Kuralları",
+            "body": [
+              "Uygulamayı kullanırken aşağıdakileri yapmamayı kabul edersiniz:",
+              [
+                "Yürürlükteki mevzuata aykırı, hukuka veya ahlaka aykırı amaçlarla kullanmak.",
+                "Başkasının hesabına yetkisiz erişmeye çalışmak, güvenlik önlemlerini aşmaya teşebbüs etmek.",
+                "Servislere otomatik araçlarla makul olmayan yük bindirmek, servis dışı bırakmaya yönelik girişimlerde bulunmak.",
+                "Uygulamayı tersine mühendisliğe tabi tutmak, kaynak koda dönüştürmek veya izinsiz türev çalışma üretmek (zorunlu yasal istisnalar saklıdır).",
+                "Uygulama üzerinden üçüncü kişilere ait kişisel verileri hukuka aykırı biçimde işlemek."
+              ]
+            ]
+          },
+          {
+            "title": "Kullanıcı İçeriği",
+            "body": [
+              "Uygulamaya girdiğiniz tüm İçerik size aittir. İçeriğiniz üzerinde mülkiyet iddia etmiyoruz.",
+              "Hizmeti size sunabilmek için (verilerinizi saklamak, senkronize etmek, dönüştürmek, özet ve grafik üretmek amacıyla) İçeriğinizi işlememize izin vermiş olursunuz. Bu izin yalnızca hizmetin sağlanması amacıyla sınırlıdır; İçeriğinizi pazarlama amacıyla kullanmaz, satmaz veya üçüncü kişilerle paylaşmayız.",
+              "İçeriğinizin doğruluğundan ve hukuka uygunluğundan siz sorumlusunuz."
+            ]
+          },
+          {
+            "title": "Geçmişinizi İçe Aktarma",
+            "body": [
+              "Kayıtlarınızı bir CSV veya Excel dosyasından — başka bir uygulamanın dışa aktarımından ya da kendi tablonuzdan — içe aktarabilirsiniz. Dosya, cihazınızın dosya seçicisi üzerinden açılır ve cihazda okunur; yalnızca onayladığınız satırlar, sonradan düzenleyip silebileceğiniz sıradan işlemler olarak kayıtlarınıza yazılır. Dosyanın kendisi hiçbir zaman yüklenmez ve saklanmaz.",
+              "İçe aktardığınız dosyayı kullanma hakkına sahip olmanızdan ve içeriğinin doğruluğundan siz sorumlusunuz. Uygulamanın dışa aktarımlarını tanıdığı diğer hizmetlerin adları ilgili sahiplerine aittir; Uygulamanın bu hizmetlerle bir bağlantısı veya onlardan aldığı bir onay yoktur.",
+              "Pro ile kayıtlarınızı CSV dosyası olarak dışa da aktarabilirsiniz. Dosya cihazınızda oluşturulur ve yalnızca cihazınızın paylaşım menüsünden gönderdiğiniz yere gider; bir kopyası bize ulaşmaz ve saklanmaz. Uygulama içinden dışa aktarma, verilerinizi almanın tek yolu değildir: veri taşınabilirliği hakkınız Pro'ya bağlı değildir (bkz. Gizlilik Politikası)."
+            ]
+          },
+          {
+            "title": "Ödemeleri Yakalama",
+            "body": [
+              "Dilerseniz Uygulama, bankanızın veya cüzdan uygulamanızın size bildirdiği ödemelerden kayıt taslağı hazırlayabilir. Bu özellik kapalı gelir ve yalnızca siz açarsanız çalışır: Android'de cihazın bildirim erişimi iznini verip Uygulamanın içinde hangi kaynakların (banka SMS'leri ve/veya listede onayladığınız banka ve cüzdan uygulamaları) okunacağını seçerek; iOS'ta Kestirmeler uygulamasında, bir ödemeyi veya mesajı Uygulamaya ileten bir otomasyonu kendiniz kurarak.",
+              "Okunan mesaj cihazınızda yorumlanır ve bir taslak olarak bekler. Taslak, siz onaylayana kadar kayıtlarınıza yazılmaz: doldurulmuş kayıt formunda kontrol edip kaydederek ya da — art arda son iki ödemesini aynı kategoriye kaydettiğiniz bir satıcının ödemesinde — taslağın veya bildiriminin üzerindeki \"Ekle\"ye basarak. \"Ekle\", ödemeyi okunduğu hâliyle, o kategoriye ve o para birimindeki tek cüzdanınıza, form açılmadan kaydeder. Bu şekilde eklenen bir kaydı aynı yerden geri alabilir (bildiriminde 24 saat boyunca), diğer kayıtlar gibi düzenleyebilir veya silebilirsiniz. iOS'ta, Uygulama açılmadan bir bildirimden eklenen ödeme, Uygulamayı bir sonraki açışınızda kaydedilir. Onaylanmayan taslaklar 14 gün sonra kendiliğinden silinir.",
+              "Mesajların okunması otomatiktir ve hatalı olabilir: tutar, para birimi, satıcı, tarih veya işlemin türü yanlış okunabilir ya da bir ödeme hiç fark edilmeyebilir. Bir taslağı kaydetmeden ya da \"Ekle\"ye basmadan önce kontrol etmek sizin sorumluluğunuzdadır. Bankalar ve uygulamalar mesaj biçimlerini önceden haber vermeden değiştirebilir; özelliğin belirli bir banka veya uygulamayla çalışacağı taahhüt edilmez. Uygulamanın bu kuruluşlarla bir bağlantısı yoktur.",
+              "Dilerseniz yakalamanın herkes için iyileşmesine yardım edebilirsiniz: Uygulamanın düzeltmelerinizden öğrendiği mesaj biçimlerini paylaşarak ya da yanlış okuduğu bir mesajı bize göndererek. İkisi de siz kullanmadıkça gerçekleşmez; neyin gönderilip neyin gönderilmediği Gizlilik Politikası'nda yazılıdır.",
+              "Özelliği dilediğiniz an Uygulama içindeki anahtarlarla, cihazınızın bildirim erişimi ayarından veya Kestirmeler otomasyonunu silerek kapatabilirsiniz."
+            ]
+          },
+          {
+            "title": "Cüzdan Paylaşımı",
+            "body": [
+              "Kendi cüzdanlarınıza başka kişileri davet edebilirsiniz. Siz bir davet oluşturmadıkça hiçbir şey paylaşılmaz; varsayılan olarak paylaşım yoktur.",
+              "İki tür davet vardır ve ikisi de kullanılmadan önce dilediğiniz an iptal edilebilir. **QR kod**, yüz yüze gösterilmek içindir: 15 dakika geçerlidir, tek kullanımlıktır ve okutan kişi kodun kapsadığı cüzdanlara doğrudan katılır; bu nedenle onu bir anahtar gibi görün ve yalnızca davet etmek istediğiniz kişiye okutun. **Bağlantı**, bir mesajla gönderilmek içindir: 7 gün geçerlidir ve tek başına kimseyi içeri almaz — bağlantıyı kullanan kişi yalnızca bir katılım isteği gönderir; siz o kişinin görünen adını görüp isteği onaylamadıkça hiçbir cüzdanınıza erişemez. Bir bağlantıyla yalnızca bir istek onaylanabilir; bağlantıyı iptal etmek bekleyen istekleri de iptal eder.",
+              "İçeri aldığınız kişi o cüzdanın kayıtlarını eksiksiz görür; düzenleyici olarak davet ettiyseniz kayıt ekleyip değiştirebilir de. Neyi paylaşmayı seçtiğinizden siz, paylaşılanla ne yaptığından davet ettiğiniz kişi sorumludur.",
+              "Bir üyeyi dilediğiniz an çıkarabilirsiniz; erişimi o anda sona erer. Üye de aynı şekilde kendi isteğiyle ayrılabilir. Birini çıkarmak, onun o ana kadar gördüklerini geri almaz. Cüzdan sahibinin Pro'su sona ererse ve cüzdan ücretsiz planın kapsadığı tek paylaşılan cüzdan değilse, üyeler cüzdanı sahibinin Pro'su geri gelene kadar açamaz; içindeki hiçbir şey silinmez (bkz. \"Pro Abonelik ve Ücretlendirme\").",
+              "Paylaşımın iki tarafı da tam hesap gerektirir: misafir oturumu ne davet edebilir ne bir davete katılabilir; aksi hâlde karşı taraf bir daha ulaşılamayacak bir hesaba güvenmiş olurdu."
+            ]
+          },
+          {
+            "title": "Pro Abonelik ve Ücretlendirme",
+            "body": [
+              "Uygulama ücretsiz kullanılabilir ve reklam gösterilmez. Nomad Budget Pro (\"Pro\"), ek özelliklerin kilidini açan, isteğe bağlı ve ücretli bir aboneliktir. Pro'nun neleri kapsadığı, abone olduğunuz sırada Uygulamadaki Pro ekranında açıklanır.",
+              "Pro, aylık ve yıllık plan olarak sunulur. Her planın fiyatı, yerel para biriminizde ve mağazanın uyguladığı vergiler dâhil olarak, satın almayı onaylamadan önce Uygulamada gösterilir. Yıllık plan, yeni abonelere ücretsiz bir deneme süresiyle sunulabilir; süresi, satın almayı onaylamadan önce Pro ekranında gösterilir. Denemeye uygun olup olmadığınıza mağaza karar verir; deneme genellikle her mağaza hesabı için bir kez kullanılabilir. Deneme süresince ücret alınmaz. Deneme bitmeden iptal etmezseniz (App Store'da bitiminden en az 24 saat önce), deneme sona erdiğinde abonelik ücretli yıllık plana dönüşür ve yıllık ücret tahsil edilir. Deneme sırasında iptal ederseniz Pro, deneme süresinin sonuna kadar etkin kalır ve hiçbir ücret alınmaz.",
+              "Ödeme, satın almayı onayladığınız anda Apple (App Store) veya Google (Google Play) tarafından, o mağazada kullandığınız hesaptan tahsil edilir. Ödemeye mağazanın kendi satış koşulları uygulanır. Kart veya banka bilgilerinizi hiçbir zaman görmeyiz ve saklamayız.",
+              [
+                "**Otomatik yenileme:** abonelik, her dönemin sonunda aynı uzunlukta bir dönem için ve o tarihteki güncel fiyattan otomatik olarak yenilenir ve mağaza bu tutarı hesabınızdan tahsil eder — yenilemeden önce iptal etmediğiniz sürece. App Store'da bu, mevcut dönemin bitiminden en az 24 saat önce demektir.",
+                "**İptal:** aboneliğinizi dilediğiniz an App Store veya Google Play abonelik ayarlarınızdan iptal edebilirsiniz; Pro ekranındaki \"Aboneliği yönet\" düğmesi bu ayarları açar. İptal, bir sonraki yenilemeyi durdurur; Pro, ödemesini yapmış olduğunuz dönemin sonuna kadar etkin kalır. Uygulamayı ya da hesabınızı silmek aboneliği iptal etmez — iptal mağaza üzerinden yapılmalıdır.",
+                "**Başarısız ödeme:** mağaza bir yenileme ödemesini tahsil edemezse bir süre denemeye devam eder. Mağazanın bir ek süre tanıdığı durumlarda Pro bu süre boyunca etkin kalır; sonrasında ödeme gerçekleşene kadar askıya alınır (Google Play'de abonelik beklemeye alınır) ve mağaza denemeyi bırakırsa abonelik sona erer. Mağazadaki ödeme yönteminizi güncellemeniz, yeni bir satın alma gerekmeden Pro'yu geri açar.",
+                "**İade:** ödemeler Apple veya Google tarafından tahsil edildiğinden iade talepleri onlara yapılır ve onların politikalarına göre sonuçlandırılır; doğrudan iade yapamayız. Pro, abone olduğunuz anda ifasına başlanan dijital bir hizmet olduğundan, mevzuatın izin verdiği ölçüde yasal cayma hakkı ifaya başlanmasıyla sona erer. Tüketici mevzuatından doğan emredici haklarınız saklıdır.",
+                "**Fiyat değişikliği:** bir planın fiyatı değişirse, mağazanın kurallarının gerektirdiği şekilde önceden bilgilendirilirsiniz; mağazanın onayınızı istediği durumlarda yeni fiyat ancak onay verdiğinizde uygulanır."
+              ],
+              "Pro, abone olduğunuz sırada oturum açık olan Nomad Budget hesabına aittir ve o hesapla oturum açtığınız her cihazda kullanılabilir. Pro ekranındaki \"Satın alımları geri yükle\", mağaza hesabınızla yapılmış bir aboneliği oturum açık olan hesaba bağlar. Misafir oturumuyla abone olunamaz: satın almadan önce oturumun Apple, Google veya e-posta ile bir hesaba bağlanması istenir, çünkü misafir oturumundan çıkmak o hesabı sonlandırır. Bağlama hesabınızı değiştirmez; verileriniz olduğu gibi kalır.",
+              "Ücretsiz planın bazı sınırları vardır (örneğin hedef, tekrarlayan işlem veya paylaşılan cüzdan sayısı) ve bazı özellikler yalnızca Pro'ya dahildir (örneğin kategori ve ülke bütçeleri ile kayıtlarınızı CSV dosyası olarak dışa aktarma; aylık toplam bütçe ücretsizdir); güncel sınırlar, bir sınıra ulaştığınızda Uygulamada gösterilir. Kayıt tutma — işlem eklemek, ülke cüzdanları, para birimleri ve çevrimdışı kullanım — hiçbir planda sınırlanmaz.",
+              "Pro sona ererse (iptal, yenilenmeme veya iade nedeniyle) hiçbir veriniz silinmez. Ücretsiz planın kapsadığı kısım çalışmaya devam eder — oluşturduğunuz ilk hedef ve ilk üç tekrarlayan işlem (kendi duraklattıklarınız sayılmaz) ile ilk paylaştığınız cüzdan — bunun ötesinde oluşturduklarınız ise Pro geri gelene kadar duraklatılır: duraklatılan bir hedefin ilerlemesi izlenmez, ancak birikim cüzdanındaki para tamamen kullanılabilir kalır; duraklatılan bir tekrarlayan işlem kaydedilmez ve hatırlatılmaz, bu sürede vadesi gelenler atlanır ve Pro geri geldiğinde de eklenmez; kategori ve ülke bütçeleri izlenmez ve uyarı göndermez, aylık bütçe ise ücretsiz kalır; duraklatılan bir paylaşılan cüzdanı da üyeleri açamaz. Duraklatılan öğeler yine de silinebilir. Ücretsiz planın sınırlarını aşan yeni kayıtlar oluşturulamaz ve Pro'ya özel içgörüler yeniden kilitlenir.",
+              "Pro'nun kapsadığı özellikleri değiştirebiliriz. Ücretini ödediğiniz bir şeyi kaldıran bir değişiklik, iptal edebilmeniz için en erken bir sonraki yenilemenizde uygulanır. Bir özelliği ücretsizken kullanmış olmanız nedeniyle geriye dönük hiçbir ücret talep edilmez."
+            ]
+          },
+          {
+            "title": "Üçüncü Taraf Hizmetler ve Veriler",
+            "body": [
+              "Uygulama, hizmetin sunulması için üçüncü taraf altyapı ve veri kaynaklarından yararlanır: barındırma ve kimlik doğrulama için Supabase Inc., Apple ile Giriş veya Google ile Giriş'i tercih etmeniz hâlinde Apple veya Google, Pro abonelikleri için App Store, Google Play ve RevenueCat, izin verdiğiniz bildirimlerin iletilmesi için Expo ile Apple (APNs) ve Google (FCM), Uygulamanın kendi kodunun güncellemelerini iletmek için Expo, güncel döviz kurları için açık kur servisleri, ülkeler arası fiyat karşılaştırması için resmî istatistik kurumlarının açık verileri ve küre için NASA ile Natural Earth'ün kamu malı görüntü ve geometrileri.",
+              "Bu kaynakların kesintisizliği, güncelliği veya doğruluğu bizim kontrolümüzde değildir. Kaynakların tam listesi ve lisansları için \"Lisanslar ve Veri Kaynakları\" belgesine bakınız."
+            ]
+          },
+          {
+            "title": "Hizmetin Sürekliliği ve Değişiklikler",
+            "body": [
+              "Uygulamanın kesintisiz, hatasız veya her zaman erişilebilir olacağını taahhüt etmiyoruz. Bakım, güncelleme, altyapı arızası veya mücbir sebeplerden kaynaklı kesintiler yaşanabilir.",
+              "Özellikleri değiştirme, ekleme veya kaldırma hakkımız saklıdır. Hizmetin tamamen sonlandırılması hâlinde, verilerinizi dışa aktarabilmeniz için makul bir süre önceden e-posta ile bilgilendirme yapılır."
+            ]
+          },
+          {
+            "title": "Garanti Reddi",
+            "body": [
+              "Uygulama \"olduğu gibi\" ve \"mevcut hâliyle\" sunulur. Yürürlükteki hukukun izin verdiği azami ölçüde, açık veya zımni hiçbir garanti verilmemektedir; buna belirli bir amaca uygunluk, kesintisizlik ve hatasızlık garantileri dahildir.",
+              "Uygulamanın ürettiği hesaplama, dönüştürme, tahmin ve karşılaştırmalar bilgilendirme amaçlıdır. Ayrıntı için \"Finansal Sorumluluk Reddi\" belgesine bakınız."
+            ]
+          },
+          {
+            "title": "Sorumluluğun Sınırlandırılması",
+            "body": [
+              "Yürürlükteki hukukun izin verdiği azami ölçüde; kâr kaybı, veri kaybı, iş kesintisi veya dolaylı ya da netice kabilinden doğan zararlardan sorumlu değiliz.",
+              "Uygulamada yer alan verilere dayanarak aldığınız finansal kararların sonuçları münhasıran size aittir.",
+              "Bu maddedeki sınırlamalar, kastımızdan veya ağır ihmalimizden doğan sorumluluğu ve tüketici mevzuatından kaynaklanan devredilemez haklarınızı ortadan kaldırmaz."
+            ]
+          },
+          {
+            "title": "Hesabın Kapatılması",
+            "body": [
+              "Hesabınızı dilediğiniz zaman Uygulama içinden \"Ayarlar → Hesabı Sil\" yolunu izleyerek kapatabilirsiniz. Bu işlem hesabınızı ve tüm verilerinizi kalıcı olarak siler ve geri alınamaz. Paylaşmış olduğunuz cüzdanlar da aynı anda paylaştığınız kişiler için ortadan kalkar.",
+              "Uygulamayı artık açamıyorsanız, hesabın e-posta adresinden nomadbudget@rubeeks.co adresine yazarak hesabın kapatılmasını isteyebilirsiniz; adımlar Gizlilik Politikası'nda ve https://legal.rubeeks.co/nomadbudget/delete-account sayfasında anlatılır.",
+              "Misafir oturumu, oturumdan çıkılarak kapatılır ve sonucu aynıdır: e-posta ve şifre olmadığı için geri dönülecek bir yol kalmaz, dolayısıyla çıkış o hesabı ve kayıtlarını siler.",
+              "Hesabınızı kapatmak Pro aboneliğini iptal etmez. Aboneliği önce App Store veya Google Play ayarlarınızdan iptal edin; aksi hâlde mağaza yenilemeye devam eder. Hesabın kapatılması tek başına iade hakkı doğurmaz.",
+              "Bu Koşulların ağır biçimde veya tekrar tekrar ihlal edilmesi hâlinde, hesabınızı askıya alabilir veya sonlandırabiliriz. Hukuken mümkün olduğu ölçüde bu durumu önceden bildirir ve verilerinizi dışa aktarmanız için makul bir imkân tanırız."
+            ]
+          },
+          {
+            "title": "Koşullarda Değişiklik",
+            "body": [
+              "Bu Koşulları güncelleyebiliriz. Esaslı değişikliklerde, değişiklik yürürlüğe girmeden önce Uygulama içinde veya e-posta ile bilgilendirme yapılır ve gerektiğinde yeniden onayınız istenir.",
+              "Bildirimden sonra Uygulamayı kullanmaya devam etmeniz güncellenmiş Koşulları kabul ettiğiniz anlamına gelir. Kabul etmiyorsanız hesabınızı kapatabilirsiniz."
+            ]
+          },
+          {
+            "title": "Uygulanacak Hukuk ve Uyuşmazlıkların Çözümü",
+            "body": [
+              "Bu Koşullara Türkiye Cumhuriyeti hukuku uygulanır. Uyuşmazlıklarda Türkiye Cumhuriyeti mahkemeleri ve icra daireleri yetkilidir.",
+              "Tüketici sıfatını haiz kullanıcılar, parasal sınırlar dâhilinde ikametgâhlarının bulunduğu yerdeki Tüketici Hakem Heyetlerine veya Tüketici Mahkemelerine başvurabilir. Avrupa Birliği'nde yerleşik kullanıcıların kendi ülkelerinin emredici tüketici hükümlerinden doğan hakları saklıdır."
+            ]
+          },
+          {
+            "title": "İletişim",
+            "body": [
+              "Bu Koşullara ilişkin her türlü soru ve talebinizi nomadbudget@rubeeks.co adresine iletebilirsiniz."
+            ]
+          }
+        ]
+      },
+      "privacy": {
+        "slug": "privacy",
+        "title": "Gizlilik Politikası",
+        "summary": "Hangi veri, neden, nerede",
+        "intro": [
+          "Nomad Budget finansal verilerinizi tutar; bu yüzden gizlilik bizim için sonradan eklenen bir başlık değil. Bu politika hangi verileri işlediğimizi, neden işlediğimizi ve bunlar üzerinde hangi haklara sahip olduğunuzu açıklar.",
+          "Özetle: verilerinizi satmıyoruz, reklam göstermiyoruz, Uygulamada üçüncü taraf analitik veya izleme aracı çalıştırmıyoruz ve hesabınızı dilediğiniz an Uygulama içinden tamamen silebiliyorsunuz. Uygulamanın nasıl kullanıldığını ise kendi sunucumuzda, tutar veya not gibi içerik olmadan ölçüyoruz (bkz. \"Kullanım verileri\")."
+        ],
+        "sections": [
+          {
+            "title": "Veri Sorumlusu",
+            "body": [
+              "Verilerinizin işlenmesinden sorumlu taraf (veri sorumlusu): Rubeeks (rubeeks.co)",
+              "İletişim: nomadbudget@rubeeks.co"
+            ]
+          },
+          {
+            "title": "İşlediğimiz Veriler",
+            "body": [
+              "**Hesap verileri:** e-posta adresiniz, şifrenizin kriptografik özeti (şifrenin kendisi hiçbir zaman saklanmaz), hesap oluşturma tarihi, oturum bilgileri ve kayıt sırasında verdiğiniz onayın sürümü ile tarihi. Apple ile Giriş veya Google ile Giriş kullanılarak açılan hesapta şifre özeti hiç bulunmaz; onun yerine sağlayıcının bu Uygulama için size verdiği kimlik belirteci ve ilettiği e-posta adresi tutulur — Apple'da adresinizi gizlemeyi seçtiyseniz bu bir gizli yönlendirme adresidir, Google'da ise her zaman Google hesabınızın adresidir. Adınız profilinize başlangıç görünen adı olarak yazılır ve dilediğiniz gibi değiştirebilirsiniz. Apple adınızı yalnızca ilk girişte, bir kez iletir; Google her girişte iletir, ancak yalnızca ilk seferinde okunur, dolayısıyla sonradan değiştirdiğiniz görünen ad hiçbir zaman üzerine yazılmaz.",
+              "**Uygulamaya girdiğiniz finansal kayıtlar:** cüzdanlar (ad, ülke, para birimi, açılış bakiyesi), işlemler (tutar, para birimi, tarih, tür, kategori, not, etkinlik etiketi), kategoriler, bütçeler, hedefler ve tekrarlayan kurallar.",
+              "**Seyahat kayıtlarınız:** harita için onayladığınız veya girdiğiniz ziyaretler ve geçişler — hangi ülke, oradaki ilk ve son gün, nereden gelip nereye gittiğiniz, nasıl yolculuk ettiğiniz ve hangi işleminizin bilet olduğu — ile hafızadan ziyaret edilmiş olarak işaretlediğiniz ülkeler. Uygulama bunları işlemlerinizin tarih ve ülkelerinden önerir; siz onaylamadan veya girmeden hiçbiri kaydedilmez.",
+              "**İçe aktardığınız dosyalar (isteğe bağlı):** bir CSV veya Excel dosyasını içe aktarmayı seçtiğinizde dosya, cihazınızın dosya seçicisi üzerinden açılır ve cihazda okunur. Yalnızca onayladığınız satırlar, sıradan işlemler olarak kayıtlarınıza yazılır. Dosya ne yüklenir ne saklanır; Uygulama sizin seçmediğiniz hiçbir dosyaya erişemez.",
+              "**Yakalanan ödemeler (isteğe bağlı):** ödeme yakalamayı açarsanız (bkz. Kullanım Koşulları, \"Ödemeleri Yakalama\"), Android'de Uygulama, cihazın bildirim erişimi izniyle, açtığınız kaynakların — banka SMS'leri için SMS uygulamalarının, ayrıca listede onayladığınız banka ve cüzdan uygulamalarının — bildirimlerini cihazda okur. Bu listeyi kurulumda size sunabilmek için Uygulama, içinde yerleşik olarak bulunan banka ve cüzdan uygulamaları listesinden hangilerinin cihazınızda kurulu olduğuna bakar; cihazınızdaki diğer uygulamaların listesine erişmez ve bu bilgi cihazınızdan çıkmaz. Para tutarı içermeyen bildirimler okunduğu anda bırakılır ve hiçbir yere yazılmaz; tutar içerenler Uygulama açılana kadar cihazda bekler, ödeme olmadığı anlaşılanlar o anda silinir. Sosyal ağ, mesajlaşma, video ve haber uygulamaları gibi ödeme bildirmeyen uygulamaların bildirimleri hiç okunmaz. Henüz karar vermediğiniz bir uygulamanın adı ve kaç kez tutar içeren bildirim gönderdiği, size listede gösterilmek üzere cihazda tutulur; bu bir banka, cüzdan ya da Uygulamanın tanımadığı bir uygulamaysa ve bildirim bir kişinin mesajı değilse, ayrıca tutar içeren en son en çok iki bildirimi, size bu ödemeyi gösterip o uygulamanın okunup okunmayacağını sormak için en çok 48 saat cihazda bekletilir. Kabul ederseniz bunlar taslağa dönüşür; reddederseniz ya da süre dolarsa silinir. Okunmamasını seçtiğiniz bir uygulamanın bildirimleri hiç okunmaz. Aynı ödemenin ikinci bir mesajdan — örneğin yurtdışı bir harcamanın günler sonra Türk lirası karşılığıyla gelen bildiriminden — yeniden taslak olmaması için, onayladığınız, yoksaydığınız ya da elle girdiğiniz son ödemelerin tutarı, para birimi, zamanı ve satıcısı en çok 11 gün cihazda tutulur; tekrarlayan kayıtlarınızla karşılaştırmak için bu kayıtların bir kopyası, okunmamasını seçtiğiniz kartların son dört hanesi ve okuyucunun hâlâ çalıştığını size gösterebilmek için son bildirimi gördüğü an (bildirimin kendisi değil) da cihazda tutulur. Bir taslak, ödemenin geldiği andaki ülkeyle — telefonun cihazda tutulan son bilinen konumundan — işaretlenir. Bekleyen bir taslağın başka bir cihazınızdan ya da paylaşılan bir cüzdanda zaten girilip girilmediğini anlamak için Uygulama sunucudan yalnızca o günlerin kayıtlarını okur; taslağın kendisi gönderilmez. iOS'ta Uygulama başka uygulamaların bildirimlerini okuyamaz; yalnızca kendi kurduğunuz Kestirmeler otomasyonunun ilettiği tutarı, satıcıyı veya mesaj metnini alır. Her iki durumda da mesaj metni, ondan hazırlanan taslak ve Uygulamanın bankanızın mesaj biçiminden öğrendiği kalıplar yalnızca cihazınızda tutulur ve sunucularımıza gönderilmez — aşağıda \"Paylaştığınız banka mesajı biçimleri\" ve \"Bize gönderdiğiniz ödeme mesajları\" başlıklarında anlatıldığı gibi göndermeyi kendiniz seçmedikçe. Uygulamanın bir sonraki ödemede kategoriyi doldurmak ve \"Ekle\" düğmesini sunmak için her satıcı hakkında hatırladıkları da öyledir: onu en son kaydettiğiniz kategori, art arda kaç ödemesini oraya kaydettiğiniz ve son tutarla para birimi; iOS'ta bunların bir kopyası, Kestirmeler eyleminin okuyabileceği yerde, yine cihazda tutulur. \"Ekle\" ile eklenen bir kaydı geri alabilmek için gereken bilgi cihazda 24 saat tutulur. Bir taslağı onayladığınızda yalnızca kaydettiğiniz işlemin kendisi (tutar, para birimi, tarih, kategori, not ve cüzdan) diğer kayıtlarınız gibi saklanır.",
+              "**Profil:** seçtiğiniz görünen ad ve avatar. Bir cüzdanı paylaştığınızda — ya da bir paylaşım bağlantısıyla katılım isteği gönderdiğinizde, isteği alan kişiye — karşı tarafın sizinle ilgili gördüğü tek şey bunlardır; e-posta adresiniz hiçbir zaman başka bir kullanıcıya gösterilmez. Henüz bir görünen adınız yoksa, istek gönderirken bir ad girmeniz istenir ve bu ad profilinize yazılır.",
+              "**Misafir oturumları:** Uygulamayı hesap açmadan kullanabilirsiniz. Misafir hesabı, tam hesapla aynı kayıtları ve verdiğiniz onayın aynı kaydını taşır; ancak e-posta adresi ve şifresi yoktur: ona ulaşan tek şey o tek cihazda saklanan oturumdur. Bu nedenle oturumdan çıkmak, hesabı ve içindeki her şeyi geri alınamaz biçimde siler. Sonradan e-posta ve şifre eklemek ise aynı hesabı tam hesaba dönüştürür; hiçbir veri taşınmaz, hiçbir şey kaybolmaz.",
+              "**Tercihler:** arayüz dili, tema seçimi ve temel para birimi.",
+              "**Abonelikler (Pro):** Uygulama, Pro'nuz olup olmadığını anlayabilmek için, oturumunuz açık olduğu sürece hesabınızın kimliğini — rastgele bir kimlik; asla e-posta adresiniz değil — abonelik sağlayıcımız RevenueCat'e kaydeder. Abone olursanız ödemeyi mağaza (Apple veya Google) alır ve satın almayı RevenueCat'e, onun üzerinden de bize bildirir: plan, mağaza, satın alma, yenileme ve bitiş tarihleri, yenilenip yenilenmeyeceği, ödeme sorunları ve iadeler, mağazanın işlem kimlikleri ile tahsil edilen fiyat ve para birimi. RevenueCat ayrıca böyle bir isteğin taşıdığı teknik verileri de alır: Uygulama ve işletim sistemi sürümü, mağaza ülkesi ve cihazın IP adresi. Google Play'de mağaza bu güncellemeleri, Uygulama için kurulmuş bir Google Cloud mesajlaşma hizmeti (Pub/Sub) üzerinden bildirim olarak gönderir ve RevenueCat onları oradan alır; bir bildirim mağazanın satın alma referansını, planı ve değişikliğin türünü taşır, adınızı ya da e-posta adresinizi taşımaz. Kart veya banka bilgilerinizi ya da mağaza hesabınızdaki adı hiçbir zaman almayız.",
+              "**Cihazda kalan teknik veriler:** oturum belirteci, çevrimdışı çalışma için tutulan yerel önbellek, bağlantı yokken kuyruğa alınan kayıtlar, rastgele bir kurulum kimliği, henüz gönderilmemiş kullanım verileri, onay bekleyen ödeme taslakları, yakalanan ödemelerin satıcıları için hatırlanan kategoriler ve henüz hesabı olmadan açtığınız bir paylaşım bağlantısının kodu. Bunlar cihazınızda kalır; oturumdan çıktığınızda hesaba ait olanlar, uygulamayı kaldırdığınızda tamamı silinir.",
+              "**Kullanım verileri:** Uygulamanın nasıl kullanıldığını anlamak ve hataları bulup gidermek için Uygulama, hangi adımların görüldüğünü ve nasıl sonuçlandığını kendi sunucumuza kaydeder: örneğin tanıtım ekranlarından hangisine gelindiği, kayıt ve giriş denemesinin nasıl bittiği (hata kodu dâhil), kurulum adımları, kayıt formunun neyle açılıp kaydedilip kaydedilmediği, Uygulamanın kendi istediği izinlere (bildirim, konum) verilen yanıt, Pro ekranının hangi özellikten açıldığı ve satın almanın sonucu, paylaşım davetinin açılıp kullanılması ve beklenmeyen hatalar (e-posta adresleri, uzun sayılar ve kimlikler ayıklanmış hata mesajı ile kısa teknik iz). Her kayda Uygulama sürümü, cihazın iOS mu Android mi olduğu, arayüz dili, zamanı, rastgele kurulum kimliği ve — oturum açıksa — hesabınız eklenir. Tutarlar, notlar, kategori ve cüzdan adları, konum veya iletişim bilgileri bu verilere hiçbir zaman girmez. Kurulum kimliği, Uygulamanın ilk açılışta ürettiği rastgele bir değerdir; cihaz veya reklam kimliği değildir ve Uygulamayı kaldırdığınızda silinir. Uygulama son çalıştığında beklenmedik biçimde kapandıysa — çökme, yanıt vermeme ya da ekrandayken sistem tarafından kapatılma — bir sonraki açılışta bir çökme raporu gönderir. Android'de bu bilgi, Android'in Uygulamanın nasıl kapandığına dair tuttuğu kayıttan; iOS'ta ise iOS'a yerleşik tanılama altyapısı MetricKit'ten gelir; MetricKit ayrıca Uygulamanın birkaç saniye donduğunu veya aşırı işlemci kullandığını da bildirir. Rapor; sistemin kaydettiği nedeni, zamanı, kullanılan belleği, Uygulamanın o an hangi ekranda olduğunu (ekranın adı, gösterdiği içerik değil), ilgili kodun teknik izini ve cihazın markası, modeli, işletim sistemi sürümü ile bellek boyutunu içerir. Üçüncü taraf bir çökme raporlama hizmeti kullanılmaz.",
+              "**Bildirimler (isteğe bağlı):** izin verirseniz cihazınız bize bir bildirim belirteci (push token) ve cihazın iOS mu Android mi olduğunu kaydeder; böylece paylaştığınız bir cüzdanda biri işlem yaptığında, aylık bütçelerinizden biri limitinin %80'ine ulaştığında ya da limiti aştığında, bir paylaşım bağlantınızla katılım isteği geldiğinde ve gönderdiğiniz bir istek onaylandığında sizi haberdar edebiliriz (bütçe uyarılarını ve paylaşım bildirimlerini Uygulamanın bildirim ayarlarından kapatabilirsiniz). Uygulamanın hatırlatıcıları — bir süredir kayıt girmediğinizde, kurulumdan sonra hiç kayıt girmediyseniz bir kez ve tekrarlayan bir işlemin vadesinde — ile yakalanan bir ödemeyi onaylamanızı isteyen bildirimler cihazınızın kendisi tarafından oluşturulur; ne belirteç ne sunucu gerektirir ve bildirim ayarlarından kapatılabilir. Bazılarının düğmeleri vardır — yakalanan bir ödemeyi eklemek ya da geri almak, tekrarlayan bir işlemi onaylamak, atlamak ya da gerçekleşen tutarını girmek, bugün harcama yapmadığınızı söylemek — ve birine basmak, Uygulama kapalı olsa bile, Uygulama içindeki aynı seçimin yaptığını yapar. iOS'ta kurulum bittiğinde, size bir izin penceresi gösterilmeden, bildirimlerin sessizce (ses ve afiş olmadan) Bildirim Merkezi'ne gelmesine izin istenir; ilk sessiz bildirimde bunu tutma veya kapatma seçeneği iOS tarafından sunulur. İzni dilediğiniz an cihaz ayarlarından geri alabilirsiniz.",
+              "**Bize gönderdiğiniz mesajlar (isteğe bağlı):** Uygulamadaki \"Geri bildirim gönder\" formunu kullandığınızda yazdığınız metni, seçtiğiniz türü (sorun, öneri veya diğer), yanıt için verdiyseniz e-posta adresinizi ve formun göndermeden önce size gösterdiği cihaz bilgilerini — Uygulama sürümü, cihazın iOS mu Android mi olduğu ve sürümü, cihaz modeli ve arayüz dili — hesabınızla ve hesabın misafir ya da Pro olup olmadığıyla birlikte alırız. Bu mesajları yalnızca biz okuruz ve yalnızca size yanıt vermek ve Uygulamayı geliştirmek için kullanırız. Bunun yerine nomadbudget@rubeeks.co adresine yazarsanız aynısı e-postanız için de geçerlidir.",
+              "**Paylaştığınız banka mesajı biçimleri (isteğe bağlı):** Uygulamanın ödeme yakalama ekranında \"Öğrenilen biçimleri paylaş\"ı açıp ardından gelen pencerede onaylamadıkça hiçbir şey paylaşılmaz. Onayladığınızda bu cihazın düzelttiğiniz ödemelerden öğrendiği biçimler — ve sonradan öğrendikleri — hesabınızla ve geldikleri uygulamayla ya da gönderen adıyla birlikte sunucumuza gönderilir. Bir biçim, bankanızın sabit ifadesidir: tutar, satıcı ve her rakam yer tutucuyla değiştirilmiş, adınız da cihazdan çıkmadan önce çıkarılmıştır; içinde tutar, satıcı, tarih, kart hanesi veya bakiye asla bulunmaz. Bir biçim, ancak üç farklı hesap aynısını gönderdikten ve biz onu inceledikten sonra başka kişilerin Uygulamasında kullanılır; onaylanan bir biçim hiçbirine dair bilgi taşımaz. Paylaşımı dilediğiniz an kapatabilirsiniz; o ana kadar gönderilmemiş olanlar bırakılır.",
+              "**Bize gönderdiğiniz ödeme mesajları (isteğe bağlı):** yakalanan bir ödemede \"Bu mesajı geliştiriciye gönder\"i kullandığınızda mesajı ve bildirim başlığını formun gösterdiği hâliyle alırız — size gösterilmeden önce cihazınızda maskelenmiş (her rakam, adres, hesap numarası ve bağlantı yolu, kendi adınız ve kişiler arası para hareketinde karşı tarafın adı) ve sizin ardından düzenlediğiniz hâliyle — ve bunlarla birlikte Uygulamanın ondan okuduklarını (ödemenin türü, para birimi, nasıl okunduğu ve kişiler arası para hareketi değilse satıcı), eklediğiniz notu, geldiği uygulamayı, Uygulama sürümünü, cihazın iOS mu Android mi olduğunu, arayüz dilini ve hesabınızı. Tutar, tarih, kart veya yer gönderilmez. Bu mesajları yalnızca biz okuruz; o bankanın mesajlarının okunuşunu düzeltmek ve Uygulamayı test etmek için kullanırız. Günde en fazla on mesaj gönderilebilir.",
+              "**Kamera (isteğe bağlı, yalnızca QR):** kamera, yalnızca bir paylaşım davetini okutmayı seçtiğinizde ve yalnızca karşısındaki kodu okumak için açılır. Fotoğraf veya video çekilmez, saklanmaz, hiçbir yere iletilmez.",
+              "**Konum (isteğe bağlı, yalnızca ülke):** izin verirseniz, cihazınızın yaklaşık konumundan (yalnızca kaba/şehir düzeyi doğruluk) hangi ülkede bulunduğunuz belirlenir ve kaydettiğiniz işlemler ile ziyaret ettiğiniz ülkeler bu iki harfli ülke koduyla işaretlenir. Konumun ülkeye çevrilmesi için Uygulama, cihazınızın işletim sistemine yerleşik ve Apple (iOS) ya da Google (Android) tarafından sağlanan konum çözümleme hizmetini kullanır: yaklaşık koordinatlarınız bu sorgu için o hizmete gönderilir ve geriye yalnızca ülke döner. Koordinatlarınız hiçbir zaman saklanmaz ve sunucularımıza iletilmez. İzni vermeyebilir ya da dilediğiniz an cihaz ayarlarından geri alabilirsiniz; bu durumda ülke, cüzdanlarınızdan tahmin edilir ve Uygulamanın geri kalanı aynen çalışır.",
+              "Toplamadığımız veriler:",
+              [
+                "Banka veya kart bilgisi — Uygulama hiçbir finansal kuruma bağlanmaz; Pro ödemesini tamamen Apple veya Google yürütür.",
+                "Konum geçmişi veya koordinat kaydı — yukarıda açıklanan ülke bilgisi dışında konumunuza dair hiçbir veri tutulmaz.",
+                "Rehber, fotoğraflar veya — içe aktarmak için açıkça seçtiğiniz dosya dışında — cihazdaki herhangi bir dosya.",
+                "SMS'leriniz ve diğer uygulamaların bildirimleri — Uygulamanın SMS okuma izni yoktur; bildirimler yalnızca ödeme yakalamayı açtığınızda, yukarıda anlatıldığı gibi cihazda okunur ve sunucularımıza gönderilmez — yukarıda anlatıldığı gibi kendiniz göndermeyi seçtiğiniz bir mesaj dışında.",
+                "Reklam kimliği veya çapraz uygulama izleme verisi.",
+                "Üçüncü taraf analitik, çökme raporlama veya pazarlama SDK'sı verisi — Uygulamada bunların hiçbiri bulunmamaktadır."
+              ]
+            ]
+          },
+          {
+            "title": "İşleme Amaçları ve Hukuki Sebepleri",
+            "body": [
+              [
+                "**Hesabınızı oluşturmak ve güvenliğini sağlamak** — sözleşmenin ifası (KVKK m.5/2-c; GDPR m.6/1-b).",
+                "**Kayıtlarınızı saklamak, cihazlarınız arasında senkronize etmek ve size göstermek** — sözleşmenin ifası.",
+                "**Para birimi dönüşümü, bütçe/hedef takibi, özet ve grafik üretmek** — sözleşmenin ifası.",
+                "**Kayıtlarınızdan haritanızı ve rotanızı çizmek, kendi harcama düzeninizi başka ülkelerin fiyatlarıyla değerlemek** — sözleşmenin ifası.",
+                "**Harcamalarınızı ve ziyaret ettiğiniz ülkeleri harita ile ülke bazlı karşılaştırmalarda göstermek üzere konumunuzdan ülke bilgisi türetmek** — açık rıza (KVKK m.5/1; GDPR m.6/1-a). Bu rıza yalnızca cihaz izniyle verilir ve cihaz ayarlarından her an geri alınabilir.",
+                "**Bankanızın ve cüzdan uygulamanızın ödeme bildirimlerinden ya da kurduğunuz Kestirmeler otomasyonundan cihazınızda kayıt taslağı hazırlamak** — açık rıza (KVKK m.5/1; GDPR m.6/1-a). Bu rıza Android'de cihazın bildirim erişimi izni ve Uygulama içinde açtığınız kaynaklarla, iOS'ta otomasyonu sizin kurmanızla verilir ve aynı yerlerden her an geri alınabilir.",
+                "**Hizmetin kötüye kullanımını önlemek, hata ayıklamak ve güvenliği sağlamak** — meşru menfaat (KVKK m.5/2-f; GDPR m.6/1-f).",
+                "**Uygulamanın nasıl kullanıldığını ölçmek; kullanıcıların takıldığı adımları ve hataları bulup Uygulamayı geliştirmek (kullanım verileri)** — meşru menfaat (KVKK m.5/2-f; GDPR m.6/1-f). Bu işlemeye itiraz edebilirsiniz (bkz. \"Haklarınız\").",
+                "**Bize gönderdiğiniz mesajlara yanıt vermek ve bildirdiğiniz sorunları, Uygulamanın yanlış okuduğu ödeme mesajları da dahil, gidermek** — meşru menfaat (KVKK m.5/2-f; GDPR m.6/1-f).",
+                "**Paylaşmayı seçtiğiniz banka mesajı biçimleriyle ödeme yakalamayı herkes için iyileştirmek** — açık rıza (KVKK m.5/1; GDPR m.6/1-a); \"Öğrenilen biçimleri paylaş\" anahtarıyla verilir ve onunla geri alınır.",
+                "**Davet ettiğiniz kişiyle bir cüzdanı paylaşmanızı, bir bağlantıyla gelen katılım isteklerini yanıtlamanızı ve davet edildiğiniz bir cüzdana katılmanızı sağlamak** — sözleşmenin ifası.",
+                "**Pro'yu satmak, sizde olup olmadığını doğrulamak; yenileme, iptal, iade ve geri yüklenen satın alımları yürütmek** — sözleşmenin ifası.",
+                "**Paylaştığınız bir cüzdandaki hareketler, katılım istekleri ve bütçeleriniz için bildirim göndermek; hatırlatıcılar göstermek** — açık rıza (KVKK m.5/1; GDPR m.6/1-a). Bu rıza cihazın bildirim izniyle verilir ve cihaz ayarlarından her an geri alınabilir.",
+                "**Hizmete ilişkin zorunlu bildirimleri (e-posta doğrulama, şifre sıfırlama) göndermek** — sözleşmenin ifası.",
+                "**Yasal yükümlülüklere uymak ve hukuki taleplere yanıt vermek** — hukuki yükümlülük (KVKK m.5/2-ç; GDPR m.6/1-c)."
+              ],
+              "Verilerinizi profilleme, otomatik karar alma veya pazarlama amacıyla işlemiyoruz."
+            ]
+          },
+          {
+            "title": "Verilerin Saklandığı Yer ve Yurt Dışına Aktarım",
+            "body": [
+              "Hesap ve kayıt verileriniz, kullanım verileri, bize gönderdiğiniz mesajlar ve paylaştığınız banka mesajı biçimleri Supabase Inc. tarafından işletilen sunucular (AWS ap-northeast-2 — Seul, Güney Kore) üzerinde barındırılmaktadır. Bu nedenle verileriniz Türkiye dışına aktarılmaktadır (KVKK m.9).",
+              "Güney Kore, Avrupa Komisyonu'nun yeterlilik kararına sahip ülkeler arasındadır. Aktarım, hizmetin sunulabilmesi için zorunlu olup barındırma sağlayıcısıyla yapılan sözleşme ve teknik önlemlerle korunur.",
+              "Kur verisi almak için açık kur servislerine bağlanılırken yalnızca para birimi kodları gönderilir; hiçbir kişisel veri veya işlem bilgisi bu servislere iletilmez. Haritadaki ülke görselleri, barındırma sağlayıcımızın depolama alanından yalnızca ülke koduyla çekilir.",
+              "Bildirimler, iletilmek üzere Expo'nun bildirim servisine, oradan da Apple (APNs) veya Google (FCM) altyapısına verilir. Bu sağlayıcılara bildirim belirteciniz ve mesajın metni ulaşır; paylaşılan bir cüzdandaki hareket bildiriminde bu metin işlemi yapan kişinin adını, cüzdanı ve kaydın tutarını; bir bütçe uyarısında bütçenin adını (kategorisini ya da aylık bütçenizi), harcanan tutarı ve limitini; bir katılım isteğinde veya onayında ise karşı tarafın görünen adını ve cüzdanın adını içerir. Bu, yalnızca mesajın iletilmesi süresince yapılan bir Amerika Birleşik Devletleri'ne aktarımdır ve bildirimleri cihaz ayarlarından kapattığınız anda sona erer. Hatırlatıcılar ve yakalanan ödemelerin onay bildirimleri cihazınızda oluşturulur ve bu servislerin hiçbirine gönderilmez.",
+              "Abonelik verileri, Amerika Birleşik Devletleri'nde bulunan RevenueCat, Inc. tarafından veri işleyen sıfatıyla ve onun veri işleme koşulları çerçevesinde işlenir; bu da bir yurt dışına aktarımdır. Kapsamı yalnızca hesap kimliğiniz ve satın alımlarınızdır: finansal kayıtlarınızın, seyahat kayıtlarınızın veya profilinizin hiçbiri RevenueCat'e gönderilmez."
+            ]
+          },
+          {
+            "title": "Verilerin Paylaşımı",
+            "body": [
+              "Verilerinizi satmıyoruz, kiralamıyoruz ve reklam amacıyla paylaşmıyoruz. Veriler yalnızca aşağıdaki hâllerde üçüncü taraflara açılır:",
+              [
+                "**Barındırma ve kimlik doğrulama sağlayıcısı (Supabase Inc.):** yalnızca hizmeti çalıştırmak için, veri işleyen sıfatıyla.",
+                "**Apple ile Giriş (Apple Inc.):** bu yolu seçerseniz, Apple ID'nin size ait olduğunu bize Apple doğrular ve bu sırada Uygulamayı kullandığınızı öğrenir. Bu adımda Apple, kendi gizlilik politikası kapsamında bağımsız veri sorumlusudur; kendisine kayıtlarınıza dair hiçbir bilgi iletilmez.",
+                "**Google ile Giriş (Google LLC):** bu yolu seçerseniz, Google hesabının size ait olduğunu bize Google doğrular ve bu sırada Uygulamayı kullandığınızı öğrenir. Bu adımda Google, kendi gizlilik politikası kapsamında bağımsız veri sorumlusudur; kendisine kayıtlarınıza dair hiçbir bilgi iletilmez.",
+                "**Abonelik sağlayıcısı (RevenueCat, Inc.):** yalnızca Pro'yu doğrulamak ve yönetmek için, veri işleyen sıfatıyla, hesap kimliğiniz ve satın alma verileriniz.",
+                "**App Store (Apple) ve Google Play (Google):** abone olursanız ödemeyi mağaza, kendi koşulları ve gizlilik politikası kapsamında bağımsız veri sorumlusu olarak işler. Kendisine kayıtlarınıza dair hiçbir bilgi iletilmez. Google Play'de mağazanın bir aboneliğe ilişkin bildirimleri (satın alma referansı, plan ve değişikliğin türü), RevenueCat'e ulaşmadan önce bizim adımıza Google LLC tarafından işletilen Google Cloud Pub/Sub'dan geçer.",
+                "**E-posta gönderimi:** doğrulama ve şifre sıfırlama e-postalarının iletilmesi için, yalnızca e-posta adresiniz.",
+                "**Bildirim iletimi (Expo, Apple, Google):** yalnızca mesajın iletilebilmesi için bildirim belirteciniz ve bildirimin metni.",
+                "**Uygulama güncellemeleri (Expo):** Uygulama açıldığında, kurulu sürüm için kendi kodunun daha yeni bir sürümü olup olmadığını Expo'nun güncelleme hizmetine (expo.dev, 650 Industries, Inc.) sorar ve varsa indirir. İstek; Uygulamanın sürümünü, platformu (iOS veya Android), yayın kanalını, güncelleme kütüphanesinin cihazda ürettiği rastgele bir kimliği (hesabınız, cihaz veya reklam kimliği değildir) ve her internet isteğinde olduğu gibi IP adresinizi içerir. Kayıtlarınızın hiçbirini içermez.",
+                "**Ülke sorgusu (Apple, Google):** konuma izin verirseniz, cihazınızın işletim sistemi yalnızca bulunduğunuz ülkeyi belirlemek için yaklaşık koordinatlarınızı Apple'ın (iOS) ya da Google'ın (Android) konum çözümleme hizmetine gönderir. Sağlayıcı bu sorgu için kendi gizlilik politikasına tabi bağımsız veri sorumlusudur; kendisine kayıtlarınıza dair hiçbir bilgi iletilmez.",
+                "**Cüzdan paylaştığınız kişiler:** yalnızca bir sonraki bölümde anlatılanlar ve yalnızca siz davet ettiğiniz ya da bir daveti kabul ettiğiniz için.",
+                "**Yasal talep:** yetkili makamlarca usulüne uygun olarak talep edilmesi hâlinde, mevzuatın gerektirdiği ölçüde."
+              ]
+            ]
+          },
+          {
+            "title": "Bir Cüzdanı Paylaştığınızda",
+            "body": [
+              "Paylaşım siz açmadıkça kapalıdır: siz bir davet oluşturmadıkça hiçbir cüzdanınız başkasına görünmez.",
+              "Katılan kişi o cüzdanın kayıtlarını eksiksiz görür — tutarlar, tarihler, kategoriler, notlar ve her kaydın hangi ülkede girildiği — ve her kaydı hangi üyenin girdiğini de görür. Düzenleyici ayrıca kayıt ekleyip değiştirebilir; izleyici değiştiremez.",
+              "Sizinle ilgili gördüğü şey görünen adınız ve avatarınızdır; başka hiçbir şey değil. E-posta adresiniz hiçbir zaman başka bir kullanıcıya açıklanmaz.",
+              "Yüz yüze okutulan QR kod 15 dakika geçerli ve tek kullanımlıktır; bir mesajla gönderilen bağlantı 7 gün geçerlidir ve yalnızca bir katılım isteği oluşturur. Bir istek geldiğinde isteyen kişinin görünen adını ve avatarını görürsünüz; o kişi, siz onaylayana kadar hiçbir kaydınızı göremez — beklerken yalnızca sizin görünen adınızı, avatarınızı ve isteğinin kapsadığı cüzdanların adlarını görür. Her iki daveti de kullanılmadan önce iptal edebilirsiniz. Bir üyeyi dilediğiniz an çıkarabilirsiniz; erişimi o anda sona erer. Üye de kendi isteğiyle ayrılabilir.",
+              "Paylaşımın iki tarafı da tam hesap gerektirir. Misafir oturumu ne davet edebilir ne katılabilir: misafir hesabı cihazıyla birlikte yok olabilir ve karşı taraf ulaşılamayan bir şeye güvenmiş olur."
+            ]
+          },
+          {
+            "title": "Saklama Süresi ve Silme",
+            "body": [
+              "Verileriniz hesabınız açık kaldığı sürece saklanır.",
+              "\"Ayarlar → Hesabı Sil\" ile hesabınızı sildiğinizde; kimlik kaydınız, cüzdanlarınız, işlemleriniz, kategorileriniz, bütçeleriniz, hedefleriniz, tekrarlayan kurallarınız, ziyaretleriniz, geçişleriniz ve işaretlediğiniz ülkeler kalıcı olarak silinir. Silme işlemi geri alınamaz.",
+              "Uygulamayı artık açamıyorsanız hesabınızın silinmesini Uygulama dışından da isteyebilirsiniz: hesabın e-posta adresinden — Apple ile Giriş'te adresinizi gizlediyseniz Apple'ın size gösterdiği aktarma adresinden — nomadbudget@rubeeks.co adresine \"Hesabımı sil\" konulu bir e-posta yazın. Talebi o adresten onaylamanızı isteyebiliriz; ardından hesabı ve yukarıda sayılanların tümünü 30 gün içinde siler, işlem bitince size bildiririz. Aynı adımlar https://legal.rubeeks.co/nomadbudget/delete-account sayfasında da yer alır. Misafir hesabının e-posta adresi olmadığından hangisinin size ait olduğunu bilemeyiz: onu, uygulamayı kaldırmadan önce Uygulama içinde oturumdan çıkarak silin.",
+              "Hesabınızı silmek, vermiş olduğunuz paylaşımları da sona erdirir: paylaştığınız cüzdanlar aynı anda üyeleri için ortadan kalkar; profiliniz ve bildirim belirteciniz de silinir. Başkasına ait bir cüzdana girdiğiniz kayıtlar ise yerinde kalır — çünkü o kayıtlar o kişinin kayıtlarıdır — yalnızca artık size atfedilmezler.",
+              "Misafir oturumu, oturumdan çıkılarak silinir. Bu, alışılmış anlamda bir çıkış değildir: ona ulaşan başka bir yol olmadığı için hesabın silinmesidir ve geri alınamaz.",
+              "Bizdeki abonelik kaydınız hesabınızla birlikte silinir; RevenueCat'in sizin için tuttuğu müşteri kaydını da aynı anda sildiririz. Apple ve Google, bir satın almaya ilişkin kendi kayıtlarını kendi politikalarına göre saklar. Hesabınızı silmek aboneliği iptal etmez — Kullanım Koşulları'na bakınız.",
+              "Sistem yedeklerinde kalan kopyalar, yedek döngüsünün tamamlanmasıyla (en geç 30 gün içinde) tasfiye edilir. Cihazınızdaki yerel önbellek uygulamayı kaldırdığınızda silinir.",
+              "\"Geri bildirim gönder\" ile bize ilettiğiniz mesajlar en fazla iki yıl saklanır, ardından silinir. Bir bildirimin yanıtlanabilmesi için hesabınızı silmek bu mesajları silmez; ancak artık hiçbir hesapla ilişkilendirilmezler. Daha önce silinmesini nomadbudget@rubeeks.co adresine yazarak isteyebilirsiniz.",
+              "\"Bu mesajı geliştiriciye gönder\" ile gönderdiğiniz ödeme mesajları da aynı şekilde en fazla iki yıl saklanır; hesabınız silindiğinde artık hiçbir hesapla ilişkilendirilmez. Hesabınızla paylaştığınız bir biçim arasındaki bağ hesabınızla birlikte silinir; bir yıl boyunca ne onaylanan ne de yeniden gönderilen bir paylaşılmış biçim silinir.",
+              "Kullanım verileri ve çökme raporları 90 gün saklanır, ardından kendiliğinden silinir. Hesabınızı sildiğinizde bu süre dolana kadar kalan kayıtlar artık hiçbir hesapla ilişkilendirilmez.",
+              "Bir paylaşım daveti, süresi dolduktan en geç 14 gün sonra, o davetle gönderilmiş katılım istekleriyle birlikte silinir; onaylanan bir istekten geriye yalnızca cüzdan üyeliği kalır.",
+              "Ödeme taslakları yalnızca cihazınızdadır: onayladığınızda, yok saydığınızda, oturumdan çıktığınızda veya 14 gün içinde onaylanmadıklarında silinir.",
+              "Silme talebinizi nomadbudget@rubeeks.co adresine e-posta göndererek de iletebilirsiniz."
+            ]
+          },
+          {
+            "title": "Güvenlik",
+            "body": [
+              "Cihaz ile sunucu arasındaki tüm trafik TLS ile şifrelenir. Veriler sunucuda şifreli disklerde tutulur.",
+              "Her tablo satır bazlı erişim kuralları (Row Level Security) ile korunur: veritabanı düzeyinde bir kullanıcı yalnızca kendi kayıtlarına erişebilir.",
+              "Şifreniz düz metin olarak saklanmaz; yalnızca geri döndürülemez özeti tutulur.",
+              "Hiçbir sistem mutlak güvenlik sağlayamaz; hesabınızı güçlü ve benzersiz bir şifreyle korumanız önemlidir."
+            ]
+          },
+          {
+            "title": "Çerezler ve Benzer Teknolojiler",
+            "body": [
+              "Mobil uygulamada çerez kullanılmaz. Oturumunuzun açık kalması ve çevrimdışı çalışma için cihazınızın kendi güvenli depolama alanı ve yerel veritabanı kullanılır. Yerel veritabanı ayrıca, kullanım verilerini aynı kurulumda gruplamak için ilk açılışta üretilen rastgele bir kurulum kimliğini tutar; bu kimlik başka uygulamalarla veya reklam ağlarıyla paylaşılmaz, sizi uygulamalar ya da web siteleri arasında izlemek için kullanılmaz ve Uygulamayı kaldırdığınızda silinir."
+            ]
+          },
+          {
+            "title": "Çocukların Gizliliği",
+            "body": [
+              "Uygulama 18 yaş altındaki kişilere yönelik değildir ve bu kişilerden bilerek veri toplamayız. Böyle bir verinin işlendiğini tespit edersek ilgili hesabı ve verileri sileriz."
+            ]
+          },
+          {
+            "title": "Haklarınız",
+            "body": [
+              "KVKK m.11 ve — kapsamda olmanız hâlinde — GDPR uyarınca aşağıdaki haklara sahipsiniz:",
+              [
+                "Kişisel verilerinizin işlenip işlenmediğini öğrenme ve bunlara erişim talep etme.",
+                "Eksik veya yanlış işlenmiş verilerin düzeltilmesini isteme.",
+                "Verilerinizin silinmesini veya yok edilmesini isteme.",
+                "İşlemenin sınırlandırılmasını ve işlemeye itiraz etmeyi talep etme.",
+                "Verilerinizi yapılandırılmış, yaygın kullanılan bir formatta alma (veri taşınabilirliği).",
+                "Verilerin kanuna aykırı işlenmesi sebebiyle zarara uğramanız hâlinde zararın giderilmesini talep etme."
+              ],
+              "Erişim ve düzeltme haklarınızın büyük kısmını doğrudan Uygulama içinden kullanabilirsiniz: tüm kayıtlarınızı görüntüleyebilir, düzenleyebilir ve silebilirsiniz.",
+              "Pro ile Uygulama işlemlerinizi CSV dosyası olarak da dışa aktarabilir. Veri taşınabilirliği her planda geçerli bir haktır: Pro olmadan nomadbudget@rubeeks.co adresine yazmanız hâlinde verilerinizi aynı formatta göndeririz.",
+              "Kullanım verilerinin işlenmesine itiraz edebilirsiniz: nomadbudget@rubeeks.co adresine yazdığınızda hesabınıza bağlı kullanım verilerini sileriz ve hesabınızın bundan sonra gelen kullanım verilerini saklamayız.",
+              "Diğer talepleriniz için nomadbudget@rubeeks.co adresine yazın; başvurularınız en geç 30 gün içinde sonuçlandırılır. Ayrıntılı başvuru usulü için \"KVKK Aydınlatma Metni\" belgesine bakınız."
+            ]
+          },
+          {
+            "title": "Politikadaki Değişiklikler",
+            "body": [
+              "Bu politikayı güncelleyebiliriz. Esaslı değişiklikler yürürlüğe girmeden önce Uygulama içinde veya e-posta ile duyurulur. Belgenin yürürlük tarihi ve sürümü her zaman bu sayfanın başında görünür."
+            ]
+          },
+          {
+            "title": "İletişim",
+            "body": [
+              "Gizlilikle ilgili tüm soru, talep ve şikâyetleriniz için: nomadbudget@rubeeks.co"
+            ]
+          }
+        ]
+      },
+      "kvkk": {
+        "slug": "kvkk",
+        "title": "KVKK Aydınlatma Metni",
+        "summary": "6698 sayılı Kanun",
+        "intro": [
+          "Bu metin, 6698 sayılı Kişisel Verilerin Korunması Kanunu'nun (\"KVKK\") 10. maddesi ve Aydınlatma Yükümlülüğünün Yerine Getirilmesinde Uyulacak Usul ve Esaslar Hakkında Tebliğ uyarınca hazırlanmıştır.",
+          "Uygulamanın veri işleme faaliyetinin tamamına ilişkin daha ayrıntılı açıklama için \"Gizlilik Politikası\" belgesine bakınız."
+        ],
+        "sections": [
+          {
+            "title": "Veri Sorumlusunun Kimliği",
+            "body": [
+              "Veri sorumlusu: Rubeeks (rubeeks.co)",
+              "İletişim adresi: nomadbudget@rubeeks.co"
+            ]
+          },
+          {
+            "title": "İşlenen Kişisel Veri Kategorileri",
+            "body": [
+              [
+                "**Kimlik ve iletişim verisi:** e-posta adresi; seçtiğiniz görünen ad ve avatar. Hesap Apple ile Giriş veya Google ile Giriş kullanılarak açıldıysa buna sağlayıcının verdiği kimlik belirteci ile ilettiği (Apple'da gizli yönlendirme adresi olabilen) e-posta adresi de dâhildir. Misafir hesabında e-posta adresi bulunmaz; yalnızca ayarladıysanız görünen ad ve avatar bulunur.",
+                "**Müşteri işlem verisi:** Uygulamaya — elle girerek veya seçtiğiniz bir dosyadan içe aktararak — kaydettiğiniz cüzdan, işlem, kategori, bütçe, hedef ve tekrarlayan kural kayıtları; bu kayıtların tutar, para birimi, tarih ve serbest metin not alanları.",
+                "**Seyahat verisi:** onayladığınız veya girdiğiniz ziyaretler ve geçişler (ülke, ilk ve son gün, nereden ve nereye, ulaşım aracı, bilet olan işlem) ile ziyaret edilmiş olarak işaretlediğiniz ülkeler.",
+                "**İşlem güvenliği verisi:** şifrenizin kriptografik özeti (Apple ile Giriş veya Google ile Giriş kullanılarak açılan hesapta bulunmaz; kimliği sağlayıcı doğrular), oturum bilgileri, hesap oluşturma tarihi, onay sürümü ve tarihi.",
+                "**Cihaz verisi:** bildirimlere izin verdiyseniz cihazınızın bildirim belirteci ve cihazın iOS mu Android mi olduğu.",
+                "**Kullanım verisi:** Uygulamanın ilk açılışta ürettiği rastgele kurulum kimliği; görülen ekran ve adımlar, giriş ve satın alma denemelerinin sonucu, Uygulamanın istediği izinlere verilen yanıtlar ve beklenmeyen hatalar (ayıklanmış hata mesajı); çökme raporları — Android'de sistemin kaydından, iOS'ta donmaları ve aşırı işlemci kullanımını da bildiren MetricKit'ten (neden, kullanılan bellek, ekranın adı, teknik iz ve cihazın markası, modeli, işletim sistemi sürümü ile bellek boyutu); Uygulama sürümü, işletim sistemi, arayüz dili ve zaman; oturum açıksa hesabınız. Tutar, not, kategori, konum veya iletişim bilgisi içermez.",
+                "**Talep verisi:** Uygulamanın geri bildirim formuyla veya e-postayla bize gönderdiğiniz mesajlar, yakalanan bir ödemeden göndermeyi seçtiğiniz ödeme mesajları (cihazınızda maskelenmiş, Uygulamanın onlardan okuduklarıyla birlikte), verdiğiniz yanıt adresi ve mesaja eklenen cihaz bilgileri (Uygulama sürümü, işletim sistemi ve sürümü, cihaz modeli, dil).",
+                "**Paylaşılan biçim verisi (isteğe bağlı):** paylaşmayı seçtiğiniz banka mesajı biçimleri — bankanızın her rakamı, satıcısı ve adınız çıkarılmış sabit ifadesi — ve geldikleri uygulama ya da gönderen adı, hesabınızla ilişkili olarak.",
+                "**Satın alma verisi:** hesabınızın abonelik sağlayıcımızda kayıtlı olduğu kimlik ve — Pro'ya abone olursanız — plan, mağaza, satın alma, yenileme ve bitiş tarihleri, yenileme ve iade durumu, mağazanın işlem kimlikleri ile tahsil edilen fiyat ve para birimi. Kart ve banka bilgileri hiçbir zaman alınmaz.",
+                "**Paylaşım verisi:** hangi cüzdanınızı kimle ve hangi rolle paylaştığınız, hangi cüzdanlara kimin daveti ile katıldığınız, bir bağlantıyla gönderdiğiniz veya aldığınız katılım istekleri ve bir kaydı hangi üyenin girdiği."
+              ],
+              "Ödeme yakalamayı açtığınızda okunan bildirim ve mesaj metinleri, onlardan hazırlanan taslaklar ve öğrenilen mesaj kalıpları yalnızca cihazınızda işlenir ve tarafımıza aktarılmaz — paylaşmayı seçtiğiniz biçimler ve bize göndermeyi seçtiğiniz mesajlar dışında; bir taslağı onayladığınızda kaydettiğiniz işlem, müşteri işlem verisi olarak işlenir.",
+              "Özel nitelikli kişisel veri işlenmemektedir. Serbest metin not alanlarına özel nitelikli veri (sağlık, inanç vb. içerikli açıklamalar) yazmamanızı öneririz."
+            ]
+          },
+          {
+            "title": "Kişisel Verilerin İşlenme Amaçları",
+            "body": [
+              [
+                "Üyelik kaydının oluşturulması ve hesap güvenliğinin sağlanması.",
+                "Bütçe takibi hizmetinin sunulması: kayıtların saklanması, senkronize edilmesi, para birimleri arasında dönüştürülmesi, özet ve grafiklerin üretilmesi, harita ve rotanın çizilmesi, ülkelerin kendi harcamalarınız üzerinden karşılaştırılması.",
+                "Talebiniz üzerine, ödeme bildirimlerinizden veya Kestirmeler otomasyonunuzdan cihazınızda kayıt taslağı hazırlanması.",
+                "Paylaşım özelliğinin yürütülmesi: davetlerin oluşturulması ve kullanılması, katılım isteklerinin iletilmesi ve yanıtlanması, cüzdan üyeliklerinin tutulması ve bir kaydı hangi üyenin girdiğinin gösterilmesi.",
+                "Pro aboneliğinin satışı ve yönetimi: satın alma, yenileme, iptal, iade ve geri yüklenen satın alımların doğrulanması.",
+                "Hizmete ilişkin zorunlu bildirimlerin (e-posta doğrulama, şifre sıfırlama) ve — izin verdiyseniz — paylaşılan cüzdandaki hareketlere, katılım isteklerine ve bütçelerinize dair bildirimlerin iletilmesi ile hatırlatıcıların gösterilmesi.",
+                "Bilgi güvenliği süreçlerinin yürütülmesi, hata giderme ve kötüye kullanımın önlenmesi.",
+                "Uygulamanın nasıl kullanıldığının ölçülmesi, kullanıcıların takıldığı adımların bulunması ve Uygulamanın geliştirilmesi.",
+                "Talep ve şikâyetlerin takibi ile yasal yükümlülüklerin yerine getirilmesi."
+              ]
+            ]
+          },
+          {
+            "title": "Hukuki Sebepler",
+            "body": [
+              "Kişisel verileriniz KVKK m.5 kapsamında aşağıdaki hukuki sebeplere dayanılarak işlenmektedir:",
+              [
+                "**m.5/2-c** — Bir sözleşmenin kurulması veya ifasıyla doğrudan doğruya ilgili olması: hesabın oluşturulması ve Pro aboneliği dâhil hizmetin sunulması.",
+                "**m.5/2-ç** — Veri sorumlusunun hukuki yükümlülüğünü yerine getirmesi: yetkili makam taleplerinin karşılanması.",
+                "**m.5/2-f** — İlgili kişinin temel hak ve özgürlüklerine zarar vermemek kaydıyla meşru menfaat: güvenlik, kötüye kullanımın önlenmesi ve hata giderme; içerik barındırmayan kullanım verileriyle Uygulamanın geliştirilmesi; bize gönderdiğiniz mesajların yanıtlanması.",
+                "**m.5/1** — Açık rıza: cihazınızın konumundan ülke bilgisinin türetilmesi, bildirim gönderilmesi, ödeme bildirimlerinizden kayıt taslağı hazırlanması ve cihazınızın öğrendiği banka mesajı biçimlerinin paylaşılması. Hepsi cihaz izniyle (ödeme yakalamada ayrıca Uygulama içindeki anahtarlarla ya da sizin kurduğunuz Kestirmeler otomasyonuyla; biçim paylaşımında \"Öğrenilen biçimleri paylaş\" anahtarıyla) verilir ve aynı yerlerden her an geri alınabilir."
+              ]
+            ]
+          },
+          {
+            "title": "Toplama Yöntemi",
+            "body": [
+              "Kişisel verileriniz, Uygulamayı kullanmanız sırasında doğrudan sizin tarafınızdan girilmek suretiyle, içe aktarmayı seçtiğiniz bir CSV veya Excel dosyasından (cihazınızda okunarak) ve — konum, kamera, bildirimler ve ödeme yakalama için — tarafınızca verilen cihaz izinleri ile kurduğunuz Kestirmeler otomasyonları aracılığıyla elektronik ortamda otomatik yollarla toplanmaktadır. Kullanım verileri, Uygulamayı kullanırken Uygulama tarafından otomatik olarak oluşturulur.",
+              "Hakkınızda üçüncü kişilerden veri temin edilen iki hâl vardır ve her ikisi de tamamen sizin tercihinize bağlıdır. Apple ile Giriş veya Google ile Giriş'i seçmeniz durumunda kimlik belirteciniz, e-posta adresiniz ve adınız ilgili sağlayıcıdan tarafımıza ulaşır — Apple'dan yalnızca ilk girişte, Google'dan her girişte, ancak yalnızca ilk seferinde okunmak üzere. Pro'ya abone olmanız durumunda ise Apple veya Google, satın almayı ve sonraki yenileme, iptal ve iadeleri RevenueCat aracılığıyla tarafımıza bildirir. Bunun dışında kaynağı başka bir kişi olan tek kayıt, davet edildiğiniz bir cüzdandaki üyeliğinizdir; bu kayıt sizi davet eden kişiyi de içerir."
+            ]
+          },
+          {
+            "title": "Aktarım ve Yurt Dışına Aktarım",
+            "body": [
+              "Kişisel verileriniz, hizmetin sunulabilmesi amacıyla barındırma ve kimlik doğrulama hizmeti sağlayan Supabase Inc.'a veri işleyen sıfatıyla aktarılmaktadır. Sunucular Supabase Inc. tarafından işletilen sunucular (AWS ap-northeast-2 — Seul, Güney Kore) üzerindedir; dolayısıyla veriler KVKK m.9 anlamında yurt dışına aktarılmaktadır.",
+              "Aktarım, sözleşmenin ifası için zorunlu olup, veri işleyenle akdedilen sözleşme ve teknik/idari tedbirlerle korunmaktadır.",
+              "Apple ile Giriş veya Google ile Giriş'i seçmeniz hâlinde, kimliğinizi doğrulayabilmesi için giriş talebiniz Amerika Birleşik Devletleri'nde bulunan Apple Inc. veya Google LLC'ye aktarılır; sağlayıcı bu adımda bağımsız veri sorumlusu sıfatıyla hareket eder ve kendisine kayıtlarınıza dair hiçbir bilgi iletilmez.",
+              "Bildirimlere izin verdiyseniz, yalnızca mesajın iletilebilmesi amacıyla bildirim belirteciniz ve bildirimin metni Amerika Birleşik Devletleri'nde bulunan Expo, Apple (APNs) ve Google (FCM) altyapılarına aktarılır.",
+              "Uygulama açıldığında, yalnızca Uygulamanın kendi kodunun güncellemelerini denetlemek ve iletmek amacıyla Uygulamanın sürümü, platformu ve yayın kanalı, güncelleme kütüphanesinin ürettiği rastgele kimlik ve IP adresiniz Amerika Birleşik Devletleri'ndeki Expo'ya aktarılır.",
+              "Konuma izin verdiyseniz, yalnızca bulunduğunuz ülkenin belirlenebilmesi amacıyla cihazınızın işletim sistemi yaklaşık koordinatlarınızı Amerika Birleşik Devletleri'nde bulunan Apple Inc.'e (iOS) veya Google LLC'ye (Android) aktarır; sağlayıcı bu sorguda bağımsız veri sorumlusu sıfatıyla hareket eder ve kendisine kayıtlarınıza dair hiçbir bilgi iletilmez.",
+              "Pro satın alımlarının doğrulanıp yönetilebilmesi için hesap kimliğiniz ve — abone olursanız — satın alma verileriniz, veri işleyen sıfatıyla hareket eden ve Amerika Birleşik Devletleri'nde bulunan RevenueCat, Inc.'e aktarılır. Abone olmanız hâlinde ödemenin kendisi, bağımsız veri sorumlusu sıfatıyla Apple Inc. veya Google LLC tarafından işlenir. Google Play'de aboneliğe ilişkin bildirimler (mağazanın satın alma referansı, plan ve değişikliğin türü), RevenueCat'e ulaşmadan önce Amerika Birleşik Devletleri'nde Google LLC tarafından işletilen Google Cloud Pub/Sub'dan geçer.",
+              "Bir cüzdanı paylaşmanız hâlinde, o cüzdanın kayıtları ile görünen adınız ve avatarınız davet ettiğiniz kişilere görünür olur. Bu aktarım yalnızca sizin talimatınızla gerçekleşir ve üyeyi çıkararak dilediğiniz an sona erdirebilirsiniz. Bir paylaşım bağlantısıyla katılım isteği gönderdiğinizde ise görünen adınız ve avatarınız bağlantının sahibine gösterilir; kayıtlarınızın hiçbiri gösterilmez.",
+              "Bunun dışında verileriniz, yalnızca kanunen yetkili kamu kurum ve kuruluşlarına, mevzuatın öngördüğü ölçüde aktarılabilir."
+            ]
+          },
+          {
+            "title": "Saklama Süresi",
+            "body": [
+              "Kişisel verileriniz, hesabınız açık kaldığı sürece saklanır. Hesabınızı silmeniz hâlinde veriler kalıcı olarak silinir; sistem yedeklerindeki kopyalar yedek döngüsünün tamamlanmasıyla (en geç 30 gün) tasfiye edilir. Misafir hesabı, ona ulaşan başka bir yol olmadığı için oturumdan çıktığınızda silinir. Satın alma verileri hesapla birlikte silinir; RevenueCat'in tuttuğu müşteri kaydı da aynı anda talebimiz üzerine silinir. Apple ve Google kendi satın alma kayıtlarını kendi politikalarına göre saklar.",
+              "Geri bildirim formuyla gönderilen mesajlar ve yakalanan bir ödemeden gönderilen ödeme mesajları, hesap açık olsun olmasın, en fazla iki yıl saklanır ve ardından silinir; hesap silindiğinde artık onunla ilişkilendirilmezler. Bir yıl boyunca ne onaylanan ne de yeniden gönderilen paylaşılmış bir banka mesajı biçimi silinir; hesabınızla bir biçim arasındaki bağ hesabınızla birlikte silinir.",
+              "Kullanım verileri ve çökme raporları 90 gün saklanır ve ardından silinir; hesap silindiğinde artık onunla ilişkilendirilmezler. Paylaşım davetleri, süreleri dolduktan en geç 14 gün sonra kendileriyle gönderilen katılım istekleriyle birlikte silinir. Ödeme yakalamanın cihazınızdaki taslakları en fazla 14 gün tutulur.",
+              "Mevzuattan doğan bir saklama yükümlülüğü bulunması hâlinde, ilgili veriler yalnızca bu yükümlülüğün gerektirdiği süre ve kapsamla sınırlı olarak muhafaza edilir."
+            ]
+          },
+          {
+            "title": "İlgili Kişinin Hakları (KVKK m.11)",
+            "body": [
+              "Veri sorumlusuna başvurarak;",
+              [
+                "Kişisel verilerinizin işlenip işlenmediğini öğrenme,",
+                "İşlenmişse buna ilişkin bilgi talep etme,",
+                "İşlenme amacını ve amacına uygun kullanılıp kullanılmadığını öğrenme,",
+                "Yurt içinde veya yurt dışında verilerin aktarıldığı üçüncü kişileri bilme,",
+                "Eksik veya yanlış işlenmiş olması hâlinde düzeltilmesini isteme,",
+                "KVKK m.7'de öngörülen şartlar çerçevesinde silinmesini veya yok edilmesini isteme,",
+                "Düzeltme, silme ve yok etme işlemlerinin verilerin aktarıldığı üçüncü kişilere bildirilmesini isteme,",
+                "Münhasıran otomatik sistemlerle analiz edilmesi suretiyle aleyhinize bir sonucun ortaya çıkmasına itiraz etme,",
+                "Kanuna aykırı işlenmesi sebebiyle zarara uğramanız hâlinde zararın giderilmesini talep etme"
+              ],
+              "haklarına sahipsiniz."
+            ]
+          },
+          {
+            "title": "Başvuru Usulü",
+            "body": [
+              "Haklarınıza ilişkin taleplerinizi, Veri Sorumlusuna Başvuru Usul ve Esasları Hakkında Tebliğ uyarınca, kimliğinizi tespit edici bilgilerle birlikte nomadbudget@rubeeks.co adresine iletebilirsiniz. Başvurunuzu, sistemimizde kayıtlı e-posta adresinizden göndermeniz kimlik doğrulamasını hızlandırır.",
+              "Başvurunuzda talebinizin konusunu açıkça belirtiniz. Talepleriniz, niteliğine göre en kısa sürede ve her hâlde en geç 30 gün içinde ücretsiz olarak sonuçlandırılır. İşlemin ayrıca bir maliyet gerektirmesi hâlinde Kurul tarafından belirlenen tarifedeki ücret alınabilir.",
+              "Başvurunuzun reddedilmesi, verilen cevabı yetersiz bulmanız veya süresinde cevap verilmemesi hâlinde, cevabı öğrendiğiniz tarihten itibaren 30 ve her hâlde başvuru tarihinden itibaren 60 gün içinde Kişisel Verileri Koruma Kurulu'na şikâyette bulunabilirsiniz."
+            ]
+          }
+        ]
+      },
+      "disclaimer": {
+        "slug": "disclaimer",
+        "title": "Finansal Sorumluluk Reddi",
+        "summary": "Sayılar tahmin, tavsiye değil",
+        "intro": [
+          "Nomad Budget bir kayıt ve analiz aracıdır. Ürettiği her sayı, sizin girdiğiniz verilere ve açık kaynaklı istatistiklere dayanan bir tahmindir."
+        ],
+        "sections": [
+          {
+            "title": "Yatırım veya Finansal Tavsiye Değildir",
+            "body": [
+              "Uygulamada yer alan hiçbir içerik, özet, grafik, karşılaştırma veya öneri — ücretsiz Uygulamaya ya da Pro'ya ait olması fark etmeksizin — yatırım danışmanlığı, finansal danışmanlık, portföy yöneticiliği veya yatırım tavsiyesi niteliğinde değildir.",
+              "Yatırım danışmanlığı hizmeti, yetkili kuruluşlar tarafından kişilerin risk ve getiri tercihleri dikkate alınarak sunulur. Uygulama böyle bir yetkiye sahip değildir ve kişiye özel değerlendirme yapmaz."
+            ]
+          },
+          {
+            "title": "Döviz Kurları",
+            "body": [
+              "Kurlar açık ve ücretsiz kur servislerinden alınır, önbelleğe kaydedilir ve belirli aralıklarla yenilenir. Gerçek zamanlı, alım-satım için bağlayıcı veya bankanızın uygulayacağı kur değildir.",
+              "Çevrimdışıyken veya kur servisi erişilemezken, en son bilinen kur geçici olarak kullanılır; bağlantı geldiğinde, kaydı o arada değiştirmediyseniz, kaydın tarihine ait kurla yeniden hesaplanır. Dönüştürülmüş tutarlar bu nedenle bir süre gerçekleşen tutarlardan sapabilir.",
+              "Geçmiş tarihli işlemlerde, mevcutsa o tarihe en yakın tarihsel kur kullanılır."
+            ]
+          },
+          {
+            "title": "Ülkeler Arası Fiyat Karşılaştırmaları",
+            "body": [
+              "Fiyat seviyesi karşılaştırmaları, Dünya Bankası ICP 2021 ve Eurostat verilerinden türetilen endekslere dayanır ve enflasyon/kur ile ileriye taşınır. Bu, ülke ortalamalarına ilişkin kaba bir tahmindir; şehirler, semtler ve yaşam biçimleri arasındaki farkları yansıtmaz.",
+              "Kira her karşılaştırmanın dışında tutulur: hiçbir ücretsiz resmî kaynak kirayı ülkeler arası karşılaştırılabilir düzeyde yayımlamadığından Uygulama kirayı ne tahmin eder ne de iki tarafta fiyatlar. Kendi fiyat araştırmasını yayımlamayan ülkelerin seviyeleri komşu bir ekonomiden türetilir ve öyle olduğu belirtilir.",
+              "Ülke sayfasındaki \"orada bir ay kaça gelir\" tahmini ve yeni bir ülkeye vardığınızda gösterilen not, geçmiş harcamalarınızı o ülkenin fiyat seviyeleriyle yeniden fiyatlar. Yerel fiyatlara uyum sağlayacağınız değil, aynı alışkanlıkları sürdüreceğiniz varsayılır.",
+              "Bu karşılaştırmalar bir taşınma kararı için tek başına yeterli değildir; yerel araştırmanın yerini tutmaz."
+            ]
+          },
+          {
+            "title": "Harita ve Rota",
+            "body": [
+              "Haritanın gösterdiği ülkeler, kalış süreleri ve rota, kayıtlarınızın tarih ve ülkelerinden ve onayladığınız ziyaret ile geçişlerden okunur. Bunlar harcamalarınızın bir okumasıdır, seyahat günlüğü değildir: kalış süresi para harcadığınız günlerden sayılır, dolayısıyla bir ölçüm değil alt sınırdır; Uygulamanın önerdiği bir geçiş, siz onaylayana kadar tahmindir.",
+              "Ülke görselleri üretilmiş temsilî çizimlerdir; gerçek bir yerin fotoğrafı değildir."
+            ]
+          },
+          {
+            "title": "Vergi ve Hukuki Tavsiye Değildir",
+            "body": [
+              "Uygulama vergi hesaplaması yapmaz ve vergi, muhasebe veya hukuki tavsiye vermez. Kayıtlarınız resmî defter, fatura veya beyanname yerine geçmez. Vergisel yükümlülükleriniz için yetkili bir mali müşavire başvurunuz."
+            ]
+          },
+          {
+            "title": "Veri Doğruluğu ve Yedekleme",
+            "body": [
+              "Uygulamadaki tüm kayıtlar sizin girdiğiniz verilere dayanır; eksik veya hatalı girişler tüm özet ve grafikleri etkiler.",
+              "Bir ödeme bildiriminden veya mesajdan hazırlanan taslak, metnin otomatik okunmasıyla oluşur ve hatalı olabilir; onaylamadan önce tutarı, para birimini, tarihi ve kategoriyi kontrol ediniz. Yakalama her ödemeyi fark etmeyebilir; kayıtlarınızın eksiksizliği için ona güvenmeyiniz.",
+              "Verilerinizi korumak için makul teknik önlemleri alıyoruz; ancak veri kaybına karşı mutlak garanti verilemez. Sizin için kritik olan kayıtların ayrı bir kopyasını bulundurmanızı öneririz."
+            ]
+          },
+          {
+            "title": "Kararların Sorumluluğu",
+            "body": [
+              "Uygulamadaki bilgilere dayanarak aldığınız harcama, tasarruf, taşınma veya yatırım kararlarının sonuçları münhasıran size aittir. Bu kararlardan doğan zararlardan sorumluluk kabul edilmemektedir."
+            ]
+          }
+        ]
+      },
+      "licenses": {
+        "slug": "licenses",
+        "title": "Lisanslar ve Veri Kaynakları",
+        "summary": "Açık kaynak ve veriler",
+        "intro": [
+          "Nomad Budget, açık kaynak yazılımlar ve kamuya açık istatistik verileri üzerine kuruludur. Aşağıda bunların listesi ve lisansları yer alır."
+        ],
+        "sections": [
+          {
+            "title": "Açık Kaynak Bileşenler",
+            "body": [
+              [
+                "React, React Native, Expo ve expo-router — MIT Lisansı",
+                "Supabase JavaScript istemcisi — MIT Lisansı",
+                "TanStack Query — MIT Lisansı",
+                "NativeWind ve Tailwind CSS — MIT Lisansı",
+                "i18next ve react-i18next — MIT Lisansı",
+                "Zustand — MIT Lisansı",
+                "React Native Reanimated, Gesture Handler, Screens, Safe Area Context, SVG — MIT Lisansı",
+                "React Native Skia (Shopify) — MIT Lisansı",
+                "react-native-gifted-charts — MIT Lisansı",
+                "react-native-country-flag-icons — MIT Lisansı",
+                "react-native-qrcode-svg — MIT Lisansı",
+                "Google Sign-In for React Native — MIT Lisansı",
+                "RevenueCat Purchases SDK (react-native-purchases) — MIT Lisansı",
+                "SheetJS Community Edition (xlsx) — Apache Lisansı 2.0",
+                "Lucide ikonları — ISC Lisansı",
+                "Inter yazı tipi (Rasmus Andersson) — SIL Open Font License 1.1"
+              ],
+              "Her bileşenin lisans metnine, ilgili projenin resmî deposundan ulaşılabilir."
+            ]
+          },
+          {
+            "title": "Veri Kaynakları",
+            "body": [
+              [
+                "**Dünya Bankası** — ICP 2021 fiyat seviyesi endeksleri, tüketici fiyat endeksi ve resmî kur serileri (CC BY 4.0).",
+                "**Eurostat** — uyumlaştırılmış tüketici fiyat endeksleri (Avrupa Komisyonu yeniden kullanım politikası).",
+                "**open.er-api.com** — güncel döviz kurları.",
+                "**frankfurter.dev** ve **fawazahmed0/currency-api** — tarihsel döviz kurları.",
+                "**NASA Earth Observatory** — kürenin yüzeyini oluşturan Blue Marble Next Generation görüntüleri (kamu malı).",
+                "**Natural Earth** — ülke sınırları ve dünya haritası geometrisi (kamu malı)."
+              ],
+              "Veriler kaynaklarından alındıkları hâliyle kullanılır ve Uygulama içinde işlenerek türetilmiş göstergeler üretilir. Kaynak kurumlar bu türetilmiş göstergelerden sorumlu değildir ve Uygulamayı onaylamamaktadır."
+            ]
+          },
+          {
+            "title": "Görseller",
+            "body": [
+              "Haritadaki ülke görselleri, tanıtım ekranlarındaki çizimler ve boş durum nesneleri, ticari kullanıma izin veren lisanslar altında üretken görüntü araçlarıyla üretilmiştir. Bunlar temsilî çizimlerdir, fotoğraf değildir; gerçek bir kişiyi veya mülkü betimlemez."
+            ]
+          },
+          {
+            "title": "Markalar",
+            "body": [
+              "Nomad Budget adı ve logosu yayıncıya aittir. Belgede geçen diğer tüm marka ve ticari adlar ilgili sahiplerine aittir; anılmaları herhangi bir ortaklık veya onay ilişkisi göstermez."
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "deleteAccount": {
+    "en": {
+      "title": "Delete your Nomad Budget account",
+      "html": "<h2>In the app</h2>\n<ol>\n<li>Open Nomad Budget and go to <strong>Settings</strong>.</li>\n<li>Tap <strong>Delete Account</strong> and confirm.</li>\n</ol>\n<p>The account and everything in it are deleted at once. This cannot be undone.</p>\n<h2>Without the app</h2>\n<p>If you can no longer open the app, email <a href=\"mailto:nomadbudget@rubeeks.co?subject=Delete%20my%20account\">nomadbudget@rubeeks.co</a> from the email address of your account, with the subject <strong>Delete my account</strong>. If you signed in with Apple and hid your address, write from the relay address Apple shows you. We may ask you to confirm the request from that address. We delete the account within 30 days and tell you when it is done.</p>\n<p>A guest account has no email address, so we cannot tell which one is yours. Delete it in the app by signing out of it before you uninstall.</p>\n<h2>What is deleted</h2>\n<p>Your account record, wallets, transactions, categories, budgets, goals, recurring rules, visits, crossings and marked countries, your profile and push token, and your subscription record with us. We also have RevenueCat, our subscription provider, delete its customer record for you. Wallets you shared disappear for their members. Entries you made in someone else's wallet stay there as their records, no longer attributed to you.</p>\n<h2>What is kept, and for how long</h2>\n<ul>\n<li>Copies in system backups: purged within 30 days.</li>\n<li>Usage data and crash reports: kept up to 90 days in all, no longer linked to any account.</li>\n<li>Messages you sent with \"Send feedback\" or \"Send this message to the developer\": kept up to two years, no longer linked to any account. You can ask us to delete them sooner at the address above.</li>\n<li>Apple and Google keep their own records of a purchase under their own policies.</li>\n</ul>\n<p>Deleting your account does not cancel a Pro subscription. Cancel it in Google Play (Payments &amp; subscriptions) or in your Apple ID settings, or it keeps renewing.</p>"
+    },
+    "tr": {
+      "title": "Nomad Budget hesabını sil",
+      "html": "<h2>Uygulamada</h2><ol><li>Nomad Budget’i aç ve <strong>Ayarlar</strong>’a git.</li><li><strong>Hesabı Sil</strong>’e dokun ve onayla.</li></ol><p>Hesap ve içindeki her şey hemen silinir. Geri alınamaz.</p><h2>Uygulama olmadan</h2><p>Uygulamayı artık açamıyorsan, hesabının e-posta adresinden <a href=\"mailto:nomadbudget@rubeeks.co?subject=Hesab%C4%B1m%C4%B1%20sil\">nomadbudget@rubeeks.co</a> adresine <strong>Hesabımı sil</strong> konulu bir e-posta yaz. Apple ile girip adresini gizlediysen, Apple’ın sana gösterdiği aktarma adresinden yaz. Talebi o adresten onaylamanı isteyebiliriz. Hesabı 30 gün içinde siler, bitince sana haber veririz.</p><p>Misafir hesabının e-posta adresi yok; hangisinin senin olduğunu bilemeyiz. Uygulamayı kaldırmadan önce uygulamada oturumdan çıkarak sil.</p><h2>Neler silinir</h2><p>Hesap kaydın, cüzdanların, işlemlerin, kategorilerin, bütçelerin, hedeflerin, tekrarlayan kuralların, ziyaretlerin, geçişlerin ve işaretlediğin ülkeler; profilin ve bildirim belirtecin; bizdeki abonelik kaydın. Abonelik sağlayıcımız RevenueCat’e de senin için tuttuğu müşteri kaydını sildiririz. Paylaştığın cüzdanlar üyeleri için ortadan kalkar. Başkasının cüzdanına girdiğin kayıtlar onun kaydı olarak kalır, artık sana atfedilmez.</p><h2>Neler, ne kadar süre kalır</h2><ul><li>Sistem yedeklerindeki kopyalar: en geç 30 gün içinde temizlenir.</li><li>Kullanım verisi ve çökme raporları: toplamda en fazla 90 gün, hiçbir hesaba bağlı olmadan.</li><li>\"Geri bildirim gönder\" ya da \"Bu mesajı geliştiriciye gönder\" ile gönderdiklerin: en fazla iki yıl, hiçbir hesaba bağlı olmadan. Daha önce silinmesini yukarıdaki adrese yazarak isteyebilirsin.</li><li>Apple ve Google bir satın almanın kendi kayıtlarını kendi politikalarına göre saklar.</li></ul><p>Hesabı silmek Pro aboneliğini iptal etmez. Google Play’de (Ödemeler ve abonelikler) ya da Apple Kimliği ayarlarında iptal et; yoksa yenilenmeye devam eder.</p>"
+    }
+  }
+}

@@ -1,0 +1,63 @@
+---
+// One legal page: a document from the app (its numbered sections and their contents), or
+// the account-deletion page. The words are the app's; only the frame is the site's.
+import Base from '../layouts/Base.astro';
+import { formatDate } from '../blog';
+import { LEGAL, LEGAL_LABELS, blocks, legalDoc, legalPath } from '../legal';
+import type { Lang } from '../i18n';
+import '../styles/blog.css';
+import '../styles/legal.css';
+
+interface Props { lang: Lang; slug: string }
+const { lang, slug } = Astro.props;
+const l = LEGAL_LABELS[lang];
+const meta = l.meta(LEGAL.version, formatDate(new Date(LEGAL.effective), lang));
+const isDelete = slug === 'delete-account';
+const doc = isDelete ? null : legalDoc(lang, slug);
+const del = LEGAL.deleteAccount[lang];
+const title = doc ? doc.title : del.title;
+const description = doc ? doc.summary : l.deleteSummary;
+---
+
+<Base
+  lang={lang}
+  title={`${title} — ${LEGAL.appName}`}
+  description={description}
+  path={legalPath(lang, slug)}
+  alternates={{ en: legalPath('en', slug), tr: legalPath('tr', slug) }}
+  solidHeader
+>
+  <article class="post legal">
+    <header class="post-head">
+      <a class="post-back" href={legalPath(lang)}>← {l.back}</a>
+      <h1>{title}</h1>
+      <p class="legal-meta">{isDelete ? `${LEGAL.appName} · ${LEGAL.publisher}` : meta}</p>
+    </header>
+
+    {doc ? (
+      <>
+        <div class="prose legal-lede" set:html={blocks(doc.intro)} />
+        <nav class="legal-toc" aria-labelledby="toc-title">
+          <h2 id="toc-title">{l.toc}</h2>
+          <ol>
+            {doc.sections.map((section, i) => <li><a href={`#s${i + 1}`}>{section.title}</a></li>)}
+          </ol>
+        </nav>
+        <div class="prose">
+          {doc.sections.map((section, i) => (
+            <section id={`s${i + 1}`}>
+              <h2><span class="legal-n">{i + 1}.</span> {section.title}</h2>
+              <Fragment set:html={blocks(section.body)} />
+            </section>
+          ))}
+        </div>
+      </>
+    ) : (
+      <div class="prose" set:html={del.html} />
+    )}
+
+    <p class="legal-contact">
+      {LEGAL.appName} · {LEGAL.publisher} · <a href={`mailto:${LEGAL.contact}`}>{LEGAL.contact}</a>
+    </p>
+  </article>
+</Base>

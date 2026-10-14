@@ -6,7 +6,6 @@ export type Lang = 'en' | 'tr';
 export const SITE = 'https://nomadbudget.rubeeks.co';
 export const APP_STORE_ID = '6803787746';
 export const CONTACT = 'nomadbudget@rubeeks.co';
-export const LEGAL = 'https://legal.rubeeks.co/nomadbudget';
 
 /** The site's social card (public/og-*.jpg, from scripts/build-og.mjs). Raise `v` each
  *  time the cards are rebuilt: X, Facebook and the CDN keep a card by its address, and
