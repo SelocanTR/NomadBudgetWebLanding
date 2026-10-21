@@ -277,7 +277,7 @@ const latest = postsIn(lang, await allPosts()).slice(0, 3);
       </div>
       <div class="pass-stub">
         <dl class="pass-fields">
-          <div><dt>{s.final.pass.gate[0]}</dt><dd><span class="not-android">{s.final.pass.gate[1]}</span><span class="only-android">{s.final.pass.gate[2]}</span></dd></div>
+          <div><dt>{s.final.pass.gate[0]}</dt><dd class="pass-gate"><span class="only-ios">{s.final.pass.gate[1]}</span><span class="only-android">{s.final.pass.gate[2]}</span><span class="only-computer">{s.final.pass.gate[3]}</span></dd></div>
         </dl>
         <a class="btn btn-lime" href={store} rel="noopener">{s.nav.download}</a>
         <!-- Where the corner's App Store code lands while the pass is on screen (the script below). -->

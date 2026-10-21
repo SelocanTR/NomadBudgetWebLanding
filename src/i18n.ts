@@ -94,7 +94,7 @@ export type Strings = {
     body: string;
     /** The boarding pass the closing call is printed on: its label, the two ends of the
      *  route (the codes are the app's own, NMD to BGT) and the fields on it. */
-    pass: { kicker: string; from: string; fromNote: string; to: string; toNote: string; fields: [string, string][]; gate: [string, string, string]; close: string };
+    pass: { kicker: string; from: string; fromNote: string; to: string; toNote: string; fields: [string, string][]; gate: [string, string, string, string]; close: string };
   };
   footer: { tagline: string; legal: string; privacy: string; terms: string; kvkk?: string; disclaimer: string; licenses: string; contact: string; compare: string; imagery: string; rights: string };
   notFound: { title: string; body: string; home: string };
@@ -351,7 +351,7 @@ const en: Strings = {
     body: 'Start with the one you’re in.',
     pass: {
       kicker: 'Boarding pass', from: 'From', fromNote: 'Where you are', to: 'To', toNote: 'Where you go next',
-      fields: [['Passenger', 'You'], ['Class', 'Free'], ['Boarding', 'Now']], gate: ['Gate', 'App Store', 'Google Play'], close: 'Close',
+      fields: [['Passenger', 'You'], ['Class', 'Free'], ['Boarding', 'Now']], gate: ['Gate', 'App Store', 'Google Play', 'iOS · Android'], close: 'Close',
     },
   },
   footer: {
@@ -651,7 +651,7 @@ const tr: Strings = {
     body: 'İçinde bulunduğunla başla.',
     pass: {
       kicker: 'Biniş kartı', from: 'Nereden', fromNote: 'Bulunduğun ülke', to: 'Nereye', toNote: 'Gideceğin yer',
-      fields: [['Yolcu', 'Sen'], ['Sınıf', 'Ücretsiz'], ['Biniş', 'Şimdi']], gate: ['Kapı', 'App Store', 'Google Play'], close: 'Kapat',
+      fields: [['Yolcu', 'Sen'], ['Sınıf', 'Ücretsiz'], ['Biniş', 'Şimdi']], gate: ['Kapı', 'App Store', 'Google Play', 'iOS · Android'], close: 'Kapat',
     },
   },
   footer: {

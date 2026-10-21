@@ -264,9 +264,9 @@ p { margin: 0; text-wrap: pretty; }
 .qr-float .qr-code { display: block; width: 76px; height: 76px; }
 .qr-float .qr-code svg { width: 100%; height: 100%; }
 @media (min-width: 1024px) and (pointer: fine) { .qr-float { display: flex; } }
-/* What only one kind of phone sees: the other store. */
-.only-android, .is-android .not-android { display: none; }
-.is-android .only-android { display: revert; }
+/* A phone sees its own store only; a computer, whose QR code serves both, sees both. */
+.only-ios, .only-android, .is-android .only-computer, .is-ios .only-computer { display: none; }
+.is-ios .only-ios, .is-android .only-android { display: inline; }
 
 /* The planet is out of the flow: bigger than the screen is tall, it would otherwise make
    the row taller than the view and push the copy centred in it below the fold. */

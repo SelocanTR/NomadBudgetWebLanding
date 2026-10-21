@@ -100,6 +100,8 @@ const qr = await QRCode.toString(getAppUrl(lang), { type: 'svg', margin: 0, erro
 
     <script is:inline>
       if (/Android/i.test(navigator.userAgent)) document.documentElement.classList.add('is-android');
+      // iPadOS asks for the desktop site and says Macintosh; its touch screen gives it away.
+      else if (/iPhone|iPad|iPod/i.test(navigator.userAgent) || (/Macintosh/i.test(navigator.userAgent) && navigator.maxTouchPoints > 1)) document.documentElement.classList.add('is-ios');
       // Set before the first paint so the card over the hero starts see-through rather
       // than flashing solid; the scroll handler keeps it true from then on.
       if (!scrollY) document.documentElement.classList.add('at-top');
