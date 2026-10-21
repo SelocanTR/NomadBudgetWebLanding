@@ -9,10 +9,19 @@
 // the browser stops them for a hidden tab. (Not on `document.hidden`: some embedded
 // browsers report a page on screen as hidden while running its frames.)
 
-import { GlobeRenderer, loadImage, type View } from './renderer';
+// The globe changes its looks on the way: at a few stops one of the app's Pro themes
+// spreads over the planet from the country just reached (themes.ts `CUES`), and the trip
+// ends back on the realistic planet. A theme turns only at a stop, never while a vehicle
+// is on its way; one whose pictures have not arrived by then is skipped until its next
+// turn, so the trip never waits on a download. The picker under the globe holds one
+// theme for as long as the reader wants it (again to let go).
+
+import { GlobeRenderer, loadImage, type SymbolBatch, type View } from './renderer';
 import { RouteLayer, type Leg, type Transport } from './routes';
 import { drawStars } from './stars';
 import { RAD, angleBetween, clamp, greatCircle, nearestTurn, project, smoothstep } from './geo';
+import { CUES, THEMES, WAVE_MS, isThemeId, mixInk, themeFiles, type ThemeId } from './themes';
+import { planSymbols, symbolBatch, type SymbolSet } from './symbols';
 
 type Stop = { code: string; name: string; lonLat: [number, number]; amount: string };
 type Journey = { stops: Stop[]; legs: Transport[] };
@@ -23,6 +32,14 @@ const HOLD = 1500;     // a stop's moment before the next crossing
 const FINALE = 4200;   // the whole trip on show, the planet turning slowly
 const RESET = 1100;    // the trip fading away before it starts again
 const DAWN = 1000;
+/** A stop's spends burst out of its chip this long after the arrival (the chip opening first)… */
+const BURST_AFTER = 200;
+/** …and a theme's wave this long after the arrival: none, it spreads as the vehicle lands (asked 2026-10-16). */
+const WAVE_AFTER = 0;
+/** How far over the country's point the open chip's middle is, px (global.css `.chip-body`). */
+const CHIP_MIDDLE = 33;
+/** A phone's places for the spends, px from the chip's middle: two rows of three under it. */
+const PHONE_SLOTS: [number, number][] = [[-108, 46], [0, 50], [108, 46], [-108, 94], [0, 98], [108, 94]];
 const SPEED = 170;     // CSS px/s along the route on screen
 /** How far round the planet turns to the first stop when the page opens, degrees. */
 const OPENING_SPIN = 130;
@@ -30,6 +47,12 @@ const OPENING_SPIN = 130;
 const FINALE_SPIN = 60;
 
 const sine = (x: number) => (1 - Math.cos(Math.PI * clamp(x, 0, 1))) / 2;
+
+type Vec3 = [number, number, number];
+const toVec = (lon: number, lat: number): Vec3 => {
+  const φ = lat * RAD, λ = lon * RAD;
+  return [Math.cos(φ) * Math.sin(λ), Math.sin(φ), Math.cos(φ) * Math.cos(λ)];
+};
 
 
 export async function startHero(root: HTMLElement) {
@@ -41,6 +64,8 @@ export async function startHero(root: HTMLElement) {
   const slot = q<HTMLElement>('.globe-slot');
   const chips = Array.from(root.querySelectorAll<HTMLElement>('.chip'));
   const pauseButton = q<HTMLButtonElement>('.globe-pause');
+  const picker = q<HTMLElement>('.globe-themes');
+  const pickButtons = Array.from(root.querySelectorAll<HTMLButtonElement>('.theme-pick'));
 
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   // `?globe-t=12000` holds the trip at that moment, fully lit — for screenshots (the
@@ -49,7 +74,11 @@ export async function startHero(root: HTMLElement) {
   const frozen = frozenParam !== null && Number.isFinite(Number(frozenParam));
   // With it, `&globe-view=60,32` (lon,lat[,zoom]) points the camera there instead (store images).
   const viewParam = new URLSearchParams(location.search).get('globe-view')?.split(',').map(Number);
+  // With it, `&globe-theme=pirireis` draws the frame in that theme. A frozen frame is
+  // otherwise always the realistic planet: store images and the social card stay as they were.
+  const themeParam = new URLSearchParams(location.search).get('globe-theme');
   const small = () => innerWidth < 768;
+  const big = Math.max(innerWidth, innerHeight) * Math.min(devicePixelRatio, 2) > 2000;
 
   let renderer: GlobeRenderer;
   let routes: RouteLayer;
@@ -61,7 +90,6 @@ export async function startHero(root: HTMLElement) {
     // The light texture first, so the planet is turning within moments of the page
     // opening; on a big screen the sharp one takes its place once it has arrived.
     await renderer.load('/globe/earth-2k.webp', '/globe/ids.png');
-    const big = Math.max(innerWidth, innerHeight) * Math.min(devicePixelRatio, 2) > 2000;
     if (big) renderer.swapGround('/globe/earth-4k.webp').then(() => { dirty = true; schedulefr(); }, () => {});
   } catch (e) {
     console.warn('globe unavailable', e);
@@ -102,6 +130,8 @@ export async function startHero(root: HTMLElement) {
   let travelStart: number[] = [];
   let travelEnd: number[] = [];
   let finaleStart = 0, resetStart = 0, cycle = 1;
+  /** The theme from each moment on; `from` the stop it spreads from (else the view's centre). */
+  let cues: { at: number; id: ThemeId; from: number | null }[] = [];
   const schedule = () => {
     arrivals = [FIRST];
     travelStart = [];
@@ -121,6 +151,13 @@ export async function startHero(root: HTMLElement) {
     finaleStart = t;
     resetStart = t + FINALE;
     cycle = resetStart + RESET;
+    cues = [{ at: 0, id: 'realistic', from: null }];
+    for (const [code, id] of CUES) {
+      const i = stops.findIndex((s) => s.code === code);
+      if (i > 0) cues.push({ at: arrivals[i] + WAVE_AFTER, id, from: i });
+    }
+    cues.push({ at: resetStart, id: 'realistic', from: null });
+    cues.sort((a, b) => a.at - b.at);
   };
 
   const layout = () => {
@@ -138,6 +175,7 @@ export async function startHero(root: HTMLElement) {
     routes.resize(W, H, dpr);
     drawStars(starsCanvas, Math.min(devicePixelRatio || 1, 2));
     schedule();
+    plans.clear();
     dirty = true;
   };
 
@@ -199,7 +237,210 @@ export async function startHero(root: HTMLElement) {
     return { progress, vehicle, reached, back, target, zoom, fade };
   };
 
+  // --- themes ------------------------------------------------------------------------------
+  /** The themes whose ground and atlas are on the GPU, with their symbols. */
+  const sets = new Map<ThemeId, SymbolSet>();
+  const loading = new Map<ThemeId, Promise<void>>();
+  /** Each theme's symbol plan for this layout, and the random order behind it (once a page). */
+  const plans = new Map<ThemeId, number[]>();
+  const draws = new Map<ThemeId, number[]>();
+  const buffers = new Map<ThemeId, { data: Float32Array }>();
+  const favoured = new Set(stops.map((s) => s.code));
+  const ready = (id: ThemeId) => id === 'realistic' || sets.has(id);
+  /** The theme on the globe and, while its wave spreads, the one before it. */
+  const look = { id: 'realistic' as ThemeId, prev: null as ThemeId | null, origin: [0, 0, 1] as Vec3, start: 0 };
+  /** The reader's pick, held until they let it go — never kept: every visit starts on the trip's own turns. */
+  let pinned: ThemeId | null = frozen && isThemeId(themeParam) ? themeParam : null;
+
+  /**
+   * A theme's pictures are decoded off the page's thread (`createImageBitmap`) and handed
+   * to the GPU a step a frame, only in a quiet one — at a stop, with no wave crossing the
+   * planet (`pumpUploads`). Decoded on the upload, as plain images were, each stalled the
+   * turning planet for ~100 ms (seen 2026-10-16).
+   */
+  const uploads: (() => void)[] = [];
+  const decode = async (url: string, premultiply: boolean): Promise<TexImageSource> => {
+    if (typeof createImageBitmap !== 'function') return loadImage(url);
+    const blob = await (await fetch(url)).blob();
+    return createImageBitmap(blob, { premultiplyAlpha: premultiply ? 'premultiply' : 'none', colorSpaceConversion: 'none' });
+  };
+  const pumpUploads = (travelling: boolean) => {
+    if (uploads.length && !look.prev && (!travelling || !playing)) uploads.shift()!();
+  };
+
+  const loadTheme = (id: ThemeId): Promise<void> => {
+    if (ready(id)) return Promise.resolve();
+    let p = loading.get(id);
+    if (!p) {
+      const f = themeFiles(id, big);
+      p = Promise.all([decode(f.ground, false), decode(f.atlas, true), fetch(f.symbols).then((r) => r.json() as Promise<SymbolSet>)])
+        .then(([ground, atlas, set]) => new Promise<void>((done) => {
+          const steps = [
+            () => renderer.addGround(id, ground),
+            () => {
+              renderer.addAtlas(id, atlas);
+              sets.set(id, set);
+              draws.set(id, set.list.map(() => Math.random()));
+              dirty = true;
+              done();
+            },
+          ];
+          if (frozen || reduceMotion) {
+            steps.forEach((s) => s());
+            if (frozen) still(); else schedulefr();
+          } else {
+            uploads.push(...steps);
+            schedulefr();
+          }
+        }))
+        .catch((e) => console.warn('globe theme unavailable', id, e))
+        .finally(() => {
+          loading.delete(id);
+          updatePicker();
+        });
+      loading.set(id, p);
+      updatePicker();
+    }
+    return p;
+  };
+
+  /** The theme the globe should wear now. */
+  const wanted = (): ThemeId => {
+    if (pinned) return ready(pinned) ? pinned : look.id;
+    if (frozen) return 'realistic';
+    let cue = cues[0];
+    for (const c of cues) if (c.at <= t) cue = c;
+    if (cue.id === look.id || !ready(cue.id)) return look.id;
+    // Only at its stop: a theme that comes late waits for its next turn.
+    return reduceMotion || t - cue.at < HOLD - WAVE_AFTER ? cue.id : look.id;
+  };
+
+  const switchTo = (id: ThemeId) => {
+    let cue = cues[0];
+    for (const c of cues) if (c.at <= t) cue = c;
+    const from = !pinned && cue.id === id && cue.from !== null ? anchors[cue.from] : [cam.lon, cam.lat] as [number, number];
+    look.prev = frozen || reduceMotion ? null : look.id;
+    look.id = id;
+    look.origin = toVec(from[0], from[1]);
+    look.start = now();
+    root.dataset.theme = id;
+    updatePicker();
+  };
+
+  /** This frame's look: the ground and its wave, the route's ink, the symbols. */
+  const dress = (v: View): SymbolBatch[] => {
+    const want = wanted();
+    if (want !== look.id) switchTo(want);
+    const p = look.prev ? clamp((now() - look.start) / WAVE_MS, 0, 1) : 1;
+    if (p >= 1) look.prev = null;
+    // Fast from the stop, easing out over the far side: a slow start left a soft blot there.
+    const wave = (1 - (1 - p) * (1 - p)) * (Math.PI + 0.3);
+    const cur = THEMES[look.id], prev = look.prev ? THEMES[look.prev] : null;
+    // The air turns with the whole planet rather than with the wave: it is all round the disc.
+    const k = sine(p);
+    const rim = prev ? cur.rim.map((c, i) => prev.rim[i] + (c - prev.rim[i]) * k) as [number, number, number] : cur.rim;
+    renderer.setLook({ ground: cur.id, grade: cur.grade, rim, prev: prev ? { ground: prev.id, grade: prev.grade, origin: look.origin, wave } : undefined });
+    routes.ink = prev ? mixInk(prev.ink, cur.ink, sine(p)) : cur.ink;
+
+    const [ox, oy, oz] = look.origin;
+    const reached = (la: number, lo: number) => {
+      if (!prev) return 1;
+      const c = Math.cos(la);
+      const d = Math.acos(clamp(c * Math.sin(lo) * ox + Math.sin(la) * oy + c * Math.cos(lo) * oz, -1, 1));
+      return 1 - smoothstep(wave - 0.015, wave, d);
+    };
+    const batches: SymbolBatch[] = [];
+    const add = (id: ThemeId, mask: (la: number, lo: number) => number) => {
+      const set = sets.get(id);
+      if (!set) return;
+      let plan = plans.get(id);
+      if (!plan) plans.set(id, (plan = planSymbols(set.list, R0, favoured, draws.get(id)!)));
+      let buf = buffers.get(id);
+      if (!buf) buffers.set(id, (buf = { data: new Float32Array(0) }));
+      batches.push(symbolBatch(id, set, plan, v, R0, THEMES[id].grade, v.dawn, mask, buf));
+    };
+    if (prev) add(prev.id, (la, lo) => 1 - reached(la, lo));
+    add(cur.id, reached);
+    return batches;
+  };
+
+  const updatePicker = () => {
+    pickButtons.forEach((b) => {
+      const id = b.dataset.theme as ThemeId;
+      b.classList.toggle('is-current', id === look.id);
+      b.classList.toggle('is-loading', loading.has(id) && pinned === id);
+      b.setAttribute('aria-pressed', String(pinned === id));
+    });
+  };
+
+  pickButtons.forEach((b) => b.addEventListener('click', () => {
+    const id = b.dataset.theme as ThemeId;
+    pinned = pinned === id ? null : id;
+    if (pinned) void loadTheme(pinned);
+    updatePicker();
+    dirty = true;
+    schedulefr();
+  }));
+
   // --- DOM for the chips ------------------------------------------------------------------
+  /** Which stops' spends have burst this time round the trip. */
+  const burst = stops.map(() => false);
+  const bursts = () => {
+    if (frozen || reduceMotion) return;
+    stops.forEach((_, i) => {
+      const since = t - arrivals[i] - BURST_AFTER;
+      if (burst[i] || since < 0 || since > 1500) return;
+      burst[i] = true;
+      const chip = chips[i];
+      scatter(chip);
+      chip.classList.remove('is-burst');
+      void chip.offsetWidth; // the animation again from its start
+      chip.classList.add('is-burst');
+    });
+  };
+  /**
+   * Which spends burst and where each lands, new every time: a random three to six of the
+   * stop's six, spread evenly round an ellipse wide enough to clear the open chip, from a
+   * random turn, with a little jitter — the same fan at every stop read as one stamp.
+   * Every other one on a wider ring, so five or six never touch. On a phone, a random few
+   * of six places in two rows under the chip instead: the trip runs just under the CTA
+   * there (a spend flying up went under it), and six on the lower half of a ring that
+   * narrow piled up.
+   */
+  const scatter = (chip: HTMLElement) => {
+    const all = Array.from(chip.querySelectorAll<HTMLElement>('.spend'));
+    const rnd = (a: number, b: number) => a + Math.random() * (b - a);
+    const shuffled = all.slice().sort(() => Math.random() - 0.5);
+    const n = Math.min(all.length, 3 + Math.floor(Math.random() * 4));
+    const pills = shuffled.slice(0, n);
+    all.forEach((p) => { p.style.display = pills.includes(p) ? '' : 'none'; });
+    if (!n) return;
+    const phone = small();
+    const slots = PHONE_SLOTS.slice().sort(() => Math.random() - 0.5);
+    const from = rnd(0, 360), step = 360 / n;
+    pills.forEach((pill, k) => {
+      let dx: number, dy: number;
+      if (phone) {
+        [dx, dy] = slots[k];
+        dx += rnd(-8, 8);
+        dy += rnd(-5, 5);
+      } else {
+        const a = (from + k * step + rnd(-8, 8)) * RAD;
+        const outer = k % 2 === 1 && n > 3 ? 1.28 : 1;
+        // Just clear of the open chip (~170 × 44 px) and no further: they belong to it.
+        dx = Math.cos(a) * rnd(108, 122) * outer;
+        dy = Math.sin(a) * rnd(46, 56) * outer;
+      }
+      // Placed about the chip's middle, flown from the country's point under it.
+      pill.style.setProperty('--dx', `${dx.toFixed(0)}px`);
+      pill.style.setProperty('--dy', `${(dy - CHIP_MIDDLE).toFixed(0)}px`);
+    });
+  };
+  const resetBursts = () => {
+    burst.fill(false);
+    chips.forEach((c) => c.classList.remove('is-burst'));
+  };
+
   const updateDom = (s: ReturnType<typeof scene>, v: View) => {
     // The stop just reached opens its chip; the moment the next crossing sets off it
     // folds back to its flag, so the chip never sits on the vehicle leaving from under it.
@@ -250,9 +491,11 @@ export async function startHero(root: HTMLElement) {
       const fresh = since >= 0 ? 1 - smoothstep(600, 2600, since) : 0;
       renderer.setFill(i, amount, fresh);
     });
-    renderer.render(v);
+    pumpUploads(s.vehicle !== null);
+    renderer.render(v, dress(v));
     routes.draw(v, legs, s.progress, s.vehicle, s.reached, anchors, s.fade * v.dawn);
     updateDom(s, v);
+    bursts();
     root.classList.toggle('is-lit', v.dawn > 0.02);
   };
 
@@ -267,6 +510,7 @@ export async function startHero(root: HTMLElement) {
       if (t >= cycle) {
         t -= cycle;
         introFrom = FINALE_SPIN;
+        resetBursts();
       }
     }
     draw(dt);
@@ -281,7 +525,7 @@ export async function startHero(root: HTMLElement) {
     } else slowFrames = Math.max(0, slowFrames - 1);
     schedulefr();
   };
-  const moving = () => playing || holding || now() < resumeAt + 1500 || dirty || (dawnStart >= 0 && now() - dawnStart < DAWN + 50);
+  const moving = () => playing || holding || now() < resumeAt + 1500 || dirty || look.prev !== null || uploads.length > 0 || (dawnStart >= 0 && now() - dawnStart < DAWN + 50);
   const now = () => performance.now();
   const schedulefr = () => {
     if (!raf && visible && moving()) raf = requestAnimationFrame(frame);
@@ -369,10 +613,21 @@ export async function startHero(root: HTMLElement) {
 
   // --- go ----------------------------------------------------------------------------------
   layout();
+  root.dataset.theme = look.id;
+  updatePicker();
+  if (pinned) void loadTheme(pinned);
+  // The themes the trip turns to, one after the other once the planet is up — never
+  // ahead of the page's own first pictures, and not at all on a connection asking to save data.
+  const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData === true;
+  if (!frozen && !saveData) {
+    const queue = [...new Set(CUES.map(([, id]) => id))];
+    setTimeout(() => queue.reduce((p, id) => p.then(() => loadTheme(id)), Promise.resolve()), 1200);
+  }
   if (frozen) {
     t = clamp(Number(frozenParam), 0, cycle - 1);
     playing = false;
     pauseButton.hidden = true;
+    if (picker) picker.hidden = true;
     // The timings, for picking a moment to freeze.
     const ms = (xs: number[]) => xs.map(Math.round);
     root.dataset.schedule = JSON.stringify({ arrivals: ms(arrivals), travelStart: ms(travelStart), travelEnd: ms(travelEnd), finale: Math.round(finaleStart), cycle: Math.round(cycle) });

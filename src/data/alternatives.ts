@@ -76,7 +76,7 @@ export type RowKey = (typeof ROWS)[number][0];
 
 /** Nomad Budget's side of every table: the same words on every page. */
 export const OURS: Record<RowKey, string> = {
-  platforms: 'iPhone. Not on Android yet.',
+  platforms: 'iPhone and Android',
   updates: 'Active; first released in 2026',
   organised: 'One wallet per country, in that country’s currency; your trips and route are read from them',
   currencies: 'Every entry in the currency you paid in',
@@ -86,7 +86,7 @@ export const OURS: Record<RowKey, string> = {
   offline: 'Yes',
   sharing: 'Shared wallets with edit or view-only access. No bill splitting or “who owes whom”.',
   receipts: 'No',
-  map: 'A 3D globe of where you’ve been and what each country cost, drawn from your entries',
+  map: 'A 3D globe of where you’ve been and what each country cost, drawn from your entries; paper, miniature and portolan looks with Pro',
   compare: 'Yes: official price levels (World Bank ICP 2021, Eurostat) free; priced on your own spending with Pro',
   bank: 'None, by design',
   data: 'Imports CSV and Excel; exports CSV (Pro)',
@@ -162,7 +162,7 @@ export const ALTERNATIVES: Alternative[] = [
       'A daily budget that recalculates what you can spend today from what is left — Nomad Budget’s budgets are monthly, or daily per category and country with Pro.',
       'Receipt photos attached to an entry.',
       'Multiple tags on one entry.',
-      'It ran on iPad; Nomad Budget is made for iPhone.',
+      'It ran on iPad; Nomad Budget is made for phones, iPhone and Android.',
     ],
     weDoDifferently: [
       'Countries rather than trips: each country you stay in gets a wallet in its own currency, and trips are read from where you spent.',
@@ -201,7 +201,7 @@ export const ALTERNATIVES: Alternative[] = [
     pickThem:
       'TravelSpend is the better fit for a holiday or a group trip, especially if you split costs with friends, or if you use Android.',
     pickUs:
-      'Nomad Budget is the better fit if you live in one country after another for weeks or months and want each in its own currency, under one total, on iPhone.',
+      'Nomad Budget is the better fit if you live in one country after another for weeks or months and want each in its own currency, under one total.',
     row: {
       platforms: 'iPhone and Android',
       updates: 'Active; version 2.9.2 on 2 October 2026',
@@ -221,7 +221,6 @@ export const ALTERNATIVES: Alternative[] = [
     },
     theyDoBetter: [
       'Splitting costs in a group: who owes whom, balances and settling up.',
-      'Android as well as iPhone.',
       'Receipt photos, and spreading one expense over several days.',
       'A Home Screen widget with your daily average.',
       'Years of use behind it, and thousands of ratings.',
@@ -402,7 +401,7 @@ export const ALTERNATIVES: Alternative[] = [
       'Receipts read by AI: amount, shop and currency from a photo.',
       'A Travel Log that turns the expense book into a trip diary, with photos and places.',
       'A globe video made to share with friends.',
-      'Splitting a trip’s costs with friends, and Android as well as iPhone.',
+      'Splitting a trip’s costs with friends.',
       'Cash and card kept apart.',
     ],
     weDoDifferently: [
@@ -460,7 +459,7 @@ export const ALTERNATIVES: Alternative[] = [
     },
     theyDoBetter: [
       'Bank, e-wallet and crypto wallet connections.',
-      'A web version, and Android as well as iPhone.',
+      'A web version.',
       'Home Screen widgets and an AI receipt scanner.',
       'Labels for slicing your spending in more ways.',
     ],
@@ -520,7 +519,7 @@ export const ALTERNATIVES: Alternative[] = [
     theyDoBetter: [
       'A wider view of personal finance: bill reminders, debts and savings goals.',
       'Bank links in several Southeast Asian countries.',
-      'Android as well as iPhone, and a Home Screen widget.',
+      'A Home Screen widget.',
       'Premium can be bought once instead of as a subscription.',
     ],
     weDoDifferently: [

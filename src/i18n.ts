@@ -5,6 +5,7 @@ export type Lang = 'en' | 'tr';
 
 export const SITE = 'https://nomadbudget.rubeeks.co';
 export const APP_STORE_ID = '6803787746';
+export const PLAY_PACKAGE = 'com.nomadbudget.mobile';
 export const CONTACT = 'nomadbudget@rubeeks.co';
 
 /** The site's social card (public/og-*.jpg, from scripts/build-og.mjs). Raise `v` each
@@ -14,6 +15,11 @@ export const ogCard = (lang: Lang) => `/og-${lang}.jpg?v=2`;
 
 export const appStoreUrl = (lang: Lang) =>
   `https://apps.apple.com/${lang === 'tr' ? 'tr' : 'us'}/app/nomad-budget/id${APP_STORE_ID}`;
+export const playStoreUrl = (lang: Lang) =>
+  `https://play.google.com/store/apps/details?id=${PLAY_PACKAGE}&hl=${lang}`;
+/** One address for both stores (pages/get.astro sends a phone to its own): what the
+ *  corner's code holds, since the phone that scans it may be either. */
+export const getAppUrl = (lang: Lang) => `${SITE}/get/${lang === 'tr' ? '?l=tr' : ''}`;
 
 export const pathFor = (lang: Lang) => (lang === 'tr' ? '/tr/' : '/');
 export const blogPath = (lang: Lang) => `${pathFor(lang)}blog/`;
@@ -23,7 +29,8 @@ export const postPath = (lang: Lang, slug: string) => `${blogPath(lang)}${slug}/
 export const TOPICS = ['money', 'living-costs', 'rent', 'travel', 'tracking'] as const;
 export type Topic = (typeof TOPICS)[number];
 
-type Feature = { key: string; shot: string; accent: string; title: [string, string]; body: string; points: string[] };
+/** `badge`: a named family the feature belongs to, shown over its title with its mark (`/art/<art>.webp`). */
+type Feature = { key: string; shot: string; accent: string; title: [string, string]; body: string; points: string[]; badge?: { art: string; label: string } };
 type Card = { art: string; title: string; body: string };
 type Blog = {
   title: string;
@@ -60,11 +67,12 @@ export type Strings = {
     lede: string;
     cta: string;
     qr: string;
-    android: string;
     pause: string;
     play: string;
     globeAlt: string;
     perMonth: string;
+    /** The globe themes' picker: its group label and each theme's name (as the app names it). */
+    themes: { label: string; names: Record<'realistic' | 'paper' | 'miniature' | 'pirireis', string> };
   };
   what: { title: string; body: string };
   features: { eyebrow: string; title: string; items: Feature[] };
@@ -86,7 +94,7 @@ export type Strings = {
     body: string;
     /** The boarding pass the closing call is printed on: its label, the two ends of the
      *  route (the codes are the app's own, NMD to BGT) and the fields on it. */
-    pass: { kicker: string; from: string; fromNote: string; to: string; toNote: string; fields: [string, string][]; gate: [string, string]; close: string };
+    pass: { kicker: string; from: string; fromNote: string; to: string; toNote: string; fields: [string, string][]; gate: [string, string, string]; close: string };
   };
   footer: { tagline: string; legal: string; privacy: string; terms: string; kvkk?: string; disclaimer: string; licenses: string; contact: string; compare: string; imagery: string; rights: string };
   notFound: { title: string; body: string; home: string };
@@ -110,11 +118,11 @@ const en: Strings = {
       'Every country you spend in gets its own wallet, in its own currency. Nomad Budget adds it all up in the currency you choose, and draws your journey on a globe as you travel.',
     cta: 'Download Now',
     qr: 'Scan with your phone camera',
-    android: 'Android isn’t available yet — Nomad Budget is on iPhone for now.',
     pause: 'Pause the globe',
     play: 'Play the globe',
+    themes: { label: 'Globe theme', names: { realistic: 'Realistic', paper: 'Paper', miniature: 'Miniature', pirireis: 'Portolan' } },
     globeAlt:
-      'An animated globe showing a sample journey: France to Spain by train, a ferry to Morocco, a flight to Turkey, a drive to Georgia, a flight to Thailand, a bus to Malaysia, a ferry to Indonesia and a flight to Mexico. Each country shows its monthly spend in its own currency.',
+      'An animated globe showing a sample journey: France to Spain by train, a ferry to Morocco, a flight to Turkey, a drive to Georgia, a flight to Thailand, a bus to Malaysia, a ferry to Indonesia and a flight to Mexico. Each country shows its monthly spend in its own currency. On the way the globe changes its look to the app’s Pro themes: a paper map, a miniature world and a portolan chart.',
     perMonth: '/mo',
   },
   what: {
@@ -148,10 +156,11 @@ const en: Strings = {
         key: 'capture',
         shot: 'capture',
         accent: 'lime',
-        title: ['Payments that', 'add themselves.'],
+        badge: { art: 'autopilot', label: 'Autopilot' },
+        title: ['Let the app', 'do the typing.'],
         body:
-          'Set up an iPhone automation once, and every Apple Pay payment and bank text message is handed to Nomad Budget as it happens: the amount, the currency and the shop, waiting for your OK. Nothing is recorded until you confirm it.',
-        points: ['Apple Pay and bank text messages', 'Nothing saved until you confirm', 'What is caught never leaves your phone'],
+          'On Android, Nomad Budget reads the payment notifications of the bank and wallet apps you pick; on iPhone, set up an automation once and every Apple Pay payment and bank text message is handed to it as it happens — the amount, the currency and the shop, waiting for your OK. Country detection files each entry in the country you’re in, and a reminder nudges you on the days you forget.',
+        points: ['Bank notifications, texts and Apple Pay', 'Nothing saved until you confirm', 'What is caught stays on your phone'],
       },
       {
         key: 'journey',
@@ -159,7 +168,7 @@ const en: Strings = {
         accent: 'blue',
         title: ['Your journey', 'on a globe.'],
         body:
-          'Every entry remembers where it happened. Countries fill in as you travel, your route draws itself from one stop to the next, and each stop shows what it cost you. Flip to the cost view to see every country by what it actually cost.',
+          'Every entry remembers where it happened. Countries fill in as you travel, your route draws itself from one stop to the next, and each stop shows what it cost you. Flip to the cost view to see every country by what it actually cost. With Pro, the globe can be a paper map, a miniature world or a portolan chart after Piri Reis.',
         points: ['Countries fill in as you go', 'Your route, stop by stop', 'Filter by year, the last 12 months, a trip or how you travelled'],
       },
       {
@@ -251,7 +260,7 @@ const en: Strings = {
       items: [
         'Unlimited entries, wallets and currencies',
         'Total in your main currency',
-        'Globe, route, crossings and passport',
+        'The satellite globe, route, crossings and passport',
         'Official price levels for countries worldwide',
         'Your countries ranked by what they cost you',
         'A monthly budget with alerts',
@@ -267,6 +276,7 @@ const en: Strings = {
         'What a month in a country would cost you',
         'Category and country budgets with alerts',
         'Export every transaction as CSV',
+        'Globe themes: a paper map, a miniature world and a portolan after Piri Reis',
         'Unlimited goals, recurring transactions and shared wallets',
       ],
     },
@@ -292,7 +302,7 @@ const en: Strings = {
       },
       {
         q: 'Does it connect to my bank?',
-        a: 'No. Nomad Budget never asks for bank logins or card details. You log what you spend yourself, or let an iPhone automation hand it Apple Pay payments and bank text messages to confirm — which also means it works with cash, foreign cards and any bank in any country.',
+        a: 'No. Nomad Budget never asks for bank logins or card details. You log what you spend yourself, or let Autopilot catch your Apple Pay payments and bank text messages for you to confirm — which also means it works with cash, foreign cards and any bank in any country.',
       },
       {
         q: 'Does it work offline?',
@@ -311,6 +321,10 @@ const en: Strings = {
         a: 'Yes. With Pro you can export every transaction as a CSV file, to open in a spreadsheet or take anywhere else.',
       },
       {
+        q: 'What are the globe themes?',
+        a: 'New looks for the globe, with Pro: a paper map with landmark stickers, a miniature world of tiny trees and buildings, and a portolan chart after Piri Reis’s 1513 map. Your route, countries and costs stay the same on every one. The realistic satellite globe is free, and if Pro ends the globe goes back to it; nothing you recorded is lost.',
+      },
+      {
         q: 'How does the country comparison work?',
         a: 'It takes what you actually spend by category and prices it in another country using official price levels from the World Bank (ICP 2021) and Eurostat. If you have lived in both countries, it also shows what you actually spent in each. The general price index is free; the comparison built from your own basket is part of Pro.',
       },
@@ -320,11 +334,11 @@ const en: Strings = {
       },
       {
         q: 'Is it free?',
-        a: 'Yes. Recording expenses, wallets, currencies, the globe, a monthly budget and offline use are free. The free plan includes one shared wallet, one goal and three recurring bills. Pro is an optional in-app subscription that adds insight built from your own spending, category and country budgets, and no limits on those three.',
+        a: 'Yes. Recording expenses, wallets, currencies, the globe, a monthly budget and offline use are free. The free plan includes one shared wallet, one goal and three recurring bills. Pro is an optional in-app subscription that adds insight built from your own spending, category and country budgets, globe themes, and no limits on those three.',
       },
       {
         q: 'Is Nomad Budget available on Android?',
-        a: 'Not yet. Nomad Budget is available for iPhone on the App Store.',
+        a: 'Yes. Nomad Budget is on Google Play for Android phones and on the App Store for iPhone, with the same features and the same account on both.',
       },
       {
         q: 'Which languages does it support?',
@@ -337,7 +351,7 @@ const en: Strings = {
     body: 'Start with the one you’re in.',
     pass: {
       kicker: 'Boarding pass', from: 'From', fromNote: 'Where you are', to: 'To', toNote: 'Where you go next',
-      fields: [['Passenger', 'You'], ['Class', 'Free'], ['Boarding', 'Now']], gate: ['Gate', 'App Store'], close: 'Close',
+      fields: [['Passenger', 'You'], ['Class', 'Free'], ['Boarding', 'Now']], gate: ['Gate', 'App Store', 'Google Play'], close: 'Close',
     },
   },
   footer: {
@@ -404,11 +418,11 @@ const tr: Strings = {
       'Harcama yaptığın her ülkenin kendi para biriminde bir cüzdanı olur. Nomad Budget hepsini seçtiğin para biriminde toplar ve sen gezdikçe yolculuğunu bir kürede çizer.',
     cta: 'Hemen İndir',
     qr: 'Telefon kamerasıyla okut',
-    android: 'Android sürümü henüz yok — Nomad Budget şimdilik iPhone’da.',
     pause: 'Küreyi durdur',
     play: 'Küreyi oynat',
+    themes: { label: 'Küre teması', names: { realistic: 'Gerçekçi', paper: 'Kâğıt', miniature: 'Minyatür', pirireis: 'Piri Reis' } },
     globeAlt:
-      'Örnek bir yolculuğu gösteren hareketli küre: Fransa’dan İspanya’ya trenle, Fas’a feribotla, Türkiye’ye uçakla, Gürcistan’a arabayla, Tayland’a uçakla, Malezya’ya otobüsle, Endonezya’ya feribotla ve Meksika’ya uçakla. Her ülke aylık harcamasını kendi para biriminde gösterir.',
+      'Örnek bir yolculuğu gösteren hareketli küre: Fransa’dan İspanya’ya trenle, Fas’a feribotla, Türkiye’ye uçakla, Gürcistan’a arabayla, Tayland’a uçakla, Malezya’ya otobüsle, Endonezya’ya feribotla ve Meksika’ya uçakla. Her ülke aylık harcamasını kendi para biriminde gösterir. Yolda küre, uygulamanın Pro temalarına bürünür: kâğıt harita, minyatür dünya ve Piri Reis portolanı.',
     perMonth: '/ay',
   },
   what: {
@@ -442,10 +456,11 @@ const tr: Strings = {
         key: 'capture',
         shot: 'capture',
         accent: 'lime',
-        title: ['Kendi kendine', 'eklenen ödemeler.'],
+        badge: { art: 'autopilot', label: 'Otopilot' },
+        title: ['Yazma işini', 'uygulamaya bırak.'],
         body:
-          'Bir iPhone otomasyonunu bir kez kur; her Apple Pay ödemesi ve banka SMS’i olduğu anda Nomad Budget’a gelir: tutar, para birimi ve dükkân, senin onayını bekler. Sen onaylamadan hiçbir şey kaydedilmez.',
-        points: ['Apple Pay ve banka SMS’leri', 'Onaylamadan hiçbir şey kaydedilmez', 'Yakalanan hiçbir şey telefonundan çıkmaz'],
+          'Android’de Nomad Budget seçtiğin banka ve cüzdan uygulamalarının ödeme bildirimlerini okur; iPhone’da bir otomasyonu bir kez kur, her Apple Pay ödemesi ve banka SMS’i olduğu anda ona gelir — tutar, para birimi ve dükkân, senin onayını bekler. Ülke algılama her kaydı bulunduğun ülkeye koyar, unuttuğun günlerde de bir hatırlatma seni dürter.',
+        points: ['Banka bildirimleri, SMS ve Apple Pay', 'Onaylamadan hiçbir şey kaydedilmez', 'Yakalanan her şey telefonunda kalır'],
       },
       {
         key: 'journey',
@@ -453,7 +468,7 @@ const tr: Strings = {
         accent: 'blue',
         title: ['Yolculuğun', 'bir kürede.'],
         body:
-          'Her kayıt nerede yapıldığını hatırlar. Ülkeler sen gezdikçe dolar, rotan bir duraktan diğerine kendiliğinden çizilir ve her durak sana kaça mal olduğunu gösterir. Maliyet görünümüne geç, her ülkeyi gerçekte ne tuttuğuna göre gör.',
+          'Her kayıt nerede yapıldığını hatırlar. Ülkeler sen gezdikçe dolar, rotan bir duraktan diğerine kendiliğinden çizilir ve her durak sana kaça mal olduğunu gösterir. Maliyet görünümüne geç, her ülkeyi gerçekte ne tuttuğuna göre gör. Pro ile küre bir kâğıt haritaya, minyatür bir dünyaya ya da Piri Reis’ten esinlenen bir portolana dönüşür.',
         points: ['Gezdikçe dolan ülkeler', 'Durak durak rotan', 'Yıla, son 12 aya, geziye ya da ulaşıma göre süz'],
       },
       {
@@ -545,7 +560,7 @@ const tr: Strings = {
       items: [
         'Sınırsız kayıt, cüzdan ve para birimi',
         'Ana para biriminde toplam',
-        'Küre, rota, geçişler ve pasaport',
+        'Uydu görünümlü küre, rota, geçişler ve pasaport',
         'Dünya genelinde resmî ülke fiyat seviyeleri',
         'Ülkelerinin, sana maliyetine göre sıralaması',
         'Uyarılı aylık toplam bütçe',
@@ -561,6 +576,7 @@ const tr: Strings = {
         'Bir ülkede bir ayın sana kaça mal olacağı',
         'Uyarılı kategori ve ülke bütçeleri',
         'Tüm işlemleri CSV olarak dışa aktarma',
+        'Küre temaları: kâğıt harita, minyatür dünya ve Piri Reis’ten esinlenen portolan',
         'Sınırsız hedef, tekrarlayan işlem ve paylaşılan cüzdan',
       ],
     },
@@ -586,7 +602,7 @@ const tr: Strings = {
       },
       {
         q: 'Bankama bağlanıyor mu?',
-        a: 'Hayır. Nomad Budget banka şifresi ya da kart bilgisi istemez. Harcamalarını kendin girersin ya da bir iPhone otomasyonu Apple Pay ödemelerini ve banka SMS’lerini onaylaman için getirir; bu yüzden nakitle, yabancı kartlarla ve her ülkedeki her bankayla çalışır.',
+        a: 'Hayır. Nomad Budget banka şifresi ya da kart bilgisi istemez. Harcamalarını kendin girersin ya da Otopilot Apple Pay ödemelerini ve banka SMS’lerini onaylaman için yakalar; bu yüzden nakitle, yabancı kartlarla ve her ülkedeki her bankayla çalışır.',
       },
       {
         q: 'Çevrimdışı çalışıyor mu?',
@@ -605,6 +621,10 @@ const tr: Strings = {
         a: 'Evet. Pro ile tüm işlemlerini CSV dosyası olarak dışa aktarabilir, bir tabloda açabilir ya da istediğin yere götürebilirsin.',
       },
       {
+        q: 'Küre temaları nedir?',
+        a: 'Pro ile küreye gelen yeni görünümler: simge çıkartmalı bir kâğıt harita, minik ağaç ve yapılarla bir minyatür dünya ve Piri Reis’in 1513 haritasından esinlenen bir portolan. Rotan, ülkelerin ve maliyetlerin her temada aynı kalır. Gerçekçi uydu küresi ücretsizdir; Pro biterse küre ona döner, kaydettiğin hiçbir şey kaybolmaz.',
+      },
+      {
         q: 'Ülke karşılaştırması nasıl çalışıyor?',
         a: 'Kategori kategori gerçekte ne harcadığını alır ve Dünya Bankası (ICP 2021) ile Eurostat’ın resmî fiyat seviyeleriyle başka bir ülkede fiyatlar. İki ülkede de yaşadıysan, her birinde gerçekte ne harcadığını da gösterir. Genel fiyat endeksi ücretsizdir; kendi sepetinle yapılan karşılaştırma Pro’nun parçasıdır.',
       },
@@ -614,11 +634,11 @@ const tr: Strings = {
       },
       {
         q: 'Ücretsiz mi?',
-        a: 'Evet. Harcama kaydı, cüzdanlar, para birimleri, küre, aylık bütçe ve çevrimdışı kullanım ücretsizdir. Ücretsiz planda bir paylaşılan cüzdan, bir hedef ve üç tekrarlayan ödeme vardır. Pro; kendi harcamandan çıkan içgörüleri, kategori ve ülke bütçelerini ekleyen ve bu üçündeki sınırı kaldıran, isteğe bağlı bir uygulama içi aboneliktir.',
+        a: 'Evet. Harcama kaydı, cüzdanlar, para birimleri, küre, aylık bütçe ve çevrimdışı kullanım ücretsizdir. Ücretsiz planda bir paylaşılan cüzdan, bir hedef ve üç tekrarlayan ödeme vardır. Pro; kendi harcamandan çıkan içgörüleri, kategori ve ülke bütçelerini, küre temalarını ekleyen ve bu üçündeki sınırı kaldıran, isteğe bağlı bir uygulama içi aboneliktir.',
       },
       {
         q: 'Android’de var mı?',
-        a: 'Henüz yok. Nomad Budget, App Store’da iPhone için mevcut.',
+        a: 'Evet. Nomad Budget, Android telefonlar için Google Play’de, iPhone için App Store’da; ikisinde de aynı özellikler ve aynı hesap.',
       },
       {
         q: 'Hangi dilleri destekliyor?',
@@ -631,7 +651,7 @@ const tr: Strings = {
     body: 'İçinde bulunduğunla başla.',
     pass: {
       kicker: 'Biniş kartı', from: 'Nereden', fromNote: 'Bulunduğun ülke', to: 'Nereye', toNote: 'Gideceğin yer',
-      fields: [['Yolcu', 'Sen'], ['Sınıf', 'Ücretsiz'], ['Biniş', 'Şimdi']], gate: ['Kapı', 'App Store'], close: 'Kapat',
+      fields: [['Yolcu', 'Sen'], ['Sınıf', 'Ücretsiz'], ['Biniş', 'Şimdi']], gate: ['Kapı', 'App Store', 'Google Play'], close: 'Kapat',
     },
   },
   footer: {

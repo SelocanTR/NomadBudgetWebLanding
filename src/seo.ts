@@ -2,7 +2,7 @@
 // the site, and the FAQ as questions and answers — the shapes search engines and AI
 // assistants read an entity from. No ratings: only real, verifiable ones may go here.
 
-import { STRINGS, SITE, CONTACT, APP_STORE_ID, appStoreUrl, pathFor, blogPath, type Lang } from './i18n';
+import { STRINGS, SITE, CONTACT, APP_STORE_ID, PLAY_PACKAGE, appStoreUrl, pathFor, blogPath, type Lang } from './i18n';
 import { AUTHOR } from './author';
 
 // The publisher's own page at rubeeks.co (SelocanTR/SelocanTR.github.io) introduces the app
@@ -32,11 +32,15 @@ export function jsonLd(lang: Lang): object[] {
       url,
       image: `${SITE}/icons/icon-512.png`,
       applicationCategory: 'FinanceApplication',
-      operatingSystem: 'iOS',
+      operatingSystem: 'iOS, Android',
       inLanguage: ['en', 'tr', 'es', 'fr', 'ru', 'ar'],
       downloadUrl: appStoreUrl(lang),
       installUrl: appStoreUrl(lang),
-      sameAs: [`https://apps.apple.com/app/id${APP_STORE_ID}`, 'https://www.youtube.com/@NomadBudgetInt'],
+      sameAs: [
+        `https://apps.apple.com/app/id${APP_STORE_ID}`,
+        `https://play.google.com/store/apps/details?id=${PLAY_PACKAGE}`,
+        'https://www.youtube.com/@NomadBudgetInt',
+      ],
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD', category: 'free' },
       featureList: s.features.items.map((f) => `${f.title[0]} ${f.title[1]}`),
       publisher: { '@id': ORG_ID },

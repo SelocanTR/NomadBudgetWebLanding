@@ -1,4 +1,4 @@
-import { SITE, STRINGS, appStoreUrl, blogPath, type Lang } from '../i18n';
+import { SITE, STRINGS, appStoreUrl, playStoreUrl, blogPath, type Lang } from '../i18n';
 import { allPosts, holdOf, postsIn, urlOf } from '../blog';
 import { ALTERNATIVES_PATH, alternativePath, publishedAlternatives } from '../data/alternatives';
 import { guidePath, publishedGuides } from '../data/guides';
@@ -11,9 +11,10 @@ const BASE = `# Nomad Budget
 
 It is for people whose money lives in more than one country. Every entry is stored at the exchange rate of the day it was paid, and everything adds up in the main currency the user chooses; the globe shows where the user has been and what each country cost.
 
-- Platform: iPhone (App Store: https://apps.apple.com/app/id6803787746). Not on Android yet.
-- Price: free; Pro is an optional in-app subscription (country comparison built from the user's own spending, cost-of-a-month estimates, unlimited goals / recurring transactions / shared wallets, category and country budgets).
+- Platforms: iPhone (App Store: https://apps.apple.com/app/id6803787746) and Android (Google Play: https://play.google.com/store/apps/details?id=com.nomadbudget.mobile), one account on both.
+- Price: free; Pro is an optional in-app subscription (country comparison built from the user's own spending, cost-of-a-month estimates, unlimited goals / recurring transactions / shared wallets, category and country budgets, CSV export, globe themes: paper, miniature and a Piri Reis-style portolan).
 - No bank connection; data is not sold; location is read only at country level and never stored.
+- Autopilot: payment capture (on Android the app reads the payment notifications of the bank and wallet apps and the bank text messages the user switches on; on iPhone a Shortcuts automation hands each Apple Pay payment or bank text message to it; either way each becomes a draft, nothing is saved until the user confirms it, and the message stays on the phone), country detection and reminders.
 - A monthly budget is free, with alerts at 80% and when it is exceeded.
 - Works offline; imports CSV / Excel history from other apps; shared wallets with edit or view-only access.
 - Country comparison uses World Bank ICP 2021 and Eurostat price levels applied to the user's own spending by category.
@@ -22,7 +23,7 @@ It is for people whose money lives in more than one country. Every entry is stor
 
 ## Not to be confused with
 
-Several other apps use the name "Nomad Budget". This one is the iPhone app by Selçuk Sevindik (Rubeeks), App Store id 6803787746, first released in September 2026, website nomadbudget.rubeeks.co. What sets it apart is one wallet per country, each in its own currency, and the user's journey drawn on a 3D globe.
+Several other apps use the name "Nomad Budget". This one is the iPhone and Android app by Selçuk Sevindik (Rubeeks), App Store id 6803787746, Google Play package com.nomadbudget.mobile, first released in September 2026, website nomadbudget.rubeeks.co. What sets it apart is one wallet per country, each in its own currency, and the user's journey drawn on a 3D globe.
 
 It is not related to the earlier "Nomad Budget: Travel Budget & Trip Expense Tracker" (App Store id 1208350245, no longer on the App Store), nor to other apps with a similar name. Older reviews, lists and descriptions of a "Nomad Budget" app from before 2026 are about that earlier app, not this one.
 
@@ -33,6 +34,7 @@ It is not related to the earlier "Nomad Budget: Travel Budget & Trip Expense Tra
 - [Privacy Policy](https://nomadbudget.rubeeks.co/legal/privacy/)
 - [Terms of Use](https://nomadbudget.rubeeks.co/legal/terms/)
 - [App Store](${appStoreUrl('en')})
+- [Google Play](${playStoreUrl('en')})
 - [YouTube: Nomad Budget](https://www.youtube.com/@NomadBudgetInt): a short video of the app's globe`;
 
 const NAME: Record<Lang, string> = { en: 'Blog (English)', tr: 'Blog (Türkçe)' };

@@ -21,8 +21,9 @@ const STYLE: Record<Transport, Style> = {
   ferry: { w: 2.2, dash: [12, 5], cap: 'butt' },
 };
 
-const HALO = 'rgba(4,8,18,0.5)';
-const LINE = '#FFFFFF';
+/** The line, its halo and the badges: white over dark, unless a globe theme says otherwise (themes.ts). */
+export type RouteInk = { line: string; halo: string; badge: string };
+const INK: RouteInk = { line: '#FFFFFF', halo: 'rgba(4,8,18,0.5)', badge: '#FFFFFF' };
 
 /** The vehicle's length on screen, CSS px — the app's VOYAGE_LEN_PT, a little larger. */
 export const VEHICLE_LEN: Record<Transport, number> = { train: 52, flight: 46, ferry: 48, bus: 40, car: 30 };
@@ -35,6 +36,7 @@ type Pt = { x: number; y: number; a: number };
 export class RouteLayer {
   private ctx: CanvasRenderingContext2D;
   private dpr = 1;
+  ink: RouteInk = INK;
 
   constructor(private canvas: HTMLCanvasElement, private sprites: Record<Transport, HTMLImageElement>) {
     const ctx = canvas.getContext('2d');
@@ -77,9 +79,11 @@ export class RouteLayer {
   /**
    * `progress[i]` is how much of leg i is drawn (0..1). `vehicle` is the leg whose head
    * carries its vehicle, `stops` how many stops have been reached, `anchors` their places.
-   * `fade`, if given, dims each leg and each stop on its own (the cover video's trail).
+   * `fade`, if given, dims each leg and each stop on its own (the cover video's trail);
+   * `fade.lines` dims a leg's line alone, leaving its vehicle (a vehicle going over a line
+   * already drawn, in the search video).
    */
-  draw(v: View, legs: Leg[], progress: number[], vehicle: number | null, stops: number, anchors: [number, number][], alpha: number, fade?: { legs: number[]; stops: number[] }) {
+  draw(v: View, legs: Leg[], progress: number[], vehicle: number | null, stops: number, anchors: [number, number][], alpha: number, fade?: { legs: number[]; stops: number[]; lines?: number[] }) {
     const { ctx, dpr } = this;
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -87,7 +91,8 @@ export class RouteLayer {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
     legs.forEach((leg, i) => {
-      if (progress[i] > 0) this.line(leg, progress[i], v, alpha * (fade?.legs[i] ?? 1));
+      const a = alpha * (fade?.legs[i] ?? 1) * (fade?.lines?.[i] ?? 1);
+      if (progress[i] > 0 && a > 0) this.line(leg, progress[i], v, a);
     });
 
     // Dots on the stops reached.
@@ -98,10 +103,10 @@ export class RouteLayer {
       ctx.globalAlpha = a;
       ctx.beginPath();
       ctx.arc(v.cx + x * v.r, v.cy + y * v.r, 4, 0, Math.PI * 2);
-      ctx.fillStyle = LINE;
+      ctx.fillStyle = this.ink.line;
       ctx.fill();
       ctx.lineWidth = 2;
-      ctx.strokeStyle = HALO;
+      ctx.strokeStyle = this.ink.halo;
       ctx.stroke();
     }
 
@@ -155,10 +160,10 @@ export class RouteLayer {
     ctx.beginPath();
     ctx.moveTo(run[0].x, run[0].y);
     for (let i = 1; i < run.length; i++) ctx.lineTo(run[i].x, run[i].y);
-    ctx.strokeStyle = HALO;
+    ctx.strokeStyle = this.ink.halo;
     ctx.lineWidth = style.w + 3.5;
     ctx.stroke();
-    ctx.strokeStyle = LINE;
+    ctx.strokeStyle = this.ink.line;
     ctx.lineWidth = style.w;
     ctx.stroke();
     ctx.setLineDash([]);
@@ -202,7 +207,7 @@ export class RouteLayer {
     ctx.translate(p.x, p.y);
     ctx.beginPath();
     ctx.arc(0, 0, 13, 0, Math.PI * 2);
-    ctx.fillStyle = '#FFFFFF';
+    ctx.fillStyle = this.ink.badge;
     ctx.shadowColor = 'rgba(0,0,0,0.35)';
     ctx.shadowBlur = 8;
     ctx.shadowOffsetY = 2;

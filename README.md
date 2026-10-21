@@ -1,6 +1,6 @@
 # Nomad Budget — tanıtım sitesi
 
-`https://nomadbudget.rubeeks.co` · Astro (statik) · GitHub Pages · EN (`/`) + TR (`/tr/`)
+**[nomadbudget.rubeeks.co](https://nomadbudget.rubeeks.co/)** · [Türkçe (`/tr/`)](https://nomadbudget.rubeeks.co/tr/) · [Blog (`/blog/`)](https://nomadbudget.rubeeks.co/blog/) · [TR Blog (`/tr/blog/`)](https://nomadbudget.rubeeks.co/tr/blog/) · [Comparisons (`/alternatives/`)](https://nomadbudget.rubeeks.co/alternatives/) · [Legal (`/legal/`)](https://nomadbudget.rubeeks.co/legal/) · Astro (statik) · GitHub Pages
 
 ## Komutlar
 

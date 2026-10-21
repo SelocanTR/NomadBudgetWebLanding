@@ -67,7 +67,7 @@ export const GUIDES: Guide[] = [
         table: {
           head: ['App', 'Best for', 'Platforms', 'Last updated'],
           rows: [
-            ['[Nomad Budget](#nomad-budget) (ours)', 'Living in one country after another', 'iPhone', 'Active, 2026'],
+            ['[Nomad Budget](#nomad-budget) (ours)', 'Living in one country after another', 'iPhone, Android', 'Active, 2026'],
             ['[TravelSpend](#trips-and-groups)', 'Trips, alone or with a group', 'iPhone, Android', '2 October 2026'],
             ['[Trabee Pocket](#a-trip-diary)', 'A trip diary with an expense book', 'iPhone, Android', '2 October 2026'],
             ['[Tripcoin](#trips-offline)', 'Trip budgets, offline', 'iPhone, iPad', '25 August 2025'],
@@ -84,7 +84,7 @@ export const GUIDES: Guide[] = [
         h2: 'If you live in one country after another',
         body: [
           '**Nomad Budget** (ours) is built for digital nomads, expats and long-term travellers whose money lives in more than one country. Each country you stay in gets a wallet in its own currency, every entry keeps the exchange rate of the day it was paid, and everything adds up in one main currency you choose. A [3D globe](/#features) shows your route and what each country cost you, and before a move you can see what your own way of living would cost elsewhere, from [official price levels](/blog/does-geo-arbitrage-work/).',
-          'What it doesn’t do: split bills in a group, read receipts, or run on Android yet. It has no bank connection, on purpose. [Free on iPhone](app); Pro adds the comparisons built from your own spending.',
+          'What it doesn’t do: split bills in a group or read receipts. It has no bank connection, on purpose. [Free on iPhone and Android](app); Pro adds the comparisons built from your own spending.',
         ],
       },
       {
@@ -136,13 +136,14 @@ export const GUIDES: Guide[] = [
         list: [
           'How long do you stay? A week suits a trip app; months in one country after another suit an app built around countries.',
           'Who pays? If you split costs with others, a splitting app (or an app with splitting) will save arguments.',
-          'Which phone? Several of these apps are on Android; Nomad Budget is iPhone only for now.',
+          'Which phone? Most of these apps, Nomad Budget included, are on both iPhone and Android; Tripcoin is iPhone and iPad only.',
           'Do you want a bank connection? Some of these apps sync with banks; others, Nomad Budget among them, never ask for one.',
         ],
       },
     ],
     sources: [
       { label: 'Nomad Budget on the App Store', url: STORE.nomad },
+      { label: 'Nomad Budget on Google Play', url: 'https://play.google.com/store/apps/details?id=com.nomadbudget.mobile' },
       { label: 'TravelSpend on the App Store', url: STORE.travelspend },
       { label: 'Trabee Pocket on the App Store', url: STORE.trabee },
       { label: 'Tripcoin on the App Store', url: STORE.tripcoin },

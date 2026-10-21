@@ -1,0 +1,63 @@
+/* What the store videos and stills share: the store's headline, the hero's chips, the 3D
+   phone with a screen on its glass, the audience pills. Each page sets its stage's size and
+   places these. */
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; background: #040812; overflow: hidden; }
+body { font-family: 'Inter Variable', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+p, h1 { margin: 0; }
+
+/* --- the phone: the store's render, the app's screens laid on its glass ------------------ */
+.v-phone { position: absolute; left: 0; top: 0; width: 0; height: 0; }
+.phone-body { position: absolute; left: 0; top: 0; }
+.phone-screen { position: absolute; left: 0; top: 0; width: 390px; height: 844px; transform-origin: 0 0; overflow: hidden; border-radius: 55px; background: #EEF1F6; }
+.phone-screen img { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
+.island { position: absolute; left: 50%; top: 11px; width: 125px; height: 37px; margin-left: -62.5px; border-radius: 999px; background: #000; z-index: 5; }
+
+/* --- the headline: the store's, in its typeface ------------------------------------------ */
+.head {
+  position: absolute; left: 0; top: 0; color: #fff;
+  font-family: 'Poppins', sans-serif; font-weight: 800; letter-spacing: -0.02em; line-height: 1.06;
+}
+.head .glow { display: block; color: #52D69B; }
+
+/* --- chips (the hero's) ------------------------------------------------------------------ */
+.chip { position: absolute; left: 0; top: 0; }
+.chip-body {
+  position: absolute; left: 0; bottom: 11px;
+  display: flex; align-items: center; gap: 0;
+  padding: 5px; border-radius: 999px;
+  background: #fff; color: #0E1726;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .38), 0 1px 2px rgba(0, 0, 0, .2);
+  white-space: nowrap; opacity: 0; transform-origin: 50% 100%;
+}
+.chip-body::after {
+  content: ''; position: absolute; left: 50%; bottom: -6px; margin-left: -6px;
+  border: 6px solid transparent; border-bottom: 0; border-top-color: #fff;
+}
+.chip-flag { width: 52px; height: 52px; border-radius: 50%; overflow: hidden; flex: none; box-shadow: 0 0 0 1px rgba(14, 23, 38, .08); }
+.chip-text { display: grid; max-width: 0; opacity: 0; overflow: hidden; line-height: 1.15; }
+.chip-name { font-size: 26px; font-weight: 700; letter-spacing: -0.01em; }
+.chip-amount { font-size: 22px; font-weight: 600; color: #6B7684; font-variant-numeric: tabular-nums; }
+/* A chip standing high above its place, on a stem (the store's Spain). */
+.chip-stem { position: absolute; left: -1.5px; bottom: 0; width: 3px; border-radius: 2px; background: #fff; box-shadow: 0 0 0 1px rgba(4, 8, 18, .35); }
+
+/* --- the audience pills: the store's ---------------------------------------------------- */
+.v-pills { position: absolute; left: 0; top: 0; display: flex; gap: 12px; }
+.pill {
+  display: flex; align-items: center; gap: 10px; padding-block: 7px; padding-inline: 18px 8px; border-radius: 999px;
+  background: #fff; color: #0E1726; white-space: nowrap;
+  font-family: 'Poppins', sans-serif; font-size: 24px; font-weight: 700; letter-spacing: -0.01em;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, .35);
+}
+.pill img { width: 34px; height: 34px; }
+
+/* --- the site's GlassCard, dark ---------------------------------------------------------- */
+.glass-dark {
+  background-color: rgba(12, 19, 32, .55);
+  background-image: linear-gradient(160deg, rgba(255, 255, 255, .16), rgba(255, 255, 255, .03));
+  border: 1px solid rgba(255, 255, 255, .16);
+  box-shadow: 0 24px 56px -18px rgba(0, 0, 0, .55), inset 0 1px 0 rgba(255, 255, 255, .1);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  backdrop-filter: blur(18px) saturate(150%);
+}

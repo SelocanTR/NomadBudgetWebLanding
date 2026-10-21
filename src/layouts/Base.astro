@@ -1,7 +1,7 @@
 ---
 import '@fontsource-variable/inter';
 import '../styles/global.css';
-import { STRINGS, SITE, APP_STORE_ID, appStoreUrl, pathFor, blogPath, ogCard, type Lang } from '../i18n';
+import { STRINGS, SITE, APP_STORE_ID, appStoreUrl, playStoreUrl, getAppUrl, pathFor, blogPath, ogCard, type Lang } from '../i18n';
 import { allPosts, postsIn } from '../blog';
 import { ALTERNATIVES_PATH, publishedAlternatives } from '../data/alternatives';
 import { publishedGuides } from '../data/guides';
@@ -57,7 +57,7 @@ const home = pathFor(lang);
 const hasBlog = postsIn(lang, await allPosts()).length > 0;
 // The comparisons are English only; the footer points to them from both languages.
 const hasAlternatives = publishedAlternatives().length + publishedGuides().length > 0;
-const qr = await QRCode.toString(appStoreUrl(lang), { type: 'svg', margin: 0, errorCorrectionLevel: 'M', color: { dark: '#0E1726', light: '#FFFFFF' } });
+const qr = await QRCode.toString(getAppUrl(lang), { type: 'svg', margin: 0, errorCorrectionLevel: 'M', color: { dark: '#0E1726', light: '#FFFFFF' } });
 ---
 
 <!doctype html>
@@ -103,6 +103,23 @@ const qr = await QRCode.toString(appStoreUrl(lang), { type: 'svg', margin: 0, er
       // Set before the first paint so the card over the hero starts see-through rather
       // than flashing solid; the scroll handler keeps it true from then on.
       if (!scrollY) document.documentElement.classList.add('at-top');
+      // Visible viewport height on mobile, accounting for the browser's address bar and bottom navbar.
+      {
+        let vw = innerWidth;
+        const setVh = () => {
+          const h = Math.min(innerHeight, window.visualViewport?.height || innerHeight);
+          if (h > 0) document.documentElement.style.setProperty('--vh', `${(h * 0.01).toFixed(2)}px`);
+        };
+        const onResize = () => {
+          if (innerWidth !== vw || !scrollY || matchMedia('(pointer: fine)').matches) {
+            vw = innerWidth;
+            setVh();
+          }
+        };
+        setVh();
+        addEventListener('resize', onResize, { passive: true });
+        window.visualViewport?.addEventListener('resize', onResize, { passive: true });
+      }
     </script>
   </head>
   <body>
@@ -113,17 +130,32 @@ const qr = await QRCode.toString(appStoreUrl(lang), { type: 'svg', margin: 0, er
           <img src="/icons/coin-96.webp" width="34" height="34" alt="" />
           <span>Nomad Budget</span>
         </a>
-        <nav class="nav" aria-label={lang === 'tr' ? 'Ana menü' : 'Main'}>
+        <nav id="site-nav" class="nav" aria-label={lang === 'tr' ? 'Ana menü' : 'Main'}>
           <a href={`${home}#features`}>{s.nav.features}</a>
           <a href={`${home}#privacy`}>{s.nav.privacy}</a>
           <a href={`${home}#faq`}>{s.nav.faq}</a>
           {hasBlog && <a href={blogPath(lang)}>{s.nav.blog}</a>}
         </nav>
         <div class="header-end">
-          <a class="btn btn-lime btn-small" href={appStoreUrl(lang)} rel="noopener">
-            {s.nav.download}
+          <a class="btn btn-lime btn-small header-cta" href={appStoreUrl(lang)} rel="noopener" aria-label={s.nav.download}>
+            <span class="header-cta-label">{s.nav.download}</span>
+            <svg class="header-cta-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M10 3.5v9M6.2 9.2 10 13l3.8-3.8M4.5 16.2h11" />
+            </svg>
           </a>
           {showSwitch && <a class="lang" href={otherPath} hreflang={other} lang={other} aria-label={s.nav.otherLang}><span class="long" aria-hidden="true">{s.nav.otherLang}</span><span class="short" aria-hidden="true">{other.toUpperCase()}</span></a>}
+          <button
+            class="nav-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="site-nav"
+            aria-label={lang === 'tr' ? 'Menüyü aç' : 'Open menu'}
+            data-open={lang === 'tr' ? 'Menüyü aç' : 'Open menu'}
+            data-close={lang === 'tr' ? 'Menüyü kapat' : 'Close menu'}
+          >
+            <span class="nav-toggle-bar" aria-hidden="true"></span>
+            <span class="nav-toggle-bar" aria-hidden="true"></span>
+          </button>
         </div>
       </div>
     </header>
@@ -132,7 +164,8 @@ const qr = await QRCode.toString(appStoreUrl(lang), { type: 'svg', margin: 0, er
       <slot />
     </main>
 
-    <!-- On a computer the App Store is a phone away: the code stays in the corner. -->
+    <!-- On a computer the stores are a phone away: the code stays in the corner. It holds
+         /get/, which sends the phone that scans it to its own store. -->
     <a class="qr-float" href={appStoreUrl(lang)} rel="noopener" aria-label={s.hero.qr}>
       <span class="qr-code" set:html={qr} />
       <span class="qr-caption">{s.hero.qr}</span>
@@ -162,7 +195,8 @@ const qr = await QRCode.toString(appStoreUrl(lang), { type: 'svg', margin: 0, er
             <h2>{s.footer.contact}</h2>
             <ul>
               <li><a href="mailto:nomadbudget@rubeeks.co">nomadbudget@rubeeks.co</a></li>
-              <li><a href={appStoreUrl(lang)} rel="noopener">App Store</a></li>
+              <li><a href={appStoreUrl(lang)} rel="noopener" data-store-keep>App Store</a></li>
+              <li><a href={playStoreUrl(lang)} rel="noopener">Google Play</a></li>
               {hasBlog && <li><a href={blogPath(lang)}>{s.nav.blog}</a></li>}
               {hasAlternatives && <li><a href={ALTERNATIVES_PATH} hreflang="en">{s.footer.compare}</a></li>}
               {showSwitch && <li><a href={otherPath} hreflang={other} lang={other}>{s.nav.otherLang}</a></li>}
@@ -183,7 +217,30 @@ const qr = await QRCode.toString(appStoreUrl(lang), { type: 'svg', margin: 0, er
       const header = document.querySelector<HTMLElement>('[data-header]');
       const hero = document.querySelector<HTMLElement>('.hero');
       if (header) {
+        const toggle = header.querySelector<HTMLButtonElement>('.nav-toggle');
+        const nav = header.querySelector<HTMLElement>('.nav');
+        const setMenu = (open: boolean) => {
+          header.classList.toggle('is-menu-open', open);
+          if (toggle) {
+            toggle.setAttribute('aria-expanded', String(open));
+            toggle.setAttribute('aria-label', (open ? toggle.dataset.close : toggle.dataset.open) ?? '');
+          }
+        };
+        toggle?.addEventListener('click', () => setMenu(!header.classList.contains('is-menu-open')));
+        nav?.addEventListener('click', (e) => {
+          if ((e.target as Element).closest('a')) setMenu(false);
+        });
+        addEventListener('click', (e) => {
+          if (header.classList.contains('is-menu-open') && !header.contains(e.target as Node)) setMenu(false);
+        });
+        addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && header.classList.contains('is-menu-open')) {
+            setMenu(false);
+            toggle?.focus();
+          }
+        });
         const update = () => {
+          if (innerWidth > 860 && header.classList.contains('is-menu-open')) setMenu(false);
           const scrolled = scrollY > 0;
           const pastHero = !hero || hero.getBoundingClientRect().bottom <= header.offsetHeight;
           header.classList.toggle('is-scrolled', scrolled && !pastHero);
@@ -193,6 +250,14 @@ const qr = await QRCode.toString(appStoreUrl(lang), { type: 'svg', margin: 0, er
         addEventListener('scroll', update, { passive: true });
         addEventListener('resize', update, { passive: true });
         update();
+      }
+    </script>
+    <!-- On an Android phone every download link of ours goes to Google Play instead: the
+         pages are built with the App Store address, which is a dead end there. Links to
+         other apps carry their own ids and stay; data-store-keep marks one that names its store. -->
+    <script is:inline define:vars={{ play: playStoreUrl(lang), appId: APP_STORE_ID }}>
+      if (document.documentElement.classList.contains('is-android')) {
+        for (const a of document.querySelectorAll(`a[href*="apps.apple.com"][href*="id${appId}"]:not([data-store-keep])`)) a.href = play;
       }
     </script>
   </body>

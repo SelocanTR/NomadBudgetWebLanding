@@ -5,7 +5,7 @@
 // that spreads the countries over all five bands; the US painted nearly all of them
 // cheaper, Thailand or Türkiye nearly all dearer).
 
-import type { Lang } from '../src/i18n';
+import type { CoverLang } from '../src/data/journey';
 
 export type Caption = [string, string];
 
@@ -32,10 +32,9 @@ export type VideoCopy = {
   tagline: string;
   cta: string;
   url: string;
-  sample: string;
 };
 
-export const COPY: Record<Lang, VideoCopy> = {
+export const COPY: Record<CoverLang, VideoCopy> = {
   en: {
     audiences: ['For digital nomads', 'For expats', 'For long-term travellers'],
     hook: ['The expense tracker', 'for life across borders.'],
@@ -55,9 +54,9 @@ export const COPY: Record<Lang, VideoCopy> = {
     ],
     name: 'Nomad Budget',
     tagline: 'Multi-Currency Expense Tracker',
-    cta: 'Download on the App Store',
+    // Not one store's: the app is on Google Play too.
+    cta: 'Download now',
     url: 'nomadbudget.rubeeks.co',
-    sample: 'Sample journey · illustrative figures',
   },
   tr: {
     audiences: ['Dijital göçebeler için', 'Gurbetçiler için', 'Uzun süre gezenler için'],
@@ -78,15 +77,39 @@ export const COPY: Record<Lang, VideoCopy> = {
     ],
     name: 'Nomad Budget',
     tagline: 'Çok Dövizli Harcama Takibi',
-    cta: 'App Store’dan indir',
+    cta: 'Hemen indir',
     url: 'nomadbudget.rubeeks.co',
-    sample: 'Örnek yolculuk · temsilî rakamlar',
+  },
+  // The site has no Arabic: the app's own Arabic where it has the words (the cost card's
+  // world.cost.*, the route pill's /شهر), the search video's (search-copy.ts) for the hook
+  // and audiences. The total in dollars, as there: the Arabic store is many countries'.
+  ar: {
+    audiences: ['للرحّالة الرقميين', 'للمغتربين', 'للمسافرين لفترات طويلة'],
+    hook: ['متتبّع المصاريف', 'لحياة عابرة للحدود.'],
+    currencies: ['كل دولة', 'بعملتها الخاصة.'],
+    journey: ['رحلتك', 'على كرة أرضية.'],
+    total: ['محفظة لكل دولة.', 'إجمالي واحد.'],
+    totalLabel: 'إجمالي الرحلة',
+    totalSub: '9 دول · 8 عملات',
+    cost: ['قارن بين الدول', 'قبل أن تسافر.'],
+    home: { currency: 'USD' },
+    reference: { code: 'MX', name: 'المكسيك', label: 'أنت هنا' },
+    legendTitle: 'مسعّرة مقارنةً بـ',
+    bands: ['النصف أو أقل', 'أرخص', 'متقاربة', 'أغلى', 'الضعف أو أكثر'],
+    screens: [
+      { shot: 'entry', caption: ['سجّلها', 'في ثوانٍ.'] },
+      { shot: 'capture', caption: ['مدفوعات', 'تُضاف تلقائيًا.'] },
+    ],
+    name: 'Nomad Budget',
+    tagline: 'متتبّع مصاريف متعدد العملات',
+    cta: 'حمّل الآن',
+    url: 'nomadbudget.rubeeks.co',
   },
 };
 
 /**
- * Rough rates to US dollars, for the trip's total only — the figures are illustrative
- * (the footer says so), not a claim about any day's rate.
+ * Rough rates to US dollars, for the trip's total only — the figures are illustrative,
+ * not a claim about any day's rate.
  */
 export const USD_PER: Record<string, number> = {
   USD: 1, EUR: 1.1, MAD: 0.1, TRY: 0.024, GEL: 0.37, THB: 0.029, MYR: 0.22, IDR: 0.000062, MXN: 0.053,

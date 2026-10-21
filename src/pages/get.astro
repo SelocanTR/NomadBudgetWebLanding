@@ -1,0 +1,42 @@
+---
+// The address the corner's code holds (Base.astro): the phone that scans it may be an
+// iPhone or an Android, so this page sends each to its own store. No phone it knows
+// (a computer, a crawler) gets both links. Not in the sitemap, not for search.
+import { appStoreUrl, playStoreUrl } from '../i18n';
+
+const stores = {
+  en: { ios: appStoreUrl('en'), android: playStoreUrl('en') },
+  tr: { ios: appStoreUrl('tr'), android: playStoreUrl('tr') },
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Get Nomad Budget</title>
+    <link rel="icon" href="/favicon-32.png" />
+    <script is:inline define:vars={{ stores }}>
+      const lang = new URLSearchParams(location.search).get('l') === 'tr' ? 'tr' : 'en';
+      const ua = navigator.userAgent;
+      const to = /Android/i.test(ua) ? stores[lang].android
+        : /iPhone|iPad|iPod/i.test(ua) || (/Macintosh/i.test(ua) && navigator.maxTouchPoints > 1) ? stores[lang].ios
+        : null;
+      if (to) location.replace(to);
+    </script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0E1726; color: #E9EEF5; font: 16px/1.5 system-ui, sans-serif; }
+      main { display: grid; gap: 14px; padding: 24px; text-align: center; }
+      a { display: block; padding: 14px 22px; border-radius: 14px; background: #52D69B; color: #0E1726; font-weight: 700; text-decoration: none; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Nomad Budget</h1>
+      <a href={stores.en.ios} rel="noopener">App Store</a>
+      <a href={stores.en.android} rel="noopener">Google Play</a>
+    </main>
+  </body>
+</html>

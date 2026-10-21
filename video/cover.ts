@@ -13,11 +13,18 @@
 // more: the whole height and about the middle 2490 px of the width (1.5 : 1), at about
 // 390 pt — so that is what the planet and the chips are sized for, with the stop just
 // reached and its chip inside the safe area for the rest.
+//
+// The planet changes its looks on the way, as the hero's does (themes.ts `CUES`): a Pro
+// theme spreads from the country just reached, and France, where the loop's trip begins,
+// turns it back to the realistic planet. The wave, the route's ink, the chips' colours and
+// the symbols are all functions of the clock too, so the seam stays clean.
 
-import { GlobeRenderer, loadImage, type View } from '../src/globe/renderer';
+import { GlobeRenderer, loadImage, type SymbolBatch, type View } from '../src/globe/renderer';
 import { RouteLayer, type Leg, type Transport } from '../src/globe/routes';
 import { drawStars } from '../src/globe/stars';
 import { RAD, angleBetween, clamp, greatCircle, nearestTurn, project, smoothstep } from '../src/globe/geo';
+import { CUES, type ThemeId } from '../src/globe/themes';
+import { loadThemes, themeDresser } from './themes';
 
 export const FPS = 30;
 /**
@@ -60,6 +67,9 @@ const outBack = (x: number) => {
 };
 const mod = (a: number, n: number) => ((a % n) + n) % n;
 
+/** Where the realistic planet comes back: the loop's first stop. */
+const HOME_CODE = 'FR';
+
 type Data = {
   journey: { stops: { code: string; name: string; lonLat: [number, number]; amount: string }[]; legs: Transport[] };
 };
@@ -80,6 +90,7 @@ export async function startCover(root: HTMLElement) {
   const images = qa<HTMLImageElement>('img');
   const ready = Promise.all([
     renderer.load('/globe/earth-4k.webp', '/globe/ids.png'),
+    loadThemes(renderer, CUES.map(([, id]) => id)),
     document.fonts.ready,
     ...images.map((img) => (img.complete ? Promise.resolve() : new Promise((r) => { img.onload = img.onerror = r; }))),
   ]);
@@ -150,6 +161,19 @@ export async function startCover(root: HTMLElement) {
     return { p: cameraFor(anchors[latest], 1), zoom: 1, tau: 320 };
   };
 
+  // --- the themes: each from its stop's arrival until the next one's --------------------------
+  const cues = [[HOME_CODE, 'realistic'] as [string, ThemeId], ...CUES]
+    .map(([code, id]) => ({ stop: stops.findIndex((s) => s.code === code), id }))
+    .filter((c) => c.stop >= 0)
+    .sort((a, b) => a.stop - b.stop);
+  let dress: ReturnType<typeof themeDresser>;
+  /** This moment's theme: the latest stop's cue reached on the loop, and the one before it. */
+  const themeAt = (t: number) => {
+    let c = 0;
+    for (let i = 1; i < cues.length; i++) if (since(t, A[cues[i].stop]) < since(t, A[cues[c].stop])) c = i;
+    return { cur: cues[c].id, prev: cues[(c + cues.length - 1) % cues.length].id, origin: anchors[cues[c].stop], since: since(t, A[cues[c].stop]) };
+  };
+
   // --- the camera, a frame at a time -------------------------------------------------------
   const frames = Math.round(LOOP * FPS);
   const START = A[START_AT] + START_AFTER;
@@ -183,7 +207,7 @@ export async function startCover(root: HTMLElement) {
     const lg = legs.map((_, i) => legAt(t, i));
 
     st.forEach((x, i) => renderer.setFill(i, x.alive ? smoothstep(0, 0.4, x.s) * x.fade : 0, x.alive ? 1 - smoothstep(0.3, 1.5, x.s) : 0));
-    renderer.render(v);
+    renderer.render(v, dress(themeAt(t), v));
 
     const vehicle = lg.findIndex((l) => l.moving);
     routes.draw(v, legs, lg.map((l) => l.progress), vehicle < 0 ? null : vehicle, n, anchors, 1, {
@@ -203,7 +227,7 @@ export async function startCover(root: HTMLElement) {
       chipBody[i].style.gap = `${(10 * x.open).toFixed(1)}px`;
       chipText[i].style.maxWidth = `${(320 * x.open).toFixed(1)}px`;
       chipText[i].style.opacity = x.open.toFixed(3);
-      chipText[i].style.paddingRight = `${(13 * x.open).toFixed(1)}px`;
+      chipText[i].style.paddingInlineEnd = `${(13 * x.open).toFixed(1)}px`;
     });
   };
 
@@ -215,7 +239,8 @@ export async function startCover(root: HTMLElement) {
     draw(clock(f));
   };
 
-  await ready;
+  const [, sets] = await ready;
+  dress = themeDresser(renderer, routes, root, sets, R, new Set(stops.map((s) => s.code)));
   (window as unknown as { __video: object }).__video = {
     fps: FPS, frames, duration: LOOP, seek, camera: () => ({ ...cam }),
     marks: { arrivals: A.slice(0, n).map((a) => mod(a - START, LOOP)), dur },

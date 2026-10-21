@@ -2,6 +2,8 @@
 //
 //   node video/render.mjs --lang en [--format landscape] [--stills 2,10.5,17] [--mux-only]
 //   node video/render.mjs --page cover --lang en [--stills 0,7] [--guides]
+//   node video/render.mjs --page search --lang en [--stills 0,7] [--guides]
+//   node video/render.mjs --page feature --lang en
 //
 // Needs `astro dev` running (URL defaults to http://127.0.0.1:4321) and ffmpeg (FFMPEG,
 // else on PATH). Chrome drives the page, with the GPU, at 2× the stage's CSS size.
@@ -12,7 +14,11 @@
 //   nomadbudget-cover-<lang>.mp4             the App Store header: 3840 × 1646, silent, a
 //                                            seamless loop (checked: the step from the last
 //                                            frame back to the first is no bigger than any other)
-// or with --stills, one PNG per time given, for looking at.
+//   nomadbudget-search-<lang>.mp4            the App Store search video: 2880 × 1920, likewise
+//   play-feature-<lang>.jpg                  the Google Play feature graphic: 1024 × 500, taken
+//                                            at 2× and scaled down
+// or with --stills, one PNG per time given, for looking at, under video/out/temp/ (only the
+// deliverables stay in video/out/ itself).
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -24,15 +30,19 @@ const args = Object.fromEntries(
   process.argv.slice(2).reduce((acc, a, i, all) => (a.startsWith('--') ? [...acc, [a.slice(2), all[i + 1]?.startsWith('--') ? true : all[i + 1] ?? true]] : acc), []),
 );
 const lang = args.lang ?? 'en';
+// The App Store's loops (no music, checked for a seam): the product page header, the search video.
 const cover = args.page === 'cover';
-const format = cover ? 'header' : args.format === 'landscape' ? 'landscape' : 'portrait';
+const search = args.page === 'search';
+const feature = args.page === 'feature';
+const loop = cover || search;
+const format = cover ? 'header' : search ? 'search' : args.format === 'landscape' ? 'landscape' : 'portrait';
 const base = args.url ?? process.env.VIDEO_URL ?? 'http://127.0.0.1:4321';
 const FFMPEG = process.env.FFMPEG ?? 'ffmpeg';
 const MUSIC = path.resolve(args.music ?? 'video/music/b.m4a');
 const OUT = path.resolve('video/out');
-fs.mkdirSync(OUT, { recursive: true });
+fs.mkdirSync(path.join(OUT, 'temp'), { recursive: true });
 
-const stem = path.join(OUT, cover ? `nomadbudget-cover-${lang}` : `nomadbudget-${lang}-${format}`);
+const stem = path.join(OUT, loop ? `nomadbudget-${args.page}-${lang}` : `nomadbudget-${lang}-${format}`);
 
 // --- the music: faded to the picture's length, then brought to −14 LUFS in two passes ---------
 function mux(stem, duration) {
@@ -67,14 +77,15 @@ const browser = await chromium.launch({
   args: ['--use-angle=d3d11', '--enable-gpu', '--ignore-gpu-blocklist', '--force-color-profile=srgb', '--hide-scrollbars'],
 });
 // The cover's stage is 960 × 411.5 at 4× (3840 × 1646); the viewport takes the whole pixel above it.
-const size = cover ? { width: 960, height: 412 } : format === 'landscape' ? { width: 960, height: 540 } : { width: 540, height: 960 };
-const page = await browser.newPage({ viewport: size, deviceScaleFactor: cover ? 4 : 2 });
+// The search video's is 960 × 640 at 3× (2880 × 1920); the feature graphic's 1024 × 500 at 2×.
+const size = cover ? { width: 960, height: 412 } : search ? { width: 960, height: 640 } : feature ? { width: 1024, height: 500 } : format === 'landscape' ? { width: 960, height: 540 } : { width: 540, height: 960 };
+const page = await browser.newPage({ viewport: size, deviceScaleFactor: cover ? 4 : search ? 3 : 2 });
 page.on('console', (m) => { if (m.type() === 'error' || m.type() === 'warning') console.log('[page]', m.text()); });
 page.on('pageerror', (e) => console.log('[page error]', e.message));
 page.on('response', (r) => { if (r.status() >= 400) console.log('[page]', r.status(), r.url()); });
 
-const url = cover
-  ? `${base}/video/cover/${lang}/${args.guides ? '?guides' : ''}`
+const url = loop || feature
+  ? `${base}/video/${args.page}/${lang}/${args.guides ? '?guides' : ''}`
   : `${base}/video/${lang}/${format === 'landscape' ? '?f=landscape' : ''}`;
 await page.goto(url, { waitUntil: 'load' });
 await page.waitForFunction(() => document.querySelector('[data-video]')?.getAttribute('data-ready') === '1', null, { timeout: 60000 });
@@ -90,11 +101,20 @@ const shot = () => page.screenshot({ type: 'png', animations: 'disabled', caret:
 /** The cover's frame is the top 1646 of the 1648 px the viewport makes. */
 const CROP = cover ? { width: 3840, height: 1646 } : null;
 
+// The feature graphic: one still, scaled down to Google's size, no alpha.
+if (feature) {
+  const file = path.join(OUT, `play-feature-${lang}.jpg`);
+  await sharp(await shot()).resize(1024, 500).flatten().jpeg({ quality: 92, chromaSubsampling: '4:4:4' }).toFile(file);
+  console.log(file);
+  await browser.close();
+  process.exit(0);
+}
+
 if (args.stills) {
   const times = String(args.stills).split(',').map(Number);
   for (const t of times) {
     await page.evaluate((f) => window.__video.seek(f), Math.round(t * fps));
-    const file = path.join(OUT, `still-${lang}-${format}-${t.toFixed(2)}.png`);
+    const file = path.join(OUT, 'temp', `still-${lang}-${format}-${t.toFixed(2)}.png`);
     const buf = await shot();
     fs.writeFileSync(file, CROP ? await sharp(buf).extract({ left: 0, top: 0, ...CROP }).png().toBuffer() : buf);
     console.log(file);
@@ -104,8 +124,8 @@ if (args.stills) {
 }
 
 // --- the picture ----------------------------------------------------------------------------
-// The cover has no music: its picture is the file.
-const silent = cover ? `${stem}.mp4` : `${stem}-silent.mp4`;
+// The loops have no music: the picture is the file.
+const silent = loop ? `${stem}.mp4` : `${stem}-silent.mp4`;
 const enc = spawn(FFMPEG, [
   '-y', '-loglevel', 'error',
   '-f', 'image2pipe', '-framerate', String(fps), '-c:v', 'png', '-i', '-',
@@ -116,8 +136,8 @@ const enc = spawn(FFMPEG, [
 ], { stdio: ['pipe', 'inherit', 'inherit'] });
 const done = new Promise((resolve, reject) => enc.on('close', (code) => (code === 0 ? resolve() : reject(new Error(`ffmpeg exited ${code}`)))));
 
-// For the cover's seam: each frame small and grey, and how far each is from the one before.
-const thumb = (buf) => sharp(buf).extract({ left: 0, top: 0, ...CROP }).resize(480).greyscale().raw().toBuffer();
+// For a loop's seam: each frame small and grey, and how far each is from the one before.
+const thumb = (buf) => (CROP ? sharp(buf).extract({ left: 0, top: 0, ...CROP }) : sharp(buf)).resize(480).greyscale().raw().toBuffer();
 const diff = (a, b) => { let s = 0; for (let i = 0; i < a.length; i++) s += Math.abs(a[i] - b[i]); return s / a.length; };
 const steps = [];
 let first = null, prev = null;
@@ -127,7 +147,7 @@ for (let f = 0; f < frames; f++) {
   await page.evaluate((i) => window.__video.seek(i), f);
   const buf = await shot();
   if (!enc.stdin.write(buf)) await new Promise((r) => enc.stdin.once('drain', r));
-  if (cover) {
+  if (loop) {
     const small = await thumb(buf);
     if (prev) steps.push(diff(prev, small));
     first ??= small;
@@ -143,7 +163,7 @@ await done;
 await browser.close();
 console.log(`\n${silent}`);
 
-if (cover) {
+if (loop) {
   // The step from the last frame back to the first should be one more step of the motion.
   const seam = diff(prev, first);
   const around = Math.max(steps[0], steps[steps.length - 1]);

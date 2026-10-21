@@ -16,6 +16,15 @@ const store = appStoreUrl(lang);
   <div class="hero-chips" aria-hidden="true">
     {journey.stops.map((stop) => (
       <div class="chip" data-code={stop.code}>
+        <!-- On arrival a few of the month's spends burst out of the chip and fade as the trip
+             goes on (hero.ts `is-burst`, which also scatters them). Under the chip, out from behind it. -->
+        <div class="burst">
+          {stop.spends.map((spend) => (
+            <span class="spend">
+              <span class="spend-icon">{spend.icon}</span>{spend.amount}
+            </span>
+          ))}
+        </div>
         <div class="chip-body">
           <span class="chip-flag" set:html={flagSvg(stop.code)} />
           <span class="chip-text">
@@ -43,8 +52,16 @@ const store = appStoreUrl(lang);
       <p class="lede">{s.hero.lede}</p>
       <div class="cta-row">
         <a class="btn btn-lime" href={store} rel="noopener">{s.hero.cta}</a>
+        <!-- The globe themes: the trip turns through them on its own; a pick holds one, again
+             lets it go (hero.ts). Globes only; each names itself to a screen reader and on hover. -->
+        <div class="globe-themes" role="group" aria-label={s.hero.themes.label}>
+          {(['realistic', 'paper', 'miniature', 'pirireis'] as const).map((id) => (
+            <button class="theme-pick" type="button" data-theme={id} aria-pressed="false" aria-label={s.hero.themes.names[id]} title={s.hero.themes.names[id]}>
+              <img src={`/globe/themes/${id}/thumb.webp`} width="30" height="30" alt="" loading="lazy" />
+            </button>
+          ))}
+        </div>
       </div>
-      <p class="android-note">{s.hero.android}</p>
     </div>
 
     <div class="globe-area">

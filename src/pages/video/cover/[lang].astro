@@ -8,20 +8,21 @@
 //   /video/cover/en/?guides        Apple's art safe area drawn over it
 
 import '@fontsource-variable/inter';
-import { STRINGS, type Lang } from '../../../i18n';
-import { heroJourney, flagSvg } from '../../../data/journey';
+import { STRINGS } from '../../../i18n';
+import { heroJourney, flagSvg, type CoverLang } from '../../../data/journey';
 
 export function getStaticPaths() {
-  return import.meta.env.DEV ? [{ params: { lang: 'en' } }, { params: { lang: 'tr' } }] : [];
+  return import.meta.env.DEV ? [{ params: { lang: 'en' } }, { params: { lang: 'tr' } }, { params: { lang: 'ar' } }] : [];
 }
 
-const lang = Astro.params.lang as Lang;
+const lang = Astro.params.lang as CoverLang;
 const journey = heroJourney(lang);
-const perMonth = STRINGS[lang].hero.perMonth;
+// The app's world.route.pill.perMonth for Arabic.
+const perMonth = lang === 'ar' ? '/شهر' : STRINGS[lang].hero.perMonth;
 ---
 
 <!doctype html>
-<html lang={lang}>
+<html lang={lang} dir={lang === 'ar' ? 'rtl' : 'ltr'}>
   <head>
     <meta charset="utf-8" />
     <meta name="robots" content="noindex" />
@@ -64,6 +65,8 @@ const perMonth = STRINGS[lang].hero.perMonth;
   body { font-family: 'Inter Variable', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
 
   /* 960 × 411.5 at 4× is 3840 × 1646. */
+  /* The chips' colours, set by cover.ts as the planet changes theme. */
+  .stage { --chip-fill: #fff; --chip-ink: #0E1726; --chip-muted: #6B7684; --chip-edge: transparent; }
   .stage { position: relative; width: 960px; height: calc(1646px / 4); overflow: hidden; background: #040812; }
   .stage > * { position: absolute; inset: 0; }
   .v-stars, .v-globe, .v-routes { width: 100%; height: 100%; }
@@ -76,18 +79,18 @@ const perMonth = STRINGS[lang].hero.perMonth;
     position: absolute; left: 0; bottom: 11px;
     display: flex; align-items: center; gap: 0;
     padding: 5px; border-radius: 999px;
-    background: #fff; color: #0E1726;
+    background: var(--chip-fill); color: var(--chip-ink); outline: 1.5px solid var(--chip-edge); outline-offset: -1.5px;
     box-shadow: 0 8px 22px rgba(0, 0, 0, .38), 0 1px 2px rgba(0, 0, 0, .2);
     white-space: nowrap; opacity: 0; transform-origin: 50% 100%;
   }
   .chip-body::after {
     content: ''; position: absolute; left: 50%; bottom: -6px; margin-left: -6px;
-    border: 6px solid transparent; border-bottom: 0; border-top-color: #fff;
+    border: 6px solid transparent; border-bottom: 0; border-top-color: var(--chip-fill);
   }
   .chip-flag { width: 46px; height: 46px; border-radius: 50%; overflow: hidden; flex: none; box-shadow: 0 0 0 1px rgba(14, 23, 38, .08); }
   .chip-text { display: grid; max-width: 0; opacity: 0; overflow: hidden; line-height: 1.15; }
   .chip-name { font-size: 24px; font-weight: 700; letter-spacing: -0.01em; }
-  .chip-amount { font-size: 21px; font-weight: 600; color: #6B7684; font-variant-numeric: tabular-nums; }
+  .chip-amount { font-size: 21px; font-weight: 600; color: var(--chip-muted); font-variant-numeric: tabular-nums; }
 
   .v-guides { display: none; pointer-events: none; z-index: 100; }
   .show-guides .v-guides { display: block; }

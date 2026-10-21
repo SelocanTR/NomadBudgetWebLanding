@@ -10,6 +10,11 @@
 // The marketing video (video/) adds the app's cost layer: every country painted in its
 // price band against a home country, revealed as a wave spreading out from home. It is
 // off (uCost = 0) unless `loadCost` has been called, so the hero never pays for it.
+//
+// The hero also wears the app's Pro globe themes (themes.ts): another ground with its own
+// grading, spread over the old one as a wave from a place (`setLook`), and the theme's
+// symbols lying on it, drawn in a second pass on the same canvas (symbols.ts). Without a
+// look set, the ground is the realistic one graded as it always was.
 
 const VERT = `
 attribute vec2 aPos;
@@ -35,9 +40,14 @@ uniform vec2 uCountrySize;
 uniform float uCost;         // 0 → 1: how much of the cost layer is painted
 uniform vec3 uHome;          // the home country, a unit vector
 uniform float uSweep;        // radians from home the wave has reached
+uniform sampler2D uGroundPrev; // the theme being left, while the wave crosses it
+uniform vec4 uGrade;         // saturation, diffuse base, diffuse gain, specular (themes.ts)
+uniform vec4 uGradePrev;
+uniform vec3 uOrigin;        // where the new ground spreads from, a unit vector
+uniform float uWave;         // radians from there it has reached; < 0: no wave
+uniform vec3 uRim;           // the atmosphere: the haze round the disc and the light on its limb
 
 const float PI = 3.14159265;
-const vec3 RIM = vec3(0.55, 0.72, 1.0);
 const vec3 STAY = vec3(0.310, 0.769, 0.561);   // POSTER.stay.week  #4FC48F
 const vec3 FRESH = vec3(0.659, 0.941, 0.800);  // POSTER.stay.visited #A8F0CC
 
@@ -78,13 +88,20 @@ vec4 bandAt(vec2 uv) {
   return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
 }
 
+// The app's grading: saturation, then a top-left light with a specular touch.
+vec3 graded(vec3 t, vec4 g, float ndl) {
+  float lum = dot(t, vec3(0.299, 0.587, 0.114));
+  t = mix(vec3(lum), t, g.x);
+  return t * (g.y + g.z * ndl) + vec3(g.w * pow(ndl, 8.0));
+}
+
 void main() {
   vec2 q = (gl_FragCoord.xy - uCenter) / uRadius;
   float r2 = dot(q, q);
   float r = sqrt(r2);
 
   float haze = exp(-max(r - 1.0, 0.0) * uHaze) * 0.55 * uDawn;
-  vec4 outside = vec4(RIM * haze, haze);
+  vec4 outside = vec4(uRim * haze, haze);
 
   float cover = 1.0 - smoothstep(1.0 - 1.5 / uRadius, 1.0, r);
   if (cover <= 0.0) { gl_FragColor = outside; return; }
@@ -99,13 +116,18 @@ void main() {
   float lat = asin(clamp(y1, -1.0, 1.0));
   vec2 uv = vec2(lon / (2.0 * PI) + 0.5, 0.5 - lat / PI);
 
-  vec3 t = texture2D(uGround, uv).rgb;
-  float lum = dot(t, vec3(0.299, 0.587, 0.114));
-  t = mix(vec3(lum), t, 1.4);
   vec3 normal = vec3(q.x, q.y, z);
   vec3 lightDir = normalize(vec3(-0.6, 0.6, 1.0));
   float ndl = max(0.0, dot(normal, lightDir));
-  t = t * (0.5 + 0.6 * ndl) + vec3(0.15 * pow(ndl, 8.0));
+  vec3 t = graded(texture2D(uGround, uv).rgb, uGrade, ndl);
+
+  // A new theme spreading from a place: the old ground beyond the wave, a crisp edge between.
+  // No light on the edge: while the wave is small a glow fills all of it, a white fog.
+  if (uWave >= 0.0) {
+    float dist = acos(clamp(dot(vec3(x2, y1, z2), uOrigin), -1.0, 1.0));
+    float reveal = 1.0 - smoothstep(uWave - 0.015, uWave, dist);
+    if (reveal < 1.0) t = mix(graded(texture2D(uGroundPrev, uv).rgb, uGradePrev, ndl), t, reveal);
+  }
 
   // The countries the trip has reached, painted over the graded ground and not graded
   // themselves (as in the app), keeping only a little of the limb's fall-off.
@@ -117,6 +139,10 @@ void main() {
   }
 
   if (uCost > 0.0) {
+    // Under the cost layer the ground is the app's poster navy (globeThemes.ts
+    // POSTER_GROUND_THEME): the same picture, nearly grey, cast blue.
+    vec3 poster = graded(texture2D(uGround, uv).rgb, vec4(0.2, 0.7, 0.42, 0.1), ndl) * vec3(0.154, 0.401, 0.852);
+    t = mix(t, poster, uCost);
     vec4 band = bandAt(uv);
     if (band.a > 0.0) {
       float dist = acos(clamp(dot(vec3(x2, y1, z2), uHome), -1.0, 1.0));
@@ -128,12 +154,59 @@ void main() {
     }
   }
 
-  t += RIM * pow(1.0 - z, 4.0) * 0.55;
+  t += uRim * pow(1.0 - z, 4.0) * 0.55;
 
   vec4 inside = vec4(t, 1.0);
   gl_FragColor = mix(outside, inside, cover) * uDawn;
 }
 `;
+
+// The symbols: textured quads in CSS px, each vertex with its light and its alpha. The
+// atlas is uploaded premultiplied, so a sprite's clear corners add nothing.
+const SYMBOL_VERT = `
+attribute vec2 aXY;
+attribute vec2 aUV;
+attribute vec2 aShade;       // light, alpha
+uniform vec2 uView;          // the canvas, CSS px
+varying vec2 vUV;
+varying vec2 vShade;
+void main() {
+  vUV = aUV;
+  vShade = aShade;
+  gl_Position = vec4(aXY.x / uView.x * 2.0 - 1.0, 1.0 - aXY.y / uView.y * 2.0, 0.0, 1.0);
+}
+`;
+
+const SYMBOL_FRAG = `
+precision mediump float;
+uniform sampler2D uAtlas;
+varying vec2 vUV;
+varying vec2 vShade;
+void main() {
+  vec4 c = texture2D(uAtlas, vUV);
+  gl_FragColor = vec4(c.rgb * vShade.x, c.a) * vShade.y;
+}
+`;
+
+/** Floats per vertex of a symbol quad: x, y, u, v, light, alpha. Six vertices a sprite. */
+export const SYMBOL_STRIDE = 6;
+
+/** A batch of symbols from one atlas, as symbols.ts writes them. */
+export type SymbolBatch = { atlas: string; data: Float32Array; count: number };
+
+export type Grade = [saturation: number, diffuseBase: number, diffuseGain: number, specular: number];
+
+/** The ground and its grading, the atmosphere's colour, and the wave from the theme before. */
+export type Look = {
+  ground: string;
+  grade: Grade;
+  rim?: [number, number, number];
+  prev?: { ground: string; grade: Grade; origin: [number, number, number]; wave: number };
+};
+
+export const REALISTIC_GRADE: Grade = [1.1, 0.7, 0.42, 0.1];
+/** The satellite planet's thin blue air. */
+export const REALISTIC_RIM: [number, number, number] = [0.55, 0.72, 1.0];
 
 export type View = {
   /** The disc's centre, CSS px from the canvas's top-left. */
@@ -172,6 +245,16 @@ export class GlobeRenderer {
   private idsSize: [number, number] = [2048, 1024];
   private countrySize: [number, number] = [1, 1];
   private cost = { mix: 0, home: [0, 0, 1] as [number, number, number], sweep: 0 };
+  /** The themes' grounds and atlases by id; "realistic" is `textures.ground`. */
+  private grounds = new Map<string, WebGLTexture>();
+  private atlases = new Map<string, WebGLTexture>();
+  private look: Look = { ground: 'realistic', grade: REALISTIC_GRADE };
+  private symbolProgram: WebGLProgram | null = null;
+  private symbolLoc: Record<string, WebGLUniformLocation | null> = {};
+  private symbolAttr = { xy: -1, uv: -1, shade: -1 };
+  private symbolBuffer: WebGLBuffer | null = null;
+  private quad: WebGLBuffer;
+  private aPos: number;
   scale = 1;
 
   /** `keep`: hold the drawn frame for the page to be captured from (the video). */
@@ -182,20 +265,21 @@ export class GlobeRenderer {
     const hp = gl.getShaderPrecisionFormat(gl.FRAGMENT_SHADER, gl.HIGH_FLOAT);
     if (!hp || hp.precision === 0) throw new Error('no highp');
     this.gl = gl;
-    this.program = this.link();
-    for (const name of ['uGround', 'uIds', 'uIdsLin', 'uFill', 'uCenter', 'uRadius', 'uTrig', 'uHaze', 'uDawn', 'uAnyFill', 'uIdsSize', 'uCountry', 'uBands', 'uCountrySize', 'uCost', 'uHome', 'uSweep']) {
+    this.program = this.link(VERT, FRAG);
+    for (const name of ['uGround', 'uIds', 'uIdsLin', 'uFill', 'uCenter', 'uRadius', 'uTrig', 'uHaze', 'uDawn', 'uAnyFill', 'uIdsSize', 'uCountry', 'uBands', 'uCountrySize', 'uCost', 'uHome', 'uSweep', 'uGroundPrev', 'uGrade', 'uGradePrev', 'uOrigin', 'uWave', 'uRim']) {
       this.loc[name] = gl.getUniformLocation(this.program, name);
     }
-    const buf = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    this.quad = gl.createBuffer()!;
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.quad);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
-    const aPos = gl.getAttribLocation(this.program, 'aPos');
-    gl.enableVertexAttribArray(aPos);
-    gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+    this.aPos = gl.getAttribLocation(this.program, 'aPos');
+    gl.enableVertexAttribArray(this.aPos);
+    gl.vertexAttribPointer(this.aPos, 2, gl.FLOAT, false, 0, 0);
     this.textures = { ground: gl.createTexture()!, ids: gl.createTexture()!, idsLin: gl.createTexture()!, fill: gl.createTexture()!, country: gl.createTexture()!, bands: gl.createTexture()! };
+    gl.uniform1i(this.loc.uGroundPrev, 6);
   }
 
-  private link(): WebGLProgram {
+  private link(vert: string, frag: string): WebGLProgram {
     const gl = this.gl;
     const compile = (type: number, src: string) => {
       const s = gl.createShader(type)!;
@@ -205,19 +289,19 @@ export class GlobeRenderer {
       return s;
     };
     const p = gl.createProgram()!;
-    gl.attachShader(p, compile(gl.VERTEX_SHADER, VERT));
-    gl.attachShader(p, compile(gl.FRAGMENT_SHADER, FRAG));
+    gl.attachShader(p, compile(gl.VERTEX_SHADER, vert));
+    gl.attachShader(p, compile(gl.FRAGMENT_SHADER, frag));
     gl.linkProgram(p);
     if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p) ?? 'link');
     gl.useProgram(p);
     return p;
   }
 
-  private upload(tex: WebGLTexture, unit: number, source: TexImageSource | null, filter: number, wrapS: number, w = 0, h = 0, data?: Uint8Array) {
+  private upload(tex: WebGLTexture, unit: number, source: TexImageSource | null, filter: number, wrapS: number, w = 0, h = 0, data?: Uint8Array, premultiply = false) {
     const gl = this.gl;
     gl.activeTexture(gl.TEXTURE0 + unit);
     gl.bindTexture(gl.TEXTURE_2D, tex);
-    gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
+    gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, premultiply);
     gl.pixelStorei(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, gl.NONE);
     if (source) gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, source);
     else gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, w, h, 0, gl.RGBA, gl.UNSIGNED_BYTE, data ?? null);
@@ -250,6 +334,41 @@ export class GlobeRenderer {
   async swapGround(url: string) {
     const img = await loadImage(url);
     this.upload(this.textures.ground, 0, img, this.gl.LINEAR, this.gl.REPEAT);
+  }
+
+  /** A theme's ground (themes.ts), by its id; again with the same id for a sharper one. */
+  addGround(id: string, img: TexImageSource) {
+    const gl = this.gl;
+    let tex = this.grounds.get(id);
+    if (!tex) this.grounds.set(id, (tex = gl.createTexture()!));
+    this.upload(tex, 7, img, gl.LINEAR, gl.REPEAT);
+  }
+
+  /** A theme's symbol atlas, mipmapped: the sprites are drawn at half their size and less. */
+  addAtlas(id: string, img: TexImageSource) {
+    const gl = this.gl;
+    let tex = this.atlases.get(id);
+    if (!tex) this.atlases.set(id, (tex = gl.createTexture()!));
+    this.upload(tex, 7, img, gl.LINEAR, gl.CLAMP_TO_EDGE, 0, 0, undefined, true);
+    gl.generateMipmap(gl.TEXTURE_2D);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+    if (!this.symbolProgram) {
+      const p = this.link(SYMBOL_VERT, SYMBOL_FRAG);
+      this.symbolProgram = p;
+      this.symbolLoc = { uView: gl.getUniformLocation(p, 'uView'), uAtlas: gl.getUniformLocation(p, 'uAtlas') };
+      this.symbolAttr = { xy: gl.getAttribLocation(p, 'aXY'), uv: gl.getAttribLocation(p, 'aUV'), shade: gl.getAttribLocation(p, 'aShade') };
+      this.symbolBuffer = gl.createBuffer();
+      gl.useProgram(this.program);
+    }
+  }
+
+  /** The ground to draw and, while a theme comes in, the one it is replacing. */
+  setLook(look: Look) {
+    this.look = look;
+  }
+
+  private groundTexture(id: string) {
+    return id === 'realistic' ? this.textures.ground : this.grounds.get(id) ?? this.textures.ground;
   }
 
   /**
@@ -293,7 +412,7 @@ export class GlobeRenderer {
     }
   }
 
-  render(v: View) {
+  render(v: View, symbols: SymbolBatch[] = []) {
     const gl = this.gl;
     const k = this.canvas.width / Math.max(1, this.canvas.clientWidth);
     if (this.fillDirty) {
@@ -319,6 +438,54 @@ export class GlobeRenderer {
     gl.uniform1f(this.loc.uCost, this.cost.mix);
     gl.uniform3f(this.loc.uHome, ...this.cost.home);
     gl.uniform1f(this.loc.uSweep, this.cost.sweep);
+    const look = this.look;
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, this.groundTexture(look.ground));
+    gl.uniform4f(this.loc.uGrade, ...look.grade);
+    gl.uniform3f(this.loc.uRim, ...(look.rim ?? REALISTIC_RIM));
+    if (look.prev) {
+      gl.activeTexture(gl.TEXTURE6);
+      gl.bindTexture(gl.TEXTURE_2D, this.groundTexture(look.prev.ground));
+      gl.uniform4f(this.loc.uGradePrev, ...look.prev.grade);
+      gl.uniform3f(this.loc.uOrigin, ...look.prev.origin);
+    }
+    gl.uniform1f(this.loc.uWave, look.prev ? look.prev.wave : -1);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
+    if (this.symbolProgram && symbols.some((b) => b.count > 0)) this.drawSymbols(this.symbolProgram, symbols);
+  }
+
+  private drawSymbols(p: WebGLProgram, batches: SymbolBatch[]) {
+    const gl = this.gl;
+    const a = this.symbolAttr;
+    const bytes = SYMBOL_STRIDE * 4;
+    gl.useProgram(p);
+    gl.uniform2f(this.symbolLoc.uView, this.canvas.clientWidth, this.canvas.clientHeight);
+    gl.uniform1i(this.symbolLoc.uAtlas, 7);
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.symbolBuffer);
+    gl.disableVertexAttribArray(this.aPos);
+    gl.enableVertexAttribArray(a.xy);
+    gl.enableVertexAttribArray(a.uv);
+    gl.enableVertexAttribArray(a.shade);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+    gl.activeTexture(gl.TEXTURE7);
+    for (const b of batches) {
+      const tex = this.atlases.get(b.atlas);
+      if (!tex || b.count === 0) continue;
+      gl.bindTexture(gl.TEXTURE_2D, tex);
+      gl.bufferData(gl.ARRAY_BUFFER, b.data.subarray(0, b.count * 6 * SYMBOL_STRIDE), gl.STREAM_DRAW);
+      gl.vertexAttribPointer(a.xy, 2, gl.FLOAT, false, bytes, 0);
+      gl.vertexAttribPointer(a.uv, 2, gl.FLOAT, false, bytes, 8);
+      gl.vertexAttribPointer(a.shade, 2, gl.FLOAT, false, bytes, 16);
+      gl.drawArrays(gl.TRIANGLES, 0, b.count * 6);
+    }
+    gl.disable(gl.BLEND);
+    gl.disableVertexAttribArray(a.xy);
+    gl.disableVertexAttribArray(a.uv);
+    gl.disableVertexAttribArray(a.shade);
+    gl.useProgram(this.program);
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.quad);
+    gl.enableVertexAttribArray(this.aPos);
+    gl.vertexAttribPointer(this.aPos, 2, gl.FLOAT, false, 0, 0);
   }
 }

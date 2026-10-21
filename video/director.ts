@@ -1,6 +1,10 @@
 // The marketing video, as a function of time. Every section boundary sits on the music's
 // beat grid (track B: 107 BPM, the drop at 8.0 s), every stop is reached on a beat.
 //
+// The planet changes its looks on the trip, as the hero's does (themes.ts `CUES`): a Pro
+// theme spreads from the stop just reached, and the realistic planet comes back from Mexico
+// under the total, before the cost layer, which is the app's on its own ground.
+//
 // The camera is the one thing with state: it chases a target, as the hero's does. To
 // keep a frame the same however it is reached, the chase is stepped at exactly one step
 // per video frame from frame 0 — `seek` replays it from the start when asked to go back.
@@ -9,6 +13,8 @@ import { GlobeRenderer, loadImage, type View } from '../src/globe/renderer';
 import { RouteLayer, type Leg, type Transport } from '../src/globe/routes';
 import { drawStars } from '../src/globe/stars';
 import { RAD, angleBetween, clamp, greatCircle, nearestTurn, project, smoothstep } from '../src/globe/geo';
+import { CUES, type ThemeId } from '../src/globe/themes';
+import { loadThemes, themeDresser, type ThemeMoment } from './themes';
 import cost from './assets/cost.json';
 import idsAllUrl from './assets/ids-all.png?url';
 
@@ -33,6 +39,8 @@ const OPENING_SPIN = 40;
 const HOLD = 0.4;                 // at a stop before setting off again, s
 const TOTAL = beat(24);
 const COST = beat(32);
+/** The realistic planet back, from the last stop: its wave is over as the cost layer comes. */
+const REALISTIC_AGAIN = beat(28);
 const SCREENS = beat(40);
 const END = beat(48);
 export const DURATION = 39.6;
@@ -123,6 +131,7 @@ export async function startVideo(root: HTMLElement) {
   const ready = Promise.all([
     renderer.load('/globe/earth-4k.webp', '/globe/ids.png'),
     renderer.loadCost(idsAllUrl, bands),
+    loadThemes(renderer, CUES.map(([, id]) => id)),
     document.fonts.ready,
     ...images.map((img) => (img.complete ? Promise.resolve() : new Promise((r) => { img.onload = img.onerror = r; }))),
   ]);
@@ -143,6 +152,21 @@ export async function startVideo(root: HTMLElement) {
   const departures = legs.map((_, i) => (i === 0 ? DEPART : arrivals[i] + HOLD));
   /** When a stop's chip folds back to its flag: the next stop is reached, or the trip is over. */
   const chipEnds = stops.map((_, i) => arrivals[i + 1] ?? TOTAL);
+
+  // The themes: from each cue's stop on its arrival, and the realistic planet back after the trip.
+  const turns: { at: number; id: ThemeId; from: [number, number] }[] = [
+    ...CUES.map(([code, id]) => ({ i: stops.findIndex((s) => s.code === code), id }))
+      .filter((c) => c.i >= 0)
+      .map((c) => ({ at: arrivals[c.i], id: c.id, from: anchors[c.i] })),
+    { at: REALISTIC_AGAIN, id: 'realistic' as ThemeId, from: anchors[stops.length - 1] },
+  ].sort((a, b) => a.at - b.at);
+  const themeAt = (t: number): ThemeMoment => {
+    const now = turns.filter((x) => t >= x.at);
+    if (!now.length) return { cur: 'realistic', prev: 'realistic', origin: anchors[0], since: Infinity };
+    const c = now[now.length - 1];
+    return { cur: c.id, prev: now.length > 1 ? now[now.length - 2].id : 'realistic', origin: c.from, since: t - c.at };
+  };
+  let dress: ReturnType<typeof themeDresser>;
 
   // A long crossing pulls back a little, so the planet turning under it reads slower.
   const zoomFor = (k: number) => clamp(0.72 / (legAngle[k] * RAD), 0.78, 1.8);
@@ -241,7 +265,6 @@ export async function startVideo(root: HTMLElement) {
   const phone = q<HTMLElement>('.v-phone');
   const shots = qa<HTMLImageElement>('.v-phone img');
   const endParts = qa<HTMLElement>('.v-end > *');
-  const sample = q<HTMLElement>('.v-sample');
   const roll = q<HTMLElement>('.eyebrow-roll');
   const rollWords = qa<HTMLElement>('.eyebrow-word');
   let rollWidths: number[] | null = null;
@@ -282,7 +305,7 @@ export async function startVideo(root: HTMLElement) {
     });
     const costMix = smoothstep(COST + 0.4, COST + 0.8, t);
     renderer.setCost(costMix, homeAt, 185 * sine((t - COST - 0.7) / 4.2));
-    renderer.render(v);
+    renderer.render(v, dress(themeAt(t), v));
 
     const vehicle = t < TOTAL ? vehicleAt(t) : null;
     const reached = arrivals.filter((a) => t >= a).length;
@@ -301,7 +324,7 @@ export async function startVideo(root: HTMLElement) {
       chipBody[i].style.gap = `${(8 * open).toFixed(1)}px`;
       chipText[i].style.maxWidth = `${(250 * open).toFixed(1)}px`;
       chipText[i].style.opacity = open.toFixed(3);
-      chipText[i].style.paddingRight = `${(10 * open).toFixed(1)}px`;
+      chipText[i].style.paddingInlineEnd = `${(10 * open).toFixed(1)}px`;
     });
 
     // Home, while the cost layer is the story.
@@ -365,7 +388,6 @@ export async function startVideo(root: HTMLElement) {
 
     legend.style.opacity = window01(t, COST + 1.0, SCREENS, 0.4, 0.3).toFixed(3);
     legend.style.transform = `translateY(${((1 - smoothstep(COST + 1.0, COST + 1.4, t)) * 14).toFixed(1)}px)`;
-    sample.style.opacity = (window01(t, 1.0, SCREENS, 0.5, 0.3) * 1).toFixed(3);
 
     // The phone rises with the first screen, a screen a bar, and drops for the end card.
     {
@@ -402,7 +424,8 @@ export async function startVideo(root: HTMLElement) {
     draw(f / FPS);
   };
 
-  await ready;
+  const [, , sets] = await ready;
+  dress = themeDresser(renderer, routes, root, sets, R0, new Set(stops.map((s) => s.code)));
   (window as unknown as { __video: object }).__video = { fps: FPS, frames, duration: DURATION, seek, camera: () => ({ ...cam }), marks: { FIRST, DROP, TOTAL, COST, SCREENS, END, arrivals } };
 
   if (params.has('play')) {

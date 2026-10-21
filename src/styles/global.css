@@ -35,6 +35,8 @@
   --radius: 24px;
   --gutter: clamp(16px, 4vw, 32px);
   --max: 1200px;
+  --vh: 1svh;
+  --hero-h: calc(var(--vh, 1svh) * 100 - env(safe-area-inset-bottom, 0px));
 }
 
 @media (prefers-color-scheme: dark) {
@@ -133,15 +135,61 @@ p { margin: 0; text-wrap: pretty; }
 }
 .header-end { display: flex; align-items: center; gap: 12px; }
 .lang { font-size: 14px; font-weight: 600; text-decoration: none; opacity: .82; padding: 8px 6px; }
-@media (max-width: 860px) {
-  .nav { display: none; }
-  .header-end { margin-left: auto; }
+.nav-toggle {
+  display: none; position: relative; width: 40px; height: 40px; padding: 0;
+  border-radius: 12px; border: 0; background: none; color: inherit; cursor: pointer; flex: none;
+  transition: color .2s ease, opacity .2s ease;
 }
+.site-header.is-solid .nav-toggle { color: var(--ink); }
+.site-header.is-menu-open .nav-toggle { color: var(--lime); }
+.site-header.is-solid.is-menu-open .nav-toggle { color: var(--acc-lime); }
+.nav-toggle-bar {
+  position: absolute; left: 50%; top: 50%; width: 16px; height: 2px; margin-left: -8px; margin-top: -1px;
+  border-radius: 2px; background: currentColor;
+  transition: transform .25s cubic-bezier(.2, .7, .2, 1);
+}
+.nav-toggle-bar:first-child { transform: translateY(-3.5px); }
+.nav-toggle-bar:last-child { transform: translateY(3.5px); }
+.site-header.is-menu-open .nav-toggle-bar:first-child { transform: rotate(45deg); }
+.site-header.is-menu-open .nav-toggle-bar:last-child { transform: rotate(-45deg); }
+@media (max-width: 860px) {
+  .header-end { margin-left: auto; }
+  .nav-toggle { display: inline-block; }
+  .nav {
+    position: absolute; top: calc(100% + 6px); left: var(--gutter); right: var(--gutter);
+    display: grid; gap: 4px; margin-left: 0; padding: 8px;
+    border-radius: 20px; border: 1px solid rgba(255, 255, 255, .14);
+    background: rgba(8, 14, 26, .88);
+    -webkit-backdrop-filter: saturate(160%) blur(18px); backdrop-filter: saturate(160%) blur(18px);
+    box-shadow: 0 18px 44px rgba(0, 0, 0, .42);
+    opacity: 0; visibility: hidden; pointer-events: none;
+    transform: translateY(-8px) scale(.98); transform-origin: top right;
+    transition: opacity .22s ease, transform .26s cubic-bezier(.2, .7, .2, 1), visibility 0s linear .26s;
+  }
+  .site-header.is-solid .nav {
+    background: color-mix(in srgb, var(--surface) 90%, transparent);
+    border-color: var(--border); box-shadow: var(--shadow); color: var(--ink);
+  }
+  .site-header.is-menu-open .nav {
+    opacity: 1; visibility: visible; pointer-events: auto; transform: none;
+    transition: opacity .22s ease, transform .26s cubic-bezier(.2, .7, .2, 1), visibility 0s;
+  }
+  .nav a {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 16px; border-radius: 12px; font-size: 15.5px; font-weight: 600; opacity: .92;
+  }
+  .nav a:hover, .nav a:active { background: rgba(255, 255, 255, .07); }
+  .site-header.is-solid .nav a:hover, .site-header.is-solid .nav a:active { background: var(--surface-muted); }
+}
+.header-cta-icon { display: none; width: 18px; height: 18px; }
 @media (max-width: 480px) {
   .header-inner { gap: 12px; }
   .brand { font-size: 16px; gap: 8px; }
   .brand img { width: 30px; height: 30px; }
-  .header-end { gap: 6px; }
+  .header-end { gap: 8px; }
+  .header-cta { width: 40px; padding: 0; justify-content: center; }
+  .header-cta-label { display: none; }
+  .header-cta-icon { display: block; }
   .lang .long { display: none; }
 }
 @media (min-width: 481px) { .lang .short { display: none; } }
@@ -149,7 +197,7 @@ p { margin: 0; text-wrap: pretty; }
 /* --- hero -------------------------------------------------------------------------- */
 .hero {
   position: relative;
-  min-height: max(560px, 100svh);
+  min-height: max(560px, var(--hero-h));
   background: var(--space);
   color: #E9EEF5;
   overflow: hidden;
@@ -171,10 +219,10 @@ p { margin: 0; text-wrap: pretty; }
 .hero-inner {
   position: relative; z-index: 5;
   display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); align-items: center; gap: 24px;
-  min-height: max(560px, 100svh);
+  min-height: max(560px, var(--hero-h));
   /* The bottom also clears the "what is it" card, which rises over the hero's foot by the
      same clamp (.what margin-top), so the centred copy never sits on its edge. */
-  padding-top: calc(68px + 2svh); padding-bottom: calc(4svh + clamp(48px, 7vw, 96px));
+  padding-top: calc(68px + 2 * var(--vh)); padding-bottom: calc(4 * var(--vh) + clamp(48px, 7vw, 96px));
   pointer-events: none;
 }
 .hero-copy { max-width: 560px; pointer-events: auto; }
@@ -196,15 +244,15 @@ p { margin: 0; text-wrap: pretty; }
 .eyebrow-word.is-in { opacity: 0; transform: translateY(.6em); filter: blur(3px); transition: none; }
 /* Sized by the screen's height as well as its width, so the whole of the copy sits in
    the first view of a short laptop screen as much as a tall monitor. */
-.hero h1 { margin-top: clamp(12px, 2.6svh, 22px); color: #fff; font-size: clamp(38px, min(6.2vw, 8.6svh), 80px); letter-spacing: -0.035em; line-height: 1.02; }
+.hero h1 { margin-top: clamp(12px, calc(2.6 * var(--vh)), 22px); color: #fff; font-size: clamp(38px, min(6.2vw, calc(8.6 * var(--vh))), 80px); letter-spacing: -0.035em; line-height: 1.02; }
 .hero h1 span { display: block; }
 .hero h1 .glow { color: var(--lime); }
 /* On computers the English opener ("The expense tracker") stays on one line; it is
    allowed to run past the copy column, over the edge of the globe. */
 @media (min-width: 900px) { .hero h1:lang(en) span:first-child { white-space: nowrap; } }
-.hero .lede { margin-top: clamp(12px, 2.6svh, 22px); font-size: clamp(16px, min(1.5vw, 2.3svh), 20px); line-height: 1.55; color: rgba(233, 238, 245, .8); max-width: 34em; }
-.cta-row { display: flex; align-items: center; gap: 18px; margin-top: clamp(18px, 3.6svh, 32px); flex-wrap: wrap; }
-/* The App Store code, fixed in the corner on computers (a phone opens the store itself). */
+.hero .lede { margin-top: clamp(12px, calc(2.6 * var(--vh)), 22px); font-size: clamp(16px, min(1.5vw, calc(2.3 * var(--vh))), 20px); line-height: 1.55; color: rgba(233, 238, 245, .8); max-width: 34em; }
+.cta-row { display: flex; align-items: center; gap: 18px; margin-top: clamp(18px, calc(3.6 * var(--vh)), 32px); flex-wrap: wrap; }
+/* The download code, fixed in the corner on computers (a phone opens the store itself). */
 .qr-float {
   position: fixed; right: 20px; bottom: 20px; z-index: 45;
   display: none; flex-direction: column; align-items: center; gap: 8px;
@@ -216,13 +264,14 @@ p { margin: 0; text-wrap: pretty; }
 .qr-float .qr-code { display: block; width: 76px; height: 76px; }
 .qr-float .qr-code svg { width: 100%; height: 100%; }
 @media (min-width: 1024px) and (pointer: fine) { .qr-float { display: flex; } }
-.android-note { display: none; margin-top: 16px; padding: 12px 14px; border-radius: 14px; background: rgba(255, 255, 255, .08); font-size: 14px; color: #D6DEEA; }
-.is-android .android-note { display: block; }
+/* What only one kind of phone sees: the other store. */
+.only-android, .is-android .not-android { display: none; }
+.is-android .only-android { display: revert; }
 
 /* The planet is out of the flow: bigger than the screen is tall, it would otherwise make
    the row taller than the view and push the copy centred in it below the fold. */
 .globe-area { position: relative; align-self: stretch; }
-.globe-slot { position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: min(calc(100% + 16vw), 112svh); aspect-ratio: 1; }
+.globe-slot { position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: min(calc(100% + 16vw), calc(112 * var(--vh))); aspect-ratio: 1; }
 .hero-fallback { display: none; }
 .no-webgl .hero-fallback { display: block; position: absolute; left: 6%; top: 50%; width: min(78%, 520px); transform: translateY(-50%); }
 
@@ -242,6 +291,87 @@ p { margin: 0; text-wrap: pretty; }
 .globe-pause.is-paused .i-play { display: block; }
 .globe-pause.is-paused .i-pause { display: none; }
 
+/* The globe themes, in the CTA's row: four little globes and nothing else, the one on the
+   planet ringed, the one the reader holds ringed in lime. They come in with the planet. */
+.globe-themes {
+  display: flex; align-items: center; gap: 10px; height: 40px; padding: 0 6px;
+  border-radius: 999px; background: rgba(12, 20, 36, .6); border: 1px solid rgba(255, 255, 255, .14);
+  opacity: 0; transition: opacity .6s ease .8s;
+}
+.is-ready .globe-themes { opacity: 1; }
+.no-webgl .globe-themes, .globe-themes[hidden] { display: none; }
+.theme-pick {
+  position: relative; width: 30px; height: 30px; padding: 0; border: 0; border-radius: 50%;
+  background: none; cursor: pointer; flex: none;
+}
+.theme-pick img { width: 100%; height: 100%; border-radius: 50%; display: block; transition: transform .25s ease; }
+.theme-pick:hover img { transform: scale(1.1); }
+.theme-pick::after {
+  content: ''; position: absolute; inset: -3px; border-radius: 50%;
+  box-shadow: 0 0 0 2px transparent; transition: box-shadow .3s ease;
+}
+.theme-pick.is-current::after { box-shadow: 0 0 0 2px rgba(255, 255, 255, .85); }
+.theme-pick[aria-pressed="true"]::after { box-shadow: 0 0 0 2px var(--lime); }
+.theme-pick.is-loading img { animation: theme-wait 1s ease-in-out infinite alternate; }
+@keyframes theme-wait { to { opacity: .4; } }
+
+/* The spends bursting out of the country on arrival: from the point the chip hangs on,
+   small and already showing, out round the chip (hero.ts places them about its middle,
+   33px up), then gone while the trip goes on. A ring pops at the point as they leave it.
+   Started by hero.ts (`is-burst`), on the trip's clock. */
+.burst { position: absolute; left: 0; top: 0; width: 0; height: 0; pointer-events: none; }
+.burst::before {
+  content: ''; position: absolute; left: -6px; top: -6px; width: 12px; height: 12px; border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, .9); opacity: 0;
+}
+.chip.is-burst .burst::before { animation: spend-pop .7s cubic-bezier(.1, .7, .3, 1) both; }
+@keyframes spend-pop {
+  0% { opacity: .95; transform: scale(.4); }
+  100% { opacity: 0; transform: scale(5.5); border-width: .5px; }
+}
+.spend {
+  position: absolute; left: 0; top: 0;
+  display: flex; align-items: center; gap: 5px; white-space: nowrap;
+  padding: 5px 11px 5px 8px; border-radius: 999px;
+  /* Glass, as the eyebrow's badge, not a chip: the chips are the countries, these are what
+     was spent in them. Darker than the eyebrow's, to read over a pale painted ground. */
+  background: rgba(12, 20, 36, .42); border: 1px solid rgba(255, 255, 255, .2); color: #fff;
+  -webkit-backdrop-filter: blur(10px) saturate(1.4); backdrop-filter: blur(10px) saturate(1.4);
+  font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: .01em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .35); box-shadow: 0 4px 14px rgba(0, 0, 0, .18);
+  opacity: 0; translate: -50% -50%; scale: .6;
+  /* Its own layer: the blur behind it is not redrawn under a moving picture each frame. */
+  will-change: translate, scale, opacity;
+}
+.spend-icon { font-size: 14px; line-height: 1; }
+.chip.is-burst .spend { animation: spend-fly 2.4s linear both, spend-fade 2.4s linear both; }
+.motion-paused .spend { animation-play-state: paused; }
+/* All at once, like a burst, and never still: out in a snap (under 0.3 s) from behind the
+   chip, then on outward slowly, a little way, still going as it fades. The path and the
+   fade are two animations, each with its own pace, on the individual `translate` and
+   `scale`: a `scale` over a `transform` path scaled the path too, and the shrinking fade
+   pulled every spend back towards the chip. */
+@keyframes spend-fly {
+  0% { translate: -50% -50%; animation-timing-function: cubic-bezier(.2, .75, .35, 1); }
+  15% { translate: calc(-50% + var(--dx)) calc(-50% + var(--dy)); animation-timing-function: cubic-bezier(.25, .4, .6, 1); }
+  100% { translate: calc(-50% + var(--dx) * 1.2) calc(-50% + var(--dy) * 1.2); }
+}
+@keyframes spend-fade {
+  0% { opacity: 0; scale: .3; }
+  3% { opacity: 1; }
+  12% { scale: 1; }
+  55% { opacity: 1; scale: 1; }
+  100% { opacity: 0; scale: .9; }
+}
+@media (max-width: 899px) {
+  .spend { font-size: 11px; }
+}
+
+/* A painted ground does not darken: the chips take its ink, as the app's cards do
+   (themes.ts). Piri Reis: parchment, inked round the edge and in the writing. */
+.hero { --chip-fill: #fff; --chip-ink: #0E1726; --chip-muted: #6B7684; --chip-edge: transparent; }
+.hero[data-theme="pirireis"] { --chip-fill: #F4E7C6; --chip-ink: #4A2416; --chip-muted: #7A5A44; --chip-edge: #4A2416; }
+
 /* The chips: the app's GlobePillView — round flag, name, the month's spend under it —
    hung on the country by a pointer. Past stops fold to the flag alone. */
 .chip { position: absolute; left: 0; top: 0; opacity: var(--vis, 1); will-change: transform; }
@@ -249,15 +379,15 @@ p { margin: 0; text-wrap: pretty; }
   position: absolute; left: 0; bottom: 11px;
   display: flex; align-items: center; gap: 0;
   padding: 4px; border-radius: 999px;
-  background: #fff; color: #0E1726;
+  background: var(--chip-fill); color: var(--chip-ink); outline: 1.5px solid var(--chip-edge); outline-offset: -1.5px;
   box-shadow: 0 8px 22px rgba(0, 0, 0, .38), 0 1px 2px rgba(0, 0, 0, .2);
   white-space: nowrap;
   opacity: 0; transform: translateX(-50%) scale(.5); transform-origin: 50% 100%;
-  transition: opacity .3s ease, transform .5s cubic-bezier(.34, 1.56, .64, 1), gap .4s ease;
+  transition: opacity .3s ease, transform .5s cubic-bezier(.34, 1.56, .64, 1), gap .4s ease, background-color .6s ease, color .6s ease, outline-color .6s ease;
 }
 .chip-body::after {
   content: ''; position: absolute; left: 50%; bottom: -6px; margin-left: -6px;
-  border: 6px solid transparent; border-bottom: 0; border-top-color: #fff;
+  border: 6px solid transparent; border-bottom: 0; border-top-color: var(--chip-fill);
 }
 .chip.is-on .chip-body { opacity: 1; transform: translateX(-50%) scale(.82); }
 .chip.is-current .chip-body { transform: translateX(-50%) scale(1); gap: 8px; }
@@ -265,24 +395,38 @@ p { margin: 0; text-wrap: pretty; }
 .chip-text { display: grid; max-width: 0; opacity: 0; overflow: hidden; line-height: 1.15; transition: max-width .45s ease, opacity .3s ease, padding .45s ease; }
 .chip.is-current .chip-text { max-width: 190px; opacity: 1; padding-right: 10px; }
 .chip-name { font-size: 14px; font-weight: 700; letter-spacing: -0.01em; }
-.chip-amount { font-size: 13px; font-weight: 500; color: #6B7684; font-variant-numeric: tabular-nums; }
+.chip-amount { font-size: 13px; font-weight: 500; color: var(--chip-muted); font-variant-numeric: tabular-nums; }
 
 @media (max-width: 899px) {
   .hero-scrim { background: linear-gradient(180deg, rgba(4, 8, 18, .92) 0%, rgba(4, 8, 18, .75) 38%, rgba(4, 8, 18, 0) 58%); }
-  .hero-inner { grid-template-columns: minmax(0, 1fr); align-content: start; padding-top: 104px; padding-bottom: 0; gap: 0; min-height: 0; }
-  .hero, .hero-inner { min-height: 0; }
-  .hero-copy { max-width: 640px; }
-  /* The planet rises from under the copy and the hero ends a little past its middle:
+  .hero, .hero-inner { min-height: var(--hero-h); }
+  .hero-inner {
+    display: flex; flex-direction: column; align-items: stretch;
+    padding-top: calc(64px + clamp(6px, calc(2 * var(--vh)), 28px)); padding-bottom: 0; gap: 0;
+  }
+  /* One column: the copy centred over the planet, scaled to the visible viewport height. */
+  .hero-copy { max-width: 640px; margin-inline: auto; padding-inline: clamp(14px, 6vw, 44px); text-align: center; }
+  .hero h1 { margin-top: clamp(8px, calc(1.8 * var(--vh)), 20px); font-size: clamp(28px, min(8.8vw, calc(4.8 * var(--vh))), 44px); }
+  .hero .lede { margin-inline: auto; margin-top: clamp(8px, calc(1.8 * var(--vh)), 18px); font-size: clamp(14px, min(4.2vw, calc(2.1 * var(--vh))), 18px); line-height: 1.48; }
+  .cta-row { justify-content: center; gap: 10px; margin-top: clamp(12px, calc(2.2 * var(--vh)), 26px); }
+  .hero .btn { min-height: clamp(44px, calc(6.2 * var(--vh)), 52px); }
+  /* The planet rises from under the copy and the hero ends at the visible screen's foot:
      a horizon, with the trip happening on the part above the fold. */
-  .globe-area { --d: min(118vw, 780px); margin-top: calc(var(--d) * -0.1); justify-content: center; }
-  .globe-slot { position: relative; top: auto; transform: none; width: var(--d); margin-inline: calc((100% - var(--d)) / 2); margin-bottom: calc(var(--d) * -0.34); }
-  /* Clear of the "what is it" card, which rises over the hero's foot. */
-  .globe-pause { bottom: 64px; }
+  .globe-area {
+    --d: min(118vw, calc(68 * var(--vh)), 780px);
+    flex: 1; width: 100%; min-height: clamp(190px, calc(30 * var(--vh)), 290px);
+    margin-top: 0;
+  }
+  .globe-slot {
+    position: absolute; left: 50%; top: calc(var(--d) * -0.1); transform: translateX(-50%);
+    width: var(--d); margin: 0;
+  }
+  /* Clear of the "what is it" card and any bottom system bar. */
+  .globe-pause { bottom: calc(52px + env(safe-area-inset-bottom, 0px)); }
   .chip-name { display: none; }
-  /* One column: the copy centred over the planet. */
-  .hero-copy { margin-inline: auto; padding-inline: clamp(14px, 6vw, 44px); text-align: center; }
-  .hero .lede { margin-inline: auto; }
-  .cta-row { justify-content: center; }
+  /* Opposite the pause button at the foot of the hero on mobile. */
+  .globe-themes { position: absolute; right: var(--gutter); bottom: calc(52px + env(safe-area-inset-bottom, 0px)); z-index: 6; gap: 8px; padding: 0 5px; }
+  .theme-pick { width: 28px; height: 28px; }
 }
 
 /* --- sections ---------------------------------------------------------------------- */
@@ -296,7 +440,7 @@ p { margin: 0; text-wrap: pretty; }
 /* The answer to "what is it" as one of the app's cards: the wash panel, a white rim, rising
    over the foot of the hero — the step from the planet into the page, and a clear break
    before the features start. */
-.what { position: relative; z-index: 10; margin-top: clamp(-96px, -7vw, -48px); }
+.what { position: relative; z-index: 10; margin-top: clamp(-96px, -7vw, -36px); }
 .what .box {
   position: relative; isolation: isolate;
   max-width: 860px; margin-inline: auto; text-align: center;
@@ -401,6 +545,9 @@ html:not(.at-top) .what .box::before { opacity: .86; }
   box-shadow: 0 30px 60px rgba(14, 23, 38, .28), 0 0 0 1px rgba(255, 255, 255, .06);
 }
 .feature-index { font-size: 14px; font-weight: 700; color: var(--muted); font-variant-numeric: tabular-nums; }
+/* A family the feature belongs to (Autopilot), with the app's own mark for it. */
+.feature-badge { display: inline-flex; align-items: center; gap: 8px; margin-top: 10px; font-size: 15px; font-weight: 700; color: var(--ink); }
+.feature-badge img { width: 40px; height: 40px; }
 .feature h3 { margin-top: 10px; font-size: clamp(30px, 3.6vw, 46px); letter-spacing: -0.03em; }
 .feature h3 span { display: block; color: var(--c); }
 .feature p { margin-top: 18px; font-size: 18px; }

@@ -1,13 +1,18 @@
 // The hero globe alone, transparent around it — route lines, badges and country chips
 // included — as a PNG for store images. The dev server must be running.
 //
-//   node scripts/globe-still.mjs <out.png> [t=finale+3000] [size=1100] [lang=en|tr] [all]
+//   node scripts/globe-still.mjs <out.png> [t=finale+3000] [size=1100] [lang=en|tr|ar] [all]
 //
 // `t` is the scenario clock (see `?globe-t`); the default is the finale, the whole trip
 // drawn, the planet turned to Europe–Asia. `all` opens every chip, not just the current one.
 // Bold ink for a small picture: a small `size` and a dense DSF (say 380 and 8) draws the
 // lines, badges and chips large against the planet; PAD=0.3 leaves room for them past its rim.
 // VIEW=lon,lat[,zoom] points the camera elsewhere (default: the page's own finale view).
+// THEME=paper|miniature|pirireis draws the planet in one of the app's Pro themes.
+// `ar`: the site has no Arabic page, so the English hero is shot with its chips re-lettered
+// from the App Store cover's Arabic journey (/video/cover/ar/, dev only), right to left.
+// NOSPACE=1 skips <out>-space.png. The outermost EDGE (default 0.06) of the frame fades to
+// nothing, so the glow's faint dithered tail never ends in a line (keep PAD ≥ 0.6 for it).
 // Writes <out.png> (transparent) and <out>-space.png (over the hero's starry space).
 
 import { chromium } from 'playwright-core';
@@ -16,6 +21,7 @@ import sharp from 'sharp';
 const [out, tArg, sizeArg = '1100', lang = 'en', all] = process.argv.slice(2);
 const SIZE = +sizeArg, PAD = Math.round(SIZE * +(process.env.PAD ?? 0.06)), VIEW = SIZE + PAD * 2;
 const VIEWP = process.env.VIEW ? `&globe-view=${process.env.VIEW}` : '';
+const THEMEP = process.env.THEME ? `&globe-theme=${process.env.THEME}` : '';
 const BASE = process.env.BASE ?? 'http://localhost:4399';
 const CHROME = process.env.CHROME ?? 'C:/Program Files/Google/Chrome/Application/chrome.exe';
 
@@ -23,7 +29,7 @@ const browser = await chromium.launch({ executablePath: CHROME, args: ['--use-an
 const page = await browser.newPage({ viewport: { width: VIEW, height: VIEW }, deviceScaleFactor: +(process.env.DSF ?? 2) });
 const css = `
   html, body, .hero { background: var(--matte, transparent) !important; }
-  body > *:not(main), main > *:not(.hero), .hero-stars, .hero-scrim, .hero-copy, .globe-pause, .hero-fallback { display: none !important; }
+  body > *:not(main), main > *:not(.hero), .hero-stars, .hero-scrim, .hero-copy, .globe-pause, .globe-themes, .hero-fallback { display: none !important; }
   .hero { position: fixed !important; inset: 0 !important; min-height: 0 !important; height: ${VIEW}px !important; overflow: visible !important; }
   .globe-slot { position: fixed !important; left: ${PAD + SIZE * 0.03}px !important; top: ${PAD + SIZE * 0.03}px !important;
                 width: ${SIZE * 0.94}px !important; height: ${SIZE * 0.94}px !important; margin: 0 !important; transform: none !important; translate: none !important; }
@@ -42,14 +48,27 @@ await page.addInitScript((css) => {
 }, css);
 
 const path = lang === 'tr' ? '/tr/' : '/';
+const arabic = lang === 'ar'
+  ? JSON.parse((await (await fetch(`${BASE}/video/cover/ar/`)).text())
+    .match(/<script type="application\/json" id="cover-data">([^<]*)<\/script>/)[1]).journey.stops
+  : null;
 // First a frozen load to read the schedule, then the moment itself.
 await page.goto(`${BASE}${path}?globe-t=0`, { waitUntil: 'networkidle' });
 await page.waitForFunction(() => document.querySelector('.hero')?.dataset.schedule);
 const sched = JSON.parse(await page.evaluate(() => document.querySelector('.hero').dataset.schedule));
 const t = tArg && tArg !== '-' ? +tArg : sched.finale + 3000;
-await page.goto(`${BASE}${path}?globe-t=${t}${VIEWP}`, { waitUntil: 'networkidle' });
+await page.goto(`${BASE}${path}?globe-t=${t}${VIEWP}${THEMEP}`, { waitUntil: 'networkidle' });
 await page.waitForFunction(() => document.querySelector('.hero')?.classList.contains('is-lit'));
 await page.waitForTimeout(2500); // the sharp texture and the dawn
+if (arabic) await page.evaluate((stops) => {
+  for (const s of stops) document.querySelectorAll(`.chip[data-code="${s.code}"]`).forEach((c) => {
+    c.querySelector('.chip-body')?.setAttribute('dir', 'rtl');
+    // The text's end gap is on the right for left-to-right; in Arabic it ends on the left.
+    c.querySelector('.chip-text')?.setAttribute('style', 'padding-right: 0; padding-left: 10px');
+    c.querySelector('.chip-name').textContent = s.name;
+    c.querySelector('.chip-amount').textContent = `${s.amount}/شهر`;
+  });
+}, arabic);
 if (all) await page.evaluate(() => document.querySelectorAll('.chip.is-on').forEach((c) => c.classList.add('is-current')));
 // OPEN=FR,TR,TH opens just those chips, the rest folded to their flags; HIDE=ES,MA hides some;
 // LIFT=ES:60 raises a chip that far on a stem, clear of its neighbours.
@@ -78,8 +97,16 @@ for (let i = 0, j = 0; i < blk.length; i += 3, j += 4) {
   for (let c = 0; c < 3; c++) rgba[j + c] = a ? Math.min(255, Math.round(blk[i + c] * 255 / a)) : 0;
   rgba[j + 3] = a;
 }
+const EDGE = Math.round(info.width * +(process.env.EDGE ?? 0.06));
+for (let y = 0; y < info.height; y++) for (let x = 0; x < info.width; x++) {
+  const d = Math.min(x, y, info.width - 1 - x, info.height - 1 - y);
+  if (d >= EDGE) continue;
+  const k = d / EDGE, i = (y * info.width + x) * 4 + 3;
+  rgba[i] = Math.round(rgba[i] * k * k * (3 - 2 * k));
+}
 await sharp(rgba, { raw: { width: info.width, height: info.height, channels: 4 } }).png().toFile(out);
 // The same frame over the page's own space, stars and all, for a dark layout.
+if (process.env.NOSPACE) { console.log(JSON.stringify({ t, sched })); await browser.close(); process.exit(0); }
 await page.evaluate(() => {
   document.documentElement.style.removeProperty('--matte');
   document.querySelector('.hero-stars').style.setProperty('display', 'block', 'important');
