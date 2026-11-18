@@ -4,7 +4,7 @@ Nomad Budget blogu için her şey: kimin adına, hangi sesle, hangi kurallarla, 
 yazıldığı. Yeni bir yazıya başlamadan önce baştan sona okunur; buradaki kararlar yeniden
 sorulmaz.
 
-Site: `https://nomadbudget.rubeeks.co/blog/` (EN) · `/tr/blog/` (TR) · Depo: `C:\NomadBudgetWeb`
+Site: `https://nomadbudgetapp.com/blog/` (EN) · `/tr/blog/` (TR) · Depo: `C:\NomadBudgetWeb`
 
 **"Yeni blog yazısı üret" denince:** bu dosyayı oku → §8'deki akışı baştan sona uygula.
 Yazarın bildiği şeyleri (§1) yeniden sorma; yalnız yazıya özgü deneyimi sor.

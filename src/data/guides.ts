@@ -205,7 +205,7 @@ export const GUIDES: Guide[] = [
     ],
     sources: [
       { label: 'Google Docs Editors Help: GOOGLEFINANCE', url: 'https://support.google.com/docs/answer/3093281' },
-      { label: 'Nomad Budget: features and FAQ', url: 'https://nomadbudget.rubeeks.co/' },
+      { label: 'Nomad Budget: features and FAQ', url: 'https://nomadbudgetapp.com/' },
     ],
   },
   {
@@ -259,7 +259,7 @@ export const GUIDES: Guide[] = [
     sources: [
       { label: 'Revolut on the App Store', url: STORE.revolut },
       { label: 'Wise on the App Store', url: STORE.wise },
-      { label: 'Nomad Budget: features and FAQ', url: 'https://nomadbudget.rubeeks.co/' },
+      { label: 'Nomad Budget: features and FAQ', url: 'https://nomadbudgetapp.com/' },
     ],
   },
 ];

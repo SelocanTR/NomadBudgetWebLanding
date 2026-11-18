@@ -1,6 +1,6 @@
 # Nomad Budget — tanıtım sitesi
 
-**[nomadbudget.rubeeks.co](https://nomadbudget.rubeeks.co/)** · [Türkçe (`/tr/`)](https://nomadbudget.rubeeks.co/tr/) · [Blog (`/blog/`)](https://nomadbudget.rubeeks.co/blog/) · [TR Blog (`/tr/blog/`)](https://nomadbudget.rubeeks.co/tr/blog/) · [Comparisons (`/alternatives/`)](https://nomadbudget.rubeeks.co/alternatives/) · [Legal (`/legal/`)](https://nomadbudget.rubeeks.co/legal/) · Astro (statik) · GitHub Pages
+**[nomadbudgetapp.com](https://nomadbudgetapp.com/)** · [Türkçe (`/tr/`)](https://nomadbudgetapp.com/tr/) · [Blog (`/blog/`)](https://nomadbudgetapp.com/blog/) · [TR Blog (`/tr/blog/`)](https://nomadbudgetapp.com/tr/blog/) · [Comparisons (`/alternatives/`)](https://nomadbudgetapp.com/alternatives/) · [Legal (`/legal/`)](https://nomadbudgetapp.com/legal/) · Astro (statik) · GitHub Pages
 
 ## Komutlar
 
@@ -78,13 +78,13 @@ gizliyken ya da hero ekran dışındayken döngü durur.
 
 1. **GitHub → Settings → Pages → Source: GitHub Actions.** `main`'e her push
    `.github/workflows/deploy.yml` ile yayınlanır.
-2. **Settings → Pages → Custom domain:** `nomadbudget.rubeeks.co` (`public/CNAME` zaten var).
+2. **Settings → Pages → Custom domain:** `nomadbudgetapp.com` (`public/CNAME` zaten var).
 3. **Cloudflare DNS:** `CNAME nomadbudget → selocantr.github.io`. `legal` kaydıyla aynı düzen
    (proxy'li, TLS'i Cloudflare sonlandırır).
 4. **Cloudflare → Security → Bots / AI Crawl Control:** yapay zeka tarayıcılarını engelleyen
    ayar bu alan için **kapalı** olmalı; yoksa `robots.txt`'deki izinler işe yaramaz.
 5. **Google Search Console + Bing Webmaster Tools:** alanı DNS TXT ile doğrula,
-   `https://nomadbudget.rubeeks.co/sitemap.xml` gönder. Bing'de IndexNow'u aç.
+   `https://nomadbudgetapp.com/sitemap.xml` gönder. Bing'de IndexNow'u aç.
 
 ## Açık işler
 

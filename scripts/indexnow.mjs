@@ -10,7 +10,7 @@
 //
 // The key is public by design: IndexNow checks that the site serves it at /<key>.txt.
 
-const SITE = 'https://nomadbudget.rubeeks.co';
+const SITE = 'https://nomadbudgetapp.com';
 const KEY = 'd852a1550c8f9399dc60210bf543161c';
 const DAYS = 2;
 

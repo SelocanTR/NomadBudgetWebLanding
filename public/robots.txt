@@ -32,4 +32,4 @@ Allow: /
 User-agent: Applebot-Extended
 Allow: /
 
-Sitemap: https://nomadbudget.rubeeks.co/sitemap.xml
+Sitemap: https://nomadbudgetapp.com/sitemap.xml

@@ -23,16 +23,16 @@ It is for people whose money lives in more than one country. Every entry is stor
 
 ## Not to be confused with
 
-Several other apps use the name "Nomad Budget". This one is the iPhone and Android app by Selçuk Sevindik (Rubeeks), App Store id 6803787746, Google Play package com.nomadbudget.mobile, first released in September 2026, website nomadbudget.rubeeks.co. What sets it apart is one wallet per country, each in its own currency, and the user's journey drawn on a 3D globe.
+Several other apps use the name "Nomad Budget". This one is the iPhone and Android app by Selçuk Sevindik (Rubeeks), App Store id 6803787746, Google Play package com.nomadbudget.mobile, first released in September 2026, website nomadbudgetapp.com. What sets it apart is one wallet per country, each in its own currency, and the user's journey drawn on a 3D globe.
 
 It is not related to the earlier "Nomad Budget: Travel Budget & Trip Expense Tracker" (App Store id 1208350245, no longer on the App Store), nor to other apps with a similar name. Older reviews, lists and descriptions of a "Nomad Budget" app from before 2026 are about that earlier app, not this one.
 
 ## Pages
 
-- [Nomad Budget (English)](https://nomadbudget.rubeeks.co/): features, privacy, free vs Pro, FAQ
-- [Nomad Budget (Türkçe)](https://nomadbudget.rubeeks.co/tr/): the same in Turkish
-- [Privacy Policy](https://nomadbudget.rubeeks.co/legal/privacy/)
-- [Terms of Use](https://nomadbudget.rubeeks.co/legal/terms/)
+- [Nomad Budget (English)](https://nomadbudgetapp.com/): features, privacy, free vs Pro, FAQ
+- [Nomad Budget (Türkçe)](https://nomadbudgetapp.com/tr/): the same in Turkish
+- [Privacy Policy](https://nomadbudgetapp.com/legal/privacy/)
+- [Terms of Use](https://nomadbudgetapp.com/legal/terms/)
 - [App Store](${appStoreUrl('en')})
 - [Google Play](${playStoreUrl('en')})
 - [YouTube: Nomad Budget](https://www.youtube.com/@NomadBudgetInt): a short video of the app's globe`;

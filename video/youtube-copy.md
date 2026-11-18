@@ -31,8 +31,8 @@ In this video:
 • Payments that add themselves
 
 📲 Download on the App Store: https://apps.apple.com/app/id6803787746
-🌍 Website: https://nomadbudget.rubeeks.co
-📝 Blog: https://nomadbudget.rubeeks.co/blog/
+🌍 Website: https://nomadbudgetapp.com
+📝 Blog: https://nomadbudgetapp.com/blog/
 
 Amounts in the video are from a sample trip.
 
@@ -74,7 +74,7 @@ Nomad Budget is an expense tracker app for digital nomads, expats and long-term 
 Cost-of-living sites show an average. Nomad Budget prices other countries from your own basket: what you actually spend where you are now. In the video, a month in Kazakhstan becomes an estimate for Japan — and every country's wallet flies into one trip total.
 
 📲 Download on the App Store: https://apps.apple.com/app/id6803787746
-🌍 Website: https://nomadbudget.rubeeks.co
+🌍 Website: https://nomadbudgetapp.com
 
 Amounts in the video are from a sample trip.
 
@@ -104,8 +104,8 @@ Videoda:
 • Kendi kendine eklenen ödemeler
 
 📲 App Store'dan indir: https://apps.apple.com/tr/app/id6803787746
-🌍 Web sitesi: https://nomadbudget.rubeeks.co/tr/
-📝 Blog: https://nomadbudget.rubeeks.co/tr/blog/
+🌍 Web sitesi: https://nomadbudgetapp.com/tr/
+📝 Blog: https://nomadbudgetapp.com/tr/blog/
 
 Videodaki tutarlar örnek bir geziye aittir.
 
@@ -147,7 +147,7 @@ Nomad Budget; dijital göçebeler, yurt dışında yaşayanlar ve uzun süre sey
 Yaşam maliyeti siteleri ortalama gösterir. Nomad Budget diğer ülkeleri kendi sepetinle fiyatlar: şu an bulunduğun yerde gerçekten harcadığınla. Videoda Kazakistan'daki bir ay, Japonya için bir tahmine dönüşüyor — ve her ülkenin cüzdanı tek bir yolculuk toplamında birleşiyor.
 
 📲 App Store'dan indir: https://apps.apple.com/tr/app/id6803787746
-🌍 Web sitesi: https://nomadbudget.rubeeks.co/tr/
+🌍 Web sitesi: https://nomadbudgetapp.com/tr/
 
 Videodaki tutarlar örnek bir geziye aittir.
 
@@ -181,7 +181,7 @@ Nomad Budget — متتبّع المصاريف للرحّالة الرقميين
 📲 حمّله من App Store:
 https://apps.apple.com/sa/app/id6803787746
 🌍 الموقع:
-https://nomadbudget.rubeeks.co
+https://nomadbudgetapp.com
 
 المبالغ في الفيديو من رحلة تجريبية.
 
@@ -225,7 +225,7 @@ nomad budget, متتبع المصاريف, ميزانية السفر, تطبيق
 📲 حمّله من App Store:
 https://apps.apple.com/sa/app/id6803787746
 🌍 الموقع:
-https://nomadbudget.rubeeks.co
+https://nomadbudgetapp.com
 
 المبالغ في الفيديو من رحلة تجريبية.
 

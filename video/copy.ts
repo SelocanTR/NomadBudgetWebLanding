@@ -56,7 +56,7 @@ export const COPY: Record<CoverLang, VideoCopy> = {
     tagline: 'Multi-Currency Expense Tracker',
     // Not one store's: the app is on Google Play too.
     cta: 'Download now',
-    url: 'nomadbudget.rubeeks.co',
+    url: 'nomadbudgetapp.com',
   },
   tr: {
     audiences: ['Dijital göçebeler için', 'Gurbetçiler için', 'Uzun süre gezenler için'],
@@ -78,7 +78,7 @@ export const COPY: Record<CoverLang, VideoCopy> = {
     name: 'Nomad Budget',
     tagline: 'Çok Dövizli Harcama Takibi',
     cta: 'Hemen indir',
-    url: 'nomadbudget.rubeeks.co',
+    url: 'nomadbudgetapp.com',
   },
   // The site has no Arabic: the app's own Arabic where it has the words (the cost card's
   // world.cost.*, the route pill's /شهر), the search video's (search-copy.ts) for the hook
@@ -103,7 +103,7 @@ export const COPY: Record<CoverLang, VideoCopy> = {
     name: 'Nomad Budget',
     tagline: 'متتبّع مصاريف متعدد العملات',
     cta: 'حمّل الآن',
-    url: 'nomadbudget.rubeeks.co',
+    url: 'nomadbudgetapp.com',
   },
 };
 

@@ -3,7 +3,7 @@
 
 export type Lang = 'en' | 'tr';
 
-export const SITE = 'https://nomadbudget.rubeeks.co';
+export const SITE = 'https://nomadbudgetapp.com';
 export const APP_STORE_ID = '6803787746';
 export const PLAY_PACKAGE = 'com.nomadbudget.mobile';
 export const CONTACT = 'nomadbudget@rubeeks.co';
